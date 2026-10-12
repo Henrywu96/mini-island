@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GG1SMM8M51"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GG1SMM8M51');
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Henry Wu · Quest Island | UI/UX Portfolio</title>
@@ -431,6 +440,8 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
 /* ================= helpers ================= */
 const $ = s => document.querySelector(s);
+// analytics: sends an event only when the Google tag is on the page (the GitHub Pages build)
+const track = (name, params = {}) => { try { if (typeof window.gtag === 'function') window.gtag('event', name, params); } catch (err) { } };
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
@@ -1298,6 +1309,7 @@ function panelHTML(id) {
 }
 function openPanel(id) {
   const st = SBY[id]; if (!st) return;
+  track('open_quest', { quest_id: id, quest_name: st.name });
   lastFocus = document.activeElement;
   faceToward(st.x, st.z, 1.5); SFX.open(); onPanelOpened(id); openId = id; panelBody.innerHTML = panelHTML(id); panel.hidden = false; panelBody.scrollTop = 0;
   $('#app').classList.add('app-panel-open');
@@ -1322,6 +1334,7 @@ panel.addEventListener('click', e => {
   if (cp) {
     const txt = cp.dataset.copy;
     const done = () => { cp.textContent = 'Copied'; setTimeout(() => cp.textContent = 'Copy', 1600); };
+    track('copy_link', { link_url: txt });
     try { navigator.clipboard.writeText(txt).then(done, () => selectText()); } catch (err) { selectText(); }
     function selectText() { const el = $('#liUrl'); const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); cp.textContent = 'Press Ctrl+C'; }
   }
@@ -1351,7 +1364,7 @@ function quickHTML() {
       <section class="q-sec card"><h2>About</h2><p class="headline">UI/UX Designer. Hamster Lover. Problem Solver.</p><p style="margin:0;color:var(--slate)">I'm Henry Wu, a UI/UX designer who crafts meaningful digital experiences with empathy and curiosity. When I'm not designing, you'll find me hanging out with my hamster, gaming, or working out.</p></section>
     </div></div>`;
 }
-function openQuick() { quick.innerHTML = quickHTML(); quick.hidden = false; quick.scrollTop = 0; quick.querySelector('[data-back]').focus(); }
+function openQuick() { track('quick_view'); quick.innerHTML = quickHTML(); quick.hidden = false; quick.scrollTop = 0; quick.querySelector('[data-back]').focus(); }
 function closeQuick() { quick.hidden = true; $('#btnQuick').focus({ preventScroll: true }); }
 quick.addEventListener('click', e => {
   if (e.target.closest('[data-back]')) { closeQuick(); if (!started) beginGame(); return; }
@@ -1370,6 +1383,7 @@ try { if (localStorage.getItem('hq-tracker-collapsed') === '1') setTrackerCollap
 /* ================= start ================= */
 function beginGame() {
   if (started) return;
+  track('start_exploring');
   started = true; $('#start').hidden = true; camDistTarget = innerWidth < 720 ? 17 : 15;
   renderer.domElement.focus({ preventScroll: true });
   setTimeout(() => { emote('wave'); say("Hi, I'm Henry! Walk to a glowing totem to open a case study.", 6); }, reduceMotion ? 0 : 900);
@@ -1427,6 +1441,7 @@ PROPS.forEach(pr => { const hit = new THREE.Mesh(new THREE.CylinderGeometry(1.0,
 
 function markInteract(id) {
   if (didInt.has(id)) return;
+  track('island_interaction', { interaction_id: id });
   didInt.add(id); addXP(2); renderTracker(); SFX.pop();
   const total = Object.keys(INTERACTIONS).length;
   if (didInt.size === total) setTimeout(() => toast(`<b>All ${total} interactions found.</b> You really explored the island!`, 4), 900);
@@ -1640,7 +1655,7 @@ function updatePlayer(dt) {
   for (const t of TOOLS) {
     if (found.has(t.n)) continue;
     if (Math.hypot(P.x - t.at[0], P.z - t.at[1]) < 1.05 && Math.abs((P.y + jumpY + 1) - t.y) < 1.4) {
-      found.add(t.n); t.m.visible = false; SFX.coin(); burst(t.at[0], t.y, t.at[1], [t.c, '#ffd166', '#ffffff'], 20, 3.5);
+      found.add(t.n); track('tool_found', { tool_name: t.n }); t.m.visible = false; SFX.coin(); burst(t.at[0], t.y, t.at[1], [t.c, '#ffd166', '#ffffff'], 20, 3.5);
       toast(`Tool unlocked: <b>${t.n}</b> · ${found.size}/${TOOLS.length}`); say(`${t.n}! ${found.size === TOOLS.length ? 'Full toolbelt.' : 'One of my everyday tools.'}`, 2.4);
       addXP(2); renderTracker();
       if (openId === 'skills') panelBody.innerHTML = panelHTML('skills');
@@ -2669,6 +2684,7 @@ function updatePlanes(dt) {
 /* ---- guided tour ---- */
 let tour = false;
 function startTour() {
+  track('start_tour');
   if (!started) beginGame();
   quick.hidden = true; closePanel(); tour = true;
   toast('<b>Guided tour</b> · Henry walks you to every stop. Press “Next” in each card to continue.', 3.6);
@@ -2676,7 +2692,7 @@ function startTour() {
 }
 function stopTour() { tour = false; }
 function onPanelOpened(id) {
-  if (tour && id === ORDER[ORDER.length - 1]) { tour = false; setTimeout(() => toast('<b>Tour complete.</b> Thanks for visiting every stop!', 3.6), 500); }
+  if (tour && id === ORDER[ORDER.length - 1]) { tour = false; track('complete_tour'); setTimeout(() => toast('<b>Tour complete.</b> Thanks for visiting every stop!', 3.6), 500); }
 }
 $('#btnTour').addEventListener('click', startTour);
 $('#buffs').addEventListener('click', e => { if (e.target.closest('[data-stoptour]')) stopTour(); });
@@ -2685,7 +2701,7 @@ $('#buffs').addEventListener('click', e => { if (e.target.closest('[data-stoptou
 let photo = false;
 function setPhoto(on) {
   if (on && !started) beginGame();
-  photo = on; $('#app').classList.toggle('photo', on);
+  photo = on; $('#app').classList.toggle('photo', on); if (on) track('photo_mode');
   $('#btnPhoto').setAttribute('aria-pressed', String(on));
   if (on) { closePanel(); path = []; SFX.click(); }
 }

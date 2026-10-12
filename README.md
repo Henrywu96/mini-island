@@ -36,7 +36,9 @@ The island follows each visitor's own day:
 - **Weather** comes from [Open-Meteo](https://open-meteo.com/), is shown in degrees Celsius and refreshes every 15 minutes. Rain, snow, fog, overcast skies, wind and thunderstorms all show up on the island, and Henry opens an umbrella when it rains.
 - Clicking the weather card previews clear sky, rain, snow and a thunderstorm, then returns to live weather.
 
-**Privacy:** the approximate area is looked up from the visitor's IP address with [GeoJS](https://www.geojs.io/) (fallback: [ipwho.is](https://ipwho.is/)). The pin button asks the browser for a precise location instead, and its place name comes from [BigDataCloud](https://www.bigdatacloud.com/). The location is only cached in the visitor's own browser for six hours; no data is stored anywhere else. If any of these services are unreachable, the island still works and simply shows the local time.
+**Privacy:** the approximate area is looked up from the visitor's IP address with [GeoJS](https://www.geojs.io/) (fallback: [ipwho.is](https://ipwho.is/)). The pin button asks the browser for a precise location instead, and its place name comes from [BigDataCloud](https://www.bigdatacloud.com/). The location is only cached in the visitor's own browser for six hours and is not sent to analytics. If any of these services are unreachable, the island still works and simply shows the local time.
+
+**Analytics:** the site uses [Google Analytics 4](https://marketingplatform.google.com/about/analytics/) to count visits and see which case studies and features people use (for example opening a case study, Quick view, the guided tour and island interactions). It collects no names, emails or precise locations. You can block it with any content blocker or by opting out with the [Google Analytics opt-out add-on](https://tools.google.com/dlpage/gaoptout).
 
 ## Controls
 
