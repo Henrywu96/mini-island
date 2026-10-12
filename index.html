@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Henry Wu · Quest Island | UI/UX Portfolio</title>
-<meta name="description" content="Henry Wu's UI/UX design portfolio as a playable 3D sky island: walk to each case study (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
+<meta name="description" content="Henry Wu's UI/UX design portfolio as a playable 3D sky island that follows your local time and weather: case studies (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
 <meta name="theme-color" content="#cfe6fb">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Henry Wu · Quest Island">
-<meta property="og:description" content="Henry Wu's UI/UX design portfolio as a playable 3D sky island: walk to each case study (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
+<meta property="og:description" content="Henry Wu's UI/UX design portfolio as a playable 3D sky island that follows your local time and weather: case studies (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2072%22%3E%3Cpath%20d%3D%22M32%200%20L64%2010%20L64%2038%20C64%2056%2048%2066%2032%2072%20C16%2066%200%2056%200%2038%20L0%2010%20Z%22%20fill%3D%22%23202b45%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2248%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2234%22%20fill%3D%22%23ffd166%22%3EH%3C/text%3E%3C/svg%3E">
 <style>[hidden]{display:none!important}img{max-width:100%}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -148,6 +148,29 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
 .photo .labels{opacity:0}
 .photo .photo-exit{display:inline-flex}
 .buff.tour{border:0;cursor:pointer;background:var(--navy);color:#fff}
+/* live time + weather card */
+.wx{top:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:6px 6px 6px 12px;border-radius:16px}
+.wx-btn{display:flex;align-items:center;gap:10px;border:0;background:transparent;padding:2px 4px 2px 0;text-align:left;color:var(--navy);border-radius:10px}
+.wx-ic{display:grid;place-items:center;width:30px;height:30px}
+.wx-ic svg{width:26px;height:26px;color:var(--coral)}
+.wx-col{display:grid;gap:3px;min-width:0}
+.wx-col b{font:700 17px/1 var(--display);font-variant-numeric:tabular-nums}
+.wx-col small{font:500 11px/1.2 var(--body);color:var(--slate);white-space:nowrap;max-width:190px;overflow:hidden;text-overflow:ellipsis}
+.wx-sep{width:1px;align-self:stretch;background:var(--line);margin:0 2px}
+.wx-pin{width:32px;height:32px;border-radius:10px;border:0;background:transparent;display:grid;place-items:center;color:var(--slate)}
+.wx-pin:hover,.wx-btn:hover .wx-ic svg{color:var(--coral)}
+.wx-pin:hover{background:rgba(236,106,78,.1)}
+.wx-pin svg{width:17px;height:17px}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:3}
+.ib{position:relative}
+.auto-badge{position:absolute;right:3px;bottom:3px;font:700 8px/1 var(--body);background:var(--coral);color:#fff;border-radius:4px;padding:2px 3px}
+@media (max-width:1100px){
+  .wx{left:auto;right:16px;top:66px;transform:none}
+  .app-panel-open .wx{display:none}
+}
+/* pet name tags */
+.pet-tag{display:flex;align-items:center;gap:5px;font:600 11px/1 var(--display);letter-spacing:.02em;color:var(--navy);background:rgba(255,255,255,.92);padding:4px 9px 4px 6px;border-radius:999px;white-space:nowrap;box-shadow:0 3px 8px rgba(32,43,69,.14);opacity:0;transition:opacity .3s}
+.pet-tag span{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 0 1.5px #fff,0 0 0 2.5px rgba(32,43,69,.15)}
 /* floating labels */
 .slabel{transform:translateY(-6px);display:flex;align-items:center;gap:6px;padding:5px 10px 5px 7px;border-radius:999px;background:rgba(255,255,255,.92);box-shadow:0 4px 12px rgba(32,43,69,.14);font:600 12px/1 var(--display);letter-spacing:.02em;color:var(--navy);white-space:nowrap;transition:opacity .3s}
 .slabel span{width:9px;height:9px;border-radius:3px;background:var(--c)}
@@ -208,7 +231,7 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
 .copyrow button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;font:600 12px var(--body)}
 
 /* toast */
-.toast{top:16px;left:50%;transform:translateX(-50%);padding:11px 16px;border-radius:14px;background:var(--navy);color:#fff;font:600 13px/1.35 var(--body);box-shadow:0 12px 28px rgba(32,43,69,.28);z-index:9;max-width:calc(100% - 32px);text-align:center;animation:drop .3s cubic-bezier(.2,1.3,.4,1)}
+.toast{top:84px;left:50%;transform:translateX(-50%);padding:11px 16px;border-radius:14px;background:var(--navy);color:#fff;font:600 13px/1.35 var(--body);box-shadow:0 12px 28px rgba(32,43,69,.28);z-index:9;max-width:calc(100% - 32px);text-align:center;animation:drop .3s cubic-bezier(.2,1.3,.4,1)}
 .toast b{color:var(--sun)}
 @keyframes drop{from{transform:translate(-50%,-12px);opacity:0}}
 
@@ -253,6 +276,10 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
 @media (max-width:720px){
   .pcard{width:auto;right:132px;padding:8px 12px 8px 8px}
   .iconbar{flex-direction:column}
+  .wx{left:16px;right:auto;top:84px;padding:4px 4px 4px 8px}
+  .wx-col b{font-size:15px}
+  .wx-col small{max-width:118px}
+  .toast{top:150px}
   .avatar{width:46px;height:46px;border-radius:13px}
   .tracker{display:none;top:86px;right:16px;width:auto;max-height:calc(100% - 86px - 90px);z-index:6}
   .tracker.open{display:block}
@@ -281,6 +308,17 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
 <div id="app">
   <div id="stage" aria-label="3D island world with Henry's portfolio"></div>
   <div id="vignette" aria-hidden="true"></div>
+  <div id="flash" aria-hidden="true"></div>
+
+  <div class="hud wx card" id="wx">
+    <button class="wx-btn" id="wxBtn" aria-live="polite">
+      <span class="wx-ic" id="wxIcon" aria-hidden="true"></span>
+      <span class="wx-col"><b id="wxTime">--:--</b><small id="wxDate"></small></span>
+      <span class="wx-sep" aria-hidden="true"></span>
+      <span class="wx-col"><b id="wxTemp">—</b><small id="wxDesc">Checking your weather…</small></span>
+    </button>
+    <button class="wx-pin" id="wxPin" title="Use my precise location for the weather" aria-label="Use my precise location for the weather"></button>
+  </div>
 
   <div class="hud pcard card" aria-label="Player">
     <div class="avatar" role="img" aria-label="Henry Wu"></div>
@@ -321,8 +359,10 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
     <div>Second action<span><kbd>F</kbd></span></div>
     <div>Wave · Dance · Cheer<span><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></span></div>
     <div>Pet the hamster<span><kbd>H</kbd></span></div>
+    <div>Dogs and cats<span>Walk up · <kbd>E</kbd> <kbd>F</kbd></span></div>
     <div>Show or hide quest log<span><kbd>Q</kbd></span></div>
-    <div>Day · sunset · night<span><kbd>N</kbd></span></div>
+    <div>Auto · day · sunset · night<span><kbd>N</kbd></span></div>
+    <div>Weather preview<span>Click the weather card</span></div>
     <div>Guided tour<span><kbd>T</kbd></span></div>
     <div>Photo mode<span><kbd>P</kbd></span></div>
     <div>Sound on or off<span><kbd>M</kbd></span></div>
@@ -358,7 +398,7 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
       <div class="crest" aria-hidden="true">H</div>
       <h1>HENRY WU</h1>
       <p class="kicker">UI/UX Designer · Portfolio</p>
-      <p class="tag">Crafting simple, engaging, and code-ready digital experiences. Walk the sky islands, open each quest, and play with what you find. Or press T for a guided tour.</p>
+      <p class="tag">Crafting simple, engaging, and code-ready digital experiences. Walk the sky islands, open each quest, and play with what you find. The sky follows your local time and weather.</p>
       <div class="start-actions">
         <button class="btn primary" id="btnStart">Start exploring</button>
         <button class="btn" id="btnStartQuick">Quick view instead</button>
@@ -1089,7 +1129,7 @@ const WHEEL = { x: -2.2, z: -6.6 };
 const hamHit = new THREE.Mesh(new THREE.SphereGeometry(.6, 8, 6), hitMat); hamHit.userData.ham = true; scene.add(hamHit); stationHits.push(hamHit);
 
 const anim = { w: 0, amt: 0, yaw: 0, emote: null, et: 0, edur: 0, headYaw: 0 };
-const EMOTE_DUR = { wave: 2.2, idlewave: 1.8, dance: 3.4, cheer: 2.2, drink: 2.0, shake: 1.3, send: 1.4 };
+const EMOTE_DUR = { wave: 2.2, idlewave: 1.8, dance: 3.4, cheer: 2.2, drink: 2.0, shake: 1.3, send: 1.4, petdown: 1.5 };
 const FACE_CAM = ['wave', 'idlewave', 'dance', 'cheer'];
 function emote(type, dur) {
   anim.emote = type; anim.et = 0; anim.edur = dur || EMOTE_DUR[type] || 2;
@@ -1108,6 +1148,7 @@ function animateHenry(dt) {
   let legR = s * .75 * a, legL = -s * .75 * a, armR = -s * .6 * a, armL = s * .6 * a, armRz = 0, armLz = 0;
   let hipY = .72 + Math.abs(Math.cos(anim.w)) * .06 * a + Math.sin(t * 2.2) * .006, hipX = 0, lean = .1 * a, bodyYaw = 0, headTilt = 0, headPitch = -.04 * a;
   if (jumpY > 0) { legR = -.7; legL = .25; armRz = .55; armLz = .55; }
+  if (wxUmbrella) { armR = -.3; armRz = -.15; }
   if (e) {
     const k = clamp(Math.min(anim.et * 5, (anim.edur - anim.et) * 5), 0, 1), et = anim.et;
     if (e === 'wave' || e === 'idlewave') { armRz = lerp(armRz, 2.6 + Math.sin(et * 11) * .28, k); armR = lerp(armR, 0, k); headTilt = .14 * k; }
@@ -1116,10 +1157,11 @@ function animateHenry(dt) {
     else if (e === 'drink') { armR = lerp(armR, -2.15, k); armRz = -.4 * k; headPitch = -.22 * k; }
     else if (e === 'shake') { armR = lerp(armR, -1.45, k); armL = lerp(armL, -1.45, k); bodyYaw = Math.sin(et * 32) * .1 * k; }
     else if (e === 'send') { armR = lerp(armR, -2.0, k); armRz = .25 * k; armL = lerp(armL, -.6, k); }
+    else if (e === 'petdown') { hipY -= .15 * k; lean += .45 * k; legR = lerp(legR, -.5, k); legL = lerp(legL, -.5, k); armR = lerp(armR, -1.2 + Math.sin(et * 14) * .14, k); armRz = .05 * k; headPitch = .3 * k; }
   }
   R.legs[0].rotation.x = legR; R.legs[1].rotation.x = legL;
   R.arms[0].rotation.set(armR, 0, -(.12 + armRz)); R.arms[1].rotation.set(armL, 0, .12 + armLz);
-  R.hips.position.set(hipX, hipY, 0); R.hips.rotation.x = anim.flip || 0; R.body.rotation.set(lean, bodyYaw, 0);
+  R.hips.position.set(hipX, hipY, 0); R.body.rotation.set(lean, bodyYaw, 0);
   let hy = 0;
   if (lookTarget && !e) hy = clamp(angDiff(Math.atan2(lookTarget.x - P.x, lookTarget.z - P.z), anim.yaw), -1, 1) * .8;
   anim.headYaw = lerp(anim.headYaw, hy, 1 - Math.exp(-dt * 6));
@@ -1187,7 +1229,7 @@ placeCamera();
 /* ================= HUD: tracker, XP ================= */
 let level = 4, xp = 72;
 const didInt = new Set();
-const INTERACTIONS = { hourglass: 'Turn the hourglass', planter: 'Log a green action', hug: 'Send a hug', wheel: 'Hamster wheel', coffee: 'Brew a coffee', card: 'Move a job card', shake: 'Shake the skill tree', pet: 'Pet the hamster', ball: 'Kick the beach ball', pad: 'Bounce on a jump pad', butterflies: 'Startle the butterflies', plane: 'Throw a paper plane' };
+const INTERACTIONS = { hourglass: 'Turn the hourglass', planter: 'Log a green action', hug: 'Send a hug', wheel: 'Hamster wheel', coffee: 'Brew a coffee', card: 'Move a job card', shake: 'Shake the skill tree', pet: 'Pet the hamster', ball: 'Kick the beach ball', butterflies: 'Startle the butterflies', plane: 'Throw a paper plane', dog: 'Pet a dog', cat: 'Pet a cat', trick: 'Ask a dog for a trick', yarn: 'Toss yarn for a cat', fetch: 'Play fetch with a dog' };
 function renderTracker() {
   $('#trList').innerHTML = STATIONS.map(st => `<li><button class="tr-row ${visited.has(st.id) ? 'done' : ''}" data-go="${st.id}"><span class="tr-dot" style="--c:${st.color}"></span><span class="tr-name">${esc(st.name)}</span><span class="tr-tag">${esc(st.tag)}</span><span class="tr-check" aria-label="${visited.has(st.id) ? 'visited' : 'not visited'}"></span></button></li>`).join('');
   $('#trCount').textContent = `${visited.size} / ${STATIONS.length}`;
@@ -1490,7 +1532,7 @@ function renderBuffs() {
   const html = chips.join(''), el = $('#buffs'); if (el.innerHTML !== html) el.innerHTML = html;
   document.querySelectorAll('#dock [data-emote]').forEach(b => b.classList.toggle('on', anim.emote === b.dataset.emote || (b.dataset.emote === 'pet' && hamState === 'pet')));
 }
-const TIPS = ['Glowing totems open my case studies.', 'Press 2 and I will dance.', 'One tool coin is hiding on a bridge.', 'Kick the beach ball. My hamster will chase it.', 'Step on a jump pad next to the lamps.', 'Press N to see the island at night.', 'Try turning the hourglass on StudyFlow island.', 'Press F at the coffee booth for a speed boost.', 'Press T for a guided tour of my work.'];
+const TIPS = ['Glowing totems open my case studies.', 'Press 2 and I will dance.', 'One tool coin is hiding on a bridge.', 'Kick the beach ball. My hamster will chase it.', 'Mochi and Bean love belly rubs. Walk up and press E.', 'Kick the ball near a dog to play fetch.', 'Press N to see the island at night.', 'Try turning the hourglass on StudyFlow island.', 'Press F at the coffee booth for a speed boost.', 'Press T for a guided tour of my work.', 'Toss some yarn for the cats with F.'];
 let tipI = 0;
 
 /* ---- walking ---- */
@@ -1580,8 +1622,8 @@ function updatePlayer(dt) {
   anim.yaw += angDiff(targetYaw, anim.yaw) * (1 - Math.exp(-dt * 9));
   // nearest thing to use, and something to look at
   let best = null, bd = 1e9; lookTarget = null; let ld = 6;
-  for (const list of [STATIONS, PROPS]) for (const it of list) {
-    const d = Math.hypot(P.x - it.x, P.z - it.z);
+  for (const list of [STATIONS, PROPS, PETS]) for (const it of list) {
+    const d = Math.hypot(P.x - it.x, P.z - it.z) + (it.pet ? .25 : 0);
     if (d < it.radius && d < bd) { bd = d; best = it; }
     if (d < ld) { ld = d; lookTarget = it; }
   }
@@ -1609,14 +1651,15 @@ function updatePrompt() {
   const box = $('#prompts');
   const show = near && panel.hidden && started && quick.hidden && !photo;
   if (!show) { if (!box.hidden) box.hidden = true; box.dataset.k = ''; return; }
-  const key = (near.kind ? 's:' : 'p:') + near.id;
+  const key = (near.kind ? 's:' : 'p:') + near.id + (near.pet ? ':' + near.sub : '');
   if (box.dataset.k === key && !box.hidden) return;
   box.dataset.k = key;
   if (near.kind) {
     $('#promptText').innerHTML = `${esc(near.verb)} <small>· ${esc(near.name)}</small>`;
     $('#prompt2').hidden = !near.alt; if (near.alt) $('#promptText2').innerHTML = esc(near.alt.label);
   } else {
-    $('#promptText').innerHTML = `${esc(near.label)} <small>· ${esc(near.sub)}</small>`; $('#prompt2').hidden = true;
+    $('#promptText').innerHTML = `${esc(near.label)} <small>· ${esc(near.sub)}</small>`;
+    $('#prompt2').hidden = !near.alt; if (near.alt) $('#promptText2').innerHTML = esc(near.alt.label);
   }
   box.hidden = false;
 }
@@ -1683,7 +1726,7 @@ renderer.domElement.addEventListener('pointerup', e => {
   if (photo) return;
   if (!panel.hidden) closePanel();
   const sh = pick(e, stationHits);
-  if (sh) { const u = sh.object.userData; if (u.station) walkToStation(u.station.id); else if (u.prop) walkToProp(u.prop); else if (u.ham) petHamster(); else if (u.ball) { walkTo({ x: BALL.x, z: BALL.z }); markAt(BALL.x, BALL.z); } return; }
+  if (sh) { const u = sh.object.userData; if (u.station) walkToStation(u.station.id); else if (u.prop) walkToProp(u.prop); else if (u.pet) walkToPet(u.pet); else if (u.ham) petHamster(); else if (u.ball) { walkTo({ x: BALL.x, z: BALL.z }); markAt(BALL.x, BALL.z); } return; }
   const wh = pick(e, walkMeshes);
   if (wh && walkable(wh.point.x, wh.point.z)) { walkTo({ x: wh.point.x, z: wh.point.z }); markAt(wh.point.x, wh.point.z); }
 });
@@ -1702,6 +1745,7 @@ function drawMinimap() {
   for (const b of BRIDGES) { const [a1, a2] = toMM(b.p1.x, b.p1.z), [b1, b2] = toMM(b.p2.x, b.p2.z); mg.beginPath(); mg.moveTo(a1, a2); mg.lineTo(b1, b2); mg.stroke(); }
   for (const is of ISLANDS) { const [x, y] = toMM(is.x, is.z); mg.fillStyle = '#a6db86'; mg.strokeStyle = '#86c867'; mg.lineWidth = 3; mg.beginPath(); mg.arc(x, y, is.r * MM.s, 0, 7); mg.fill(); mg.stroke(); }
   for (const t of TOOLS) { if (found.has(t.n)) continue; const [x, y] = toMM(t.at[0], t.at[1]); mg.fillStyle = '#ffd166'; mg.strokeStyle = '#fff'; mg.lineWidth = 2; mg.beginPath(); mg.arc(x, y, 5, 0, 7); mg.fill(); mg.stroke(); }
+  for (const pt of PETS) { const [x, y] = toMM(pt.x, pt.z); mg.fillStyle = pt.fur; mg.strokeStyle = '#fff'; mg.lineWidth = 2; mg.beginPath(); mg.arc(x, y, 4.5, 0, 7); mg.fill(); mg.stroke(); }
   for (const st of STATIONS) {
     const [x, y] = toMM(st.x, st.z), done = visited.has(st.id);
     mg.fillStyle = done ? '#2fb67c' : st.color; mg.strokeStyle = '#fff'; mg.lineWidth = 3; mg.beginPath(); mg.arc(x, y, st.kind === 'quest' ? 10 : 8, 0, 7); mg.fill(); mg.stroke();
@@ -1725,7 +1769,7 @@ mm.addEventListener('click', e => {
   closePanel(); walkTo({ x: is.x + (x > is.x ? .8 : -.8), z: is.z + 1.6 });
 });
 
-/* ================= extras: sound, time of day, glow, ball, jump pads, butterflies, paper plane, tour, photo mode ================= */
+/* ================= extras: sound, time of day, glow, ball, dogs and cats, butterflies, paper plane, tour, photo mode ================= */
 
 /* ---- sound: tiny synthesized effects, off with M ---- */
 let actx = null, soundOn = true;
@@ -1751,7 +1795,6 @@ const SFX = {
   close: () => tone(660, .1, 'sine', .04, -240),
   pop: () => tone(440, .1, 'triangle', .05, 320),
   jump: () => tone(320, .16, 'square', .02, 420),
-  boing: () => { tone(160, .38, 'sine', .08, 640); tone(320, .2, 'triangle', .03, 500, .02); },
   kick: () => tone(150, .12, 'triangle', .08, -70),
   level: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, .2, 'triangle', .05, 0, i * .09)),
   squeak: () => { tone(1500, .07, 'sine', .035, 600); tone(1700, .07, 'sine', .03, 500, .09); },
@@ -1823,29 +1866,39 @@ const mix = (x, y, k) => _ca.set(x).lerp(_cb.set(y), k);
 function applyTod(k) {
   const A = todFrom, B = todTo, L = (x, y) => x + (y - x) * k;
   const cv = scene.background.image, g = cv.getContext('2d'), gr = g.createLinearGradient(0, 0, 0, cv.height);
-  [0, .45, .78, 1].forEach((st, i) => gr.addColorStop(st, '#' + mix(A.sky[i], B.sky[i], k).getHexString()));
+  [0, .45, .78, 1].forEach((st, i) => gr.addColorStop(st, '#' + overcast(mix(A.sky[i], B.sky[i], k)).getHexString()));
   g.fillStyle = gr; g.fillRect(0, 0, cv.width, cv.height); scene.background.needsUpdate = true;
-  scene.fog.color.copy(mix(A.fog, B.fog, k));
-  hemi.color.copy(mix(A.hemiS, B.hemiS, k)); hemi.groundColor.copy(mix(A.hemiG, B.hemiG, k)); hemi.intensity = L(A.hemiI, B.hemiI);
-  sun.color.copy(mix(A.sunC, B.sunC, k)); sun.intensity = L(A.sunI, B.sunI); sun.position.set(L(A.sunP[0], B.sunP[0]), L(A.sunP[1], B.sunP[1]), L(A.sunP[2], B.sunP[2]));
-  sunDisc.material.color.copy(mix(A.disc, B.disc, k)); sunDisc.position.set(L(A.discP[0], B.discP[0]), L(A.discP[1], B.discP[1]), L(A.discP[2], B.discP[2]));
+  scene.fog.color.copy(overcast(mix(A.fog, B.fog, k))); scene.fog.near = 55 - 38 * WXS.fog - 14 * WXS.ov; scene.fog.far = 140 - 68 * WXS.fog - 32 * WXS.ov;
+  hemi.color.copy(mix(A.hemiS, B.hemiS, k)); hemi.groundColor.copy(mix(A.hemiG, B.hemiG, k)); hemi.intensity = L(A.hemiI, B.hemiI) * (1 - .22 * WXS.ov);
+  sun.color.copy(mix(A.sunC, B.sunC, k)); sun.intensity = L(A.sunI, B.sunI) * (1 - .62 * WXS.ov); sun.position.set(L(A.sunP[0], B.sunP[0]), L(A.sunP[1], B.sunP[1]), L(A.sunP[2], B.sunP[2]));
+  sunDisc.material.color.copy(mix(A.disc, B.disc, k)); sunDisc.material.opacity = 1 - .9 * WXS.ov; sunDisc.position.set(L(A.discP[0], B.discP[0]), L(A.discP[1], B.discP[1]), L(A.discP[2], B.discP[2]));
   lampMats.forEach(m => { m.emissiveIntensity = L(A.lamp, B.lamp); });
   lampLights.forEach(l => { l.intensity = L(A.light, B.light); });
-  stars.material.opacity = L(A.stars, B.stars); stars.visible = stars.material.opacity > .01;
+  stars.material.opacity = L(A.stars, B.stars) * (1 - WXS.ov); stars.visible = stars.material.opacity > .01;
   flies.material.opacity = L(A.flies, B.flies); flies.visible = flies.material.opacity > .01;
   renderer.toneMappingExposure = L(A.exp, B.exp);
   if (bloom) { bloom.threshold = L(A.bT, B.bT); bloom.strength = L(A.bS, B.bS); }
   cloudMat.emissive.copy(mix(A.cloud, B.cloud, k));
-  $('#vignette').style.setProperty('--vig', L(A.vig, B.vig).toFixed(3));
+  $('#vignette').style.setProperty('--vig', (L(A.vig, B.vig) + .1 * WXS.ov).toFixed(3));
+  hemiBase = hemi.intensity;
 }
-function setTod(name) {
+function setTod(name, quiet) {
   if (!TOD[name]) return;
-  todFrom = todTo; tod = name; todTo = TOD[name]; todK = reduceMotion ? 1 : 0;
-  if (reduceMotion) { applyTod(1); todFrom = todTo; }
-  const b = $('#btnTime'); b.innerHTML = ICON[name]; b.setAttribute('aria-label', `Time of day: ${TOD_NAME[name]}`); b.title = `Time of day: ${TOD_NAME[name]} (N)`;
-  if (started) { toast(`<b>${TOD_NAME[name]}</b>${name === 'night' ? ' · the lamps and fireflies are out' : ''}`, 2); SFX.chime(); }
+  if (todTo !== TOD[name]) { todFrom = todTo; todTo = TOD[name]; todK = reduceMotion ? 1 : 0; tod = name; if (reduceMotion) { applyTod(1); todFrom = todTo; } }
+  tod = name; updateTimeBtn();
+  if (started && !quiet) { toast(`<b>${TOD_NAME[name]}</b>${name === 'night' ? ' · the lamps and fireflies are out' : ''}`, 2); SFX.chime(); }
 }
-function cycleTod() { setTod(TOD_ORDER[(TOD_ORDER.indexOf(tod) + 1) % TOD_ORDER.length]); }
+function updateTimeBtn() {
+  const b = $('#btnTime'), auto = todMode === 'auto', label = auto ? `Auto, now ${TOD_NAME[tod]}` : TOD_NAME[tod];
+  b.innerHTML = ICON[tod] + (auto ? '<span class="auto-badge">A</span>' : '');
+  b.setAttribute('aria-label', `Time of day: ${label}`); b.title = `Time of day: ${label} (N)`;
+}
+function cycleTod() {
+  const order = ['auto', 'day', 'sunset', 'night'];
+  todMode = order[(order.indexOf(todMode) + 1) % order.length];
+  if (todMode === 'auto') { setTod(autoTod(), true); if (started) { toast(`<b>Auto</b> · following your local time (${TOD_NAME[tod]})`, 2.4); SFX.chime(); } }
+  else setTod(todMode);
+}
 $('#btnTime').addEventListener('click', cycleTod);
 $('#btnTime').innerHTML = ICON.day;
 
@@ -1904,35 +1957,659 @@ function ballChase() {
   return { x: BALL.x - BALL.vx / sp * .6, z: BALL.z - BALL.vz / sp * .6 };
 }
 
-/* ---- jump pads ---- */
-const padTex = canvasTex(128, 128, (c) => {
-  c.fillStyle = '#ec6a4e'; c.beginPath(); c.arc(64, 64, 62, 0, 7); c.fill();
-  c.strokeStyle = '#ffffff'; c.lineWidth = 6; for (const r of [50, 34]) { c.beginPath(); c.arc(64, 64, r, 0, 7); c.stroke(); }
-  c.fillStyle = '#ffd166'; c.beginPath(); c.moveTo(64, 38); c.lineTo(84, 62); c.lineTo(72, 62); c.lineTo(72, 86); c.lineTo(56, 86); c.lineTo(56, 62); c.lineTo(44, 62); c.closePath(); c.fill();
+/* ---- dogs and cats on Home Base ---- */
+const HUB = ISL.hub, PET_LIM = HUB.r - 1.1;
+const DOG_SPD = { walk: 1.5, trot: 2.8, run: 5.2 }, CAT_SPD = { walk: 1.1, trot: 2.3, run: 3.8 };
+const hubClamp = (x, z, lim) => { const dx = x - HUB.x, dz = z - HUB.z, r = Math.hypot(dx, dz); return r > lim ? [HUB.x + dx / r * lim, HUB.z + dz / r * lim] : [x, z]; };
+const zTex = canvasTex(64, 64, (c) => { c.font = `700 46px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineWidth = 7; c.strokeStyle = 'rgba(32,43,69,.55)'; c.strokeText('z', 32, 32); c.fillStyle = '#ffffff'; c.fillText('z', 32, 32); });
+const boneTex = canvasTex(64, 64, (c) => {
+  c.translate(32, 32); c.rotate(-.6); c.fillStyle = '#fff1d6'; c.beginPath(); c.rect(-15, -5, 30, 10);
+  for (const [x, y] of [[-16, -6], [-16, 6], [16, -6], [16, 6]]) { c.moveTo(x + 7, y); c.arc(x, y, 7, 0, 7); }
+  c.fill(); c.strokeStyle = '#d29a62'; c.lineWidth = 2; c.stroke();
 });
-const PADS = [{ x: 5.6, z: .9 }, { x: -5.6, z: .9 }, { x: 20.2, z: 16.9 }].map(p => {
-  const g = new THREE.Group(); g.position.set(p.x, 0, p.z); scene.add(g);
-  put(g, new THREE.CylinderGeometry(.78, .86, .16, 32), mat.navy, 0, .08, 0);
-  const top = put(g, new THREE.CylinderGeometry(.66, .66, .06, 32), [new THREE.MeshStandardMaterial({ color: '#ec6a4e' }), new THREE.MeshStandardMaterial({ map: padTex, emissive: '#ec6a4e', emissiveIntensity: .25, roughness: .5 }), mat.navy], 0, .19, 0);
-  const ring = new THREE.Mesh(new THREE.RingGeometry(.86, .98, 40), new THREE.MeshBasicMaterial({ color: '#ffd166', transparent: true, opacity: .55, depthWrite: false, toneMapped: false }));
-  ring.rotation.x = -Math.PI / 2; ring.position.y = .03; g.add(ring);
-  return { ...p, top, ring, armed: true, squash: 0 };
-});
-const flip = { on: false, t: 0 };
-function updatePads(dt, t) {
-  for (const p of PADS) {
-    const d = Math.hypot(P.x - p.x, P.z - p.z);
-    if (d < .62 && jumpY === 0 && p.armed && started && panel.hidden && !photo) {
-      p.armed = false; vy = 13.5; jumpY = .001; flip.on = true; flip.t = 0; p.squash = 1;
-      if (anim.emote) endEmote(); SFX.boing(); spriteBurst(p.x, .5, p.z, sparkTex, 10, { size: .3, up: 2.2, spread: 1.6 });
-      markInteract('pad');
+// the signpost pole gets a collider so nobody walks through it
+colliders.push({ x: 0, z: 1.2, r: .14 });
+
+// doghouse with food and water bowls, on the east side of Home Base
+const DOGHOUSE = { x: 5.6, z: .9, ry: -.55 };
+function dhWorld(lx, lz) { const c = Math.cos(DOGHOUSE.ry), s = Math.sin(DOGHOUSE.ry); return { x: DOGHOUSE.x + lx * c + lz * s, z: DOGHOUSE.z - lx * s + lz * c }; }
+(() => {
+  const g = new THREE.Group(); g.position.set(DOGHOUSE.x, 0, DOGHOUSE.z); g.rotation.y = DOGHOUSE.ry; scene.add(g);
+  const wall = M('#f2b45e'), roof = M('#3f4d73', { roughness: .7 });
+  put(g, new THREE.BoxGeometry(1.18, .08, 1.26), mat.wood2, 0, .04, 0);
+  put(g, new THREE.BoxGeometry(1.0, .68, 1.1), wall, 0, .42, 0);
+  const tri = new THREE.Shape(); tri.moveTo(-.5, 0); tri.lineTo(.5, 0); tri.lineTo(0, .4); tri.closePath();
+  const gab = new THREE.ShapeGeometry(tri);
+  for (const s of [1, -1]) { const m = put(g, gab, wall, 0, .76, s * .55); if (s < 0) m.rotation.y = Math.PI; }
+  for (const s of [-1, 1]) { const r = put(g, new THREE.BoxGeometry(.84, .07, 1.34), roof, s * .32, .95, 0); r.rotation.z = -s * .65; }
+  put(g, new THREE.BoxGeometry(.09, .09, 1.38), mat.sun, 0, 1.2, 0);
+  const doorM = new THREE.MeshStandardMaterial({ color: '#3a3142', roughness: .95 });
+  const door = new THREE.Mesh(new THREE.PlaneGeometry(.44, .34), doorM); door.position.set(0, .25, .556); g.add(door);
+  const arch = new THREE.Mesh(new THREE.CircleGeometry(.22, 24), doorM); arch.position.set(0, .42, .556); g.add(arch);
+  const plate = canvasTex(256, 64, (c, w, h) => { c.fillStyle = '#fffaf4'; rrPath(c, 2, 2, w - 4, h - 4, 16); c.fill(); c.fillStyle = '#202b45'; c.font = `700 30px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('MOCHI & BEAN', w / 2, h / 2 + 2); });
+  const pl = new THREE.Mesh(new THREE.PlaneGeometry(.52, .13), new THREE.MeshStandardMaterial({ map: plate, transparent: true, roughness: .8 })); pl.position.set(0, .87, .558); g.add(pl);
+  const bowl = (lx, lz, col, fill) => { const b = new THREE.Group(); b.position.set(lx, 0, lz); g.add(b); put(b, new THREE.CylinderGeometry(.14, .11, .09, 20), M(col, { roughness: .5 }), 0, .045, 0); put(b, new THREE.CylinderGeometry(.115, .115, .02, 20), fill, 0, .085, 0, false); };
+  bowl(-.84, -.14, '#ec6a4e', M('#9a6b3f', { flatShading: true })); bowl(-.84, .2, '#3b82f6', new THREE.MeshStandardMaterial({ color: '#9ed6ff', roughness: .1, metalness: .1 }));
+  for (const [s, col] of [[-1, '#f6a68f'], [1, '#9ed6ff']]) put(g, new THREE.CylinderGeometry(.33, .35, .05, 28), M(col), s * .4, .025, 1.02, false);
+  colliders.push({ x: DOGHOUSE.x, z: DOGHOUSE.z, r: .78 });
+  const bw = dhWorld(-.84, .03); colliders.push({ x: bw.x, z: bw.z, r: .3 });
+})();
+const EAT = (() => { const s = dhWorld(-1.36, .03), b = dhWorld(-.84, .03); return { x: s.x, z: s.z, yaw: Math.atan2(b.x - s.x, b.z - s.z) }; })();
+let bowlBy = null;
+
+// cat tree with two perches, on the west side
+const CATTREE = { x: -5.6, z: .9 };
+let catToy = null;
+(() => {
+  const g = new THREE.Group(); g.position.set(CATTREE.x, 0, CATTREE.z); scene.add(g);
+  const ply = M('#ead8c4'), cushion = M('#f6a68f');
+  put(g, new THREE.BoxGeometry(.92, .08, .92), ply, 0, .04, 0);
+  put(g, new THREE.CylinderGeometry(.09, .09, 1.1, 14), mat.rope, 0, .6, 0);
+  for (let i = 0; i < 6; i++) { const r = put(g, new THREE.TorusGeometry(.094, .012, 5, 16), mat.wood2, 0, .2 + i * .15, 0, false); r.rotation.x = Math.PI / 2; }
+  put(g, new THREE.CylinderGeometry(.38, .38, .06, 28), ply, 0, 1.13, 0);
+  const ring = put(g, new THREE.TorusGeometry(.25, .07, 10, 28), cushion, 0, 1.19, 0); ring.rotation.x = Math.PI / 2;
+  put(g, new THREE.CylinderGeometry(.23, .23, .03, 22), M('#fbd3c5'), 0, 1.175, 0, false);
+  put(g, new THREE.BoxGeometry(.52, .05, .44), ply, .36, .62, 0);
+  put(g, new THREE.CylinderGeometry(.045, .045, .6, 10), mat.rope, .52, .31, 0);
+  const toy = new THREE.Group(); toy.position.set(-.3, 1.1, .14); g.add(toy);
+  put(toy, new THREE.CylinderGeometry(.006, .006, .34, 4), mat.dark, 0, -.17, 0, false);
+  put(toy, new THREE.SphereGeometry(.055, 12, 10), mat.coral, 0, -.36, 0);
+  catToy = toy;
+  colliders.push({ x: CATTREE.x + .1, z: CATTREE.z, r: .64 });
+})();
+const PERCHES = [
+  { x: CATTREE.x, y: 1.17, z: CATTREE.z, yaw: .5, sx: CATTREE.x + .95, sz: CATTREE.z + .5, by: null },
+  { x: CATTREE.x + .38, y: .645, z: CATTREE.z, yaw: 1.2, sx: CATTREE.x + 1.12, sz: CATTREE.z - .38, by: null },
+];
+
+// procedural pets, same chibi style as Henry and the hamster
+const PET_GEO = { dLeg: new THREE.CylinderGeometry(.05, .044, .28, 8), dPaw: new THREE.SphereGeometry(.056, 10, 8), cLeg: new THREE.CylinderGeometry(.034, .03, .19, 8), cPaw: new THREE.SphereGeometry(.04, 10, 8) };
+function makeDog(d) {
+  const m = { fur: CM(d.fur), cream: CM(d.cream), black: CM('#1b1b1f', { roughness: .3 }), white: CM('#ffffff'), pink: CM('#f28b8b'), collar: CM(d.collar), gold: CM('#ffd166', { metalness: .4, roughness: .35 }) };
+  const root = new THREE.Group(), roll = new THREE.Group(), body = new THREE.Group();
+  root.add(roll); roll.position.y = .24; roll.add(body); body.position.y = -.24;
+  const torso = addTo(body, new THREE.SphereGeometry(.2, 20, 14), m.fur, 0, .42, 0); torso.scale.set(1, .86, 1.6);
+  const bib = addTo(body, new THREE.SphereGeometry(.14, 16, 12), m.cream, 0, .4, .19); bib.scale.set(1, 1.1, .85);
+  const belly = addTo(body, new THREE.SphereGeometry(.15, 16, 12), m.cream, 0, .33, -.02); belly.scale.set(.95, .6, 1.45);
+  const legs = [[.1, .2], [-.1, .2], [.1, -.2], [-.1, -.2]].map(([x, z]) => {
+    const piv = new THREE.Group(); piv.position.set(x, .34, z); body.add(piv);
+    addTo(piv, PET_GEO.dLeg, m.fur, 0, -.14, 0);
+    const paw = addTo(piv, PET_GEO.dPaw, m.cream, 0, -.28, .02); paw.scale.set(1, .6, 1.3);
+    return piv;
+  });
+  const collar = addTo(body, new THREE.TorusGeometry(.108, .022, 8, 22), m.collar, 0, .52, .26); collar.rotation.x = -.9;
+  addTo(body, new THREE.SphereGeometry(.026, 8, 6), m.gold, 0, .43, .35);
+  const head = new THREE.Group(); head.position.set(0, .64, .3); body.add(head);
+  addTo(head, new THREE.SphereGeometry(.11, 14, 10), m.fur, 0, -.1, -.07);
+  const skull = addTo(head, new THREE.SphereGeometry(.17, 20, 14), m.fur, 0, 0, 0); skull.scale.set(1.06, .95, 1);
+  const cheeks = addTo(head, new THREE.SphereGeometry(.11, 16, 12), m.cream, 0, -.06, .08); cheeks.scale.set(1.3, .8, 1);
+  const muzzle = addTo(head, new THREE.SphereGeometry(.085, 14, 10), m.cream, 0, -.045, .165); muzzle.scale.set(1, .82, 1.2);
+  addTo(head, new THREE.SphereGeometry(.033, 10, 8), m.black, 0, -.015, .262);
+  const eyes = [-1, 1].map(s => {
+    const e = addTo(head, new THREE.SphereGeometry(.027, 10, 8), m.black, s * .072, .035, .148); e.scale.set(1, 1, .6); e.userData.sy = 1;
+    const hl = addTo(e, new THREE.SphereGeometry(.009, 6, 6), m.white, .01, .012, .022); hl.castShadow = false;
+    return e;
+  });
+  if (d.brows) for (const s of [-1, 1]) addTo(head, new THREE.SphereGeometry(.02, 8, 6), m.cream, s * .07, .095, .138);
+  const ears = [-1, 1].map(s => {
+    const piv = new THREE.Group(); head.add(piv);
+    if (d.ear === 'up') {
+      piv.position.set(s * .095, .13, -.01); piv.rotation.z = -s * .28;
+      addTo(piv, new THREE.ConeGeometry(.062, .15, 12), m.fur, 0, .06, 0);
+      const inner = addTo(piv, new THREE.ConeGeometry(.036, .09, 10), m.cream, 0, .045, .024); inner.scale.z = .5;
+    } else {
+      piv.position.set(s * .15, .08, -.01); piv.rotation.z = s * .35;
+      const ear = addTo(piv, new THREE.SphereGeometry(.075, 12, 10), m.fur, 0, -.06, 0); ear.scale.set(.42, 1.15, .85);
     }
-    if (d > .95) p.armed = true;
-    p.squash = Math.max(0, p.squash - dt * 3);
-    p.top.scale.y = 1 - Math.sin(p.squash * Math.PI) * .6;
-    p.ring.material.opacity = .4 + Math.sin(t * 3 + p.x) * .2;
+    piv.userData.z = piv.rotation.z;
+    return piv;
+  });
+  const tongue = addTo(head, new THREE.BoxGeometry(.05, .012, .075), m.pink, 0, -.1, .2); tongue.rotation.x = .5; tongue.visible = false;
+  const tail = new THREE.Group(); tail.position.set(0, .52, -.29); body.add(tail);
+  if (d.tail === 'curl') { const c = addTo(tail, new THREE.TorusGeometry(.075, .034, 8, 18, Math.PI * 1.6), m.fur, 0, .075, .02); c.rotation.y = Math.PI / 2; }
+  else {
+    const tm = addTo(tail, new THREE.CylinderGeometry(.022, .036, .34, 8), m.fur, 0, .085, -.148); tm.rotation.x = -1.05;
+    if (d.tip) addTo(tail, new THREE.SphereGeometry(.03, 8, 6), m.cream, 0, .17, -.296);
   }
-  if (flip.on) { flip.t += dt; anim.flip = Math.min(1, flip.t / 1.05) * Math.PI * 2; if (jumpY === 0 && flip.t > .2) { flip.on = false; anim.flip = 0; } }
+  return { root, roll, body, legs, head, ears, eyes, tongue, tail, headY: .64, headZ: .3 };
+}
+function makeCat(d) {
+  const m = { fur: CM(d.fur), cream: CM(d.cream), stripe: CM(d.stripes || d.fur), eye: CM(d.eye, { roughness: .25, emissive: d.eye, emissiveIntensity: .18 }), black: CM('#141418', { roughness: .3 }), white: CM('#ffffff'), pink: CM('#f4a3a0'), whisk: CM(d.whisker || '#ffffff') };
+  const root = new THREE.Group(), body = new THREE.Group(); root.add(body);
+  const torso = addTo(body, new THREE.SphereGeometry(.15, 18, 14), m.fur, 0, .29, 0); torso.scale.set(1, .9, 1.65);
+  const chest = addTo(body, new THREE.SphereGeometry(.1, 14, 10), m.cream, 0, .28, .15); chest.scale.set(1, 1.15, .85);
+  if (d.stripes) for (const z of [-.14, -.04, .06]) { const f = Math.sqrt(1 - (z / .2475) ** 2), s = addTo(body, new THREE.TorusGeometry(.151 * f, .012, 6, 18, Math.PI), m.stripe, 0, .29, z); s.scale.y = .9; s.castShadow = false; }
+  const legs = [[.065, .15], [-.065, .15], [.065, -.15], [-.065, -.15]].map(([x, z]) => {
+    const piv = new THREE.Group(); piv.position.set(x, .22, z); body.add(piv);
+    addTo(piv, PET_GEO.cLeg, m.fur, 0, -.095, 0);
+    const paw = addTo(piv, PET_GEO.cPaw, d.socks ? m.cream : m.fur, 0, -.19, .012); paw.scale.set(1, .6, 1.2);
+    return piv;
+  });
+  const head = new THREE.Group(); head.position.set(0, .44, .22); body.add(head);
+  const skull = addTo(head, new THREE.SphereGeometry(.14, 18, 14), m.fur, 0, 0, 0); skull.scale.set(1.12, .95, 1);
+  for (const s of [-1, 1]) { const pad = addTo(head, new THREE.SphereGeometry(.045, 10, 8), m.cream, s * .032, -.05, .112); pad.scale.set(1, .85, .9); }
+  addTo(head, new THREE.SphereGeometry(.018, 8, 6), m.pink, 0, -.018, .138);
+  const eyes = [-1, 1].map(s => {
+    const e = addTo(head, new THREE.SphereGeometry(.031, 12, 10), m.eye, s * .062, .022, .112); e.scale.set(1, 1.1, .5); e.userData.sy = 1.1;
+    const pu = addTo(e, new THREE.SphereGeometry(.019, 8, 6), m.black, 0, 0, .027); pu.scale.set(.45, 1, .5);
+    addTo(e, new THREE.SphereGeometry(.007, 6, 6), m.white, .01, .012, .028).castShadow = false;
+    return e;
+  });
+  const ears = [-1, 1].map(s => {
+    const piv = new THREE.Group(); piv.position.set(s * .078, .105, -.01); piv.rotation.z = -s * .32; piv.userData.z = piv.rotation.z; head.add(piv);
+    addTo(piv, new THREE.ConeGeometry(.056, .12, 10), m.fur, 0, .05, 0);
+    const inner = addTo(piv, new THREE.ConeGeometry(.032, .075, 8), m.pink, 0, .04, .02); inner.scale.z = .45;
+    return piv;
+  });
+  for (const s of [-1, 1]) for (let i = 0; i < 3; i++) { const w = addTo(head, new THREE.BoxGeometry(.15, .004, .004), m.whisk, s * .1, -.047 + i * .014, .1); w.rotation.z = s * (i - 1) * .14; w.rotation.y = -s * .3; w.castShadow = false; }
+  const tail = new THREE.Group(); tail.position.set(0, .34, -.23); body.add(tail);
+  const segs = []; let parent = tail;
+  for (let i = 0; i < 4; i++) {
+    const sg = new THREE.Group(); if (i) sg.position.y = .12; parent.add(sg);
+    const tm = (d.stripes && i % 2) ? m.stripe : m.fur;
+    addTo(sg, new THREE.SphereGeometry(.031 - i * .002, 8, 6), tm, 0, 0, 0);
+    addTo(sg, new THREE.CylinderGeometry(.028 - i * .002, .031 - i * .002, .13, 8), tm, 0, .06, 0);
+    segs.push(sg); parent = sg;
+  }
+  addTo(segs[3], new THREE.SphereGeometry(.024, 8, 6), m.fur, 0, .125, 0);
+  return { root, body, legs, head, ears, eyes, tail, segs, headY: .44, headZ: .22 };
+}
+
+const PET_DEFS = [
+  { id: 'mochi', species: 'dog', name: 'Mochi', breed: 'Shiba', fur: '#dd8a3e', cream: '#fff1de', ear: 'up', tail: 'curl', brows: true, collar: '#ec6a4e', at: [3.4, 3.0], mat: -1 },
+  { id: 'bean', species: 'dog', name: 'Bean', breed: 'Border collie', fur: '#34333c', cream: '#fbfaf7', ear: 'flop', tail: 'long', tip: true, collar: '#3b82f6', at: [2.6, -1.8], mat: 1 },
+  { id: 'mango', species: 'cat', name: 'Mango', breed: 'Orange tabby', fur: '#f09c48', cream: '#fff3e3', stripes: '#cf7428', socks: true, eye: '#9ad86f', at: [-3.7, 1.6] },
+  { id: 'sesame', species: 'cat', name: 'Sesame', breed: 'Tuxedo cat', fur: '#2a2930', cream: '#f7f5f1', socks: true, eye: '#ffd166', at: [CATTREE.x, CATTREE.z], perch: 0 },
+];
+const PETS = PET_DEFS.map(d => {
+  const dog = d.species === 'dog', rig = dog ? makeDog(d) : makeCat(d);
+  scene.add(rig.root);
+  const p = {
+    ...d, pet: true, dog, rig, x: d.at[0], z: d.at[1], y: 0, yaw: Math.random() * 6.28, yawT: 0, state: 'idle', t: 1 + Math.random() * 2, tmax: 3, st: 0,
+    tx: 0, tz: 0, spd: 0, after: null, afterT: 0, afterYaw: null, moving: false, speedNow: 0, walkPh: Math.random() * 6, gait: 0, stuck: 0, air: null, perch: null, perchTarget: null, perchNap: false,
+    pose: { sit: 0, lie: 0, crouch: 0, bow: 0, leap: 0, paw: 0, eat: 0, groom: 0, closed: 0 }, headYaw: 0, happy: 0, petN: 0, petT: 0, hissCd: 0, zzT: 0, blink: 2 + Math.random() * 3, trickI: 0, trick: null, hop: 0, greet: false,
+    radius: dog ? 1.75 : 1.6, rad: dog ? .26 : .2, label: `Pet ${d.name}`, sub: d.breed,
+  };
+  p.yawT = p.yaw;
+  p.act = () => petPet(p);
+  p.alt = dog ? { label: 'Ask for a trick', act: () => dogTrick(p) } : { label: 'Toss the yarn', act: () => tossYarn(p) };
+  p.blob = new THREE.Mesh(new THREE.PlaneGeometry(dog ? .95 : .7, dog ? .95 : .7), blobMat); p.blob.rotation.x = -Math.PI / 2; scene.add(p.blob);
+  p.hit = new THREE.Mesh(new THREE.SphereGeometry(dog ? .62 : .5, 8, 6), hitMat); p.hit.userData.pet = p; scene.add(p.hit); stationHits.push(p.hit);
+  const el = document.createElement('div'); el.className = 'pet-tag'; el.innerHTML = `<span style="--c:${d.fur}"></span>${esc(d.name)}`;
+  p.tagEl = el; p.tag = new CSS2DObject(el); p.tagOn = false; scene.add(p.tag);
+  if (d.perch != null) { const pr = PERCHES[d.perch]; pr.by = p; p.perch = pr; p.perchTarget = pr; p.perchNap = true; p.x = pr.x; p.z = pr.z; p.y = pr.y; p.yaw = p.yawT = pr.yaw; p.state = 'perch'; p.t = p.tmax = 14; }
+  return p;
+});
+
+// yarn ball for the cats
+const yarn = (() => {
+  const g = new THREE.Group(); g.visible = false; scene.add(g);
+  const ym = M('#8b5cf6', { roughness: .9 }), ym2 = M('#b9a2fb', { roughness: .9 });
+  addTo(g, new THREE.SphereGeometry(.12, 14, 10), ym, 0, 0, 0);
+  for (const r of [[0, 0, 0], [1.2, .3, 0], [.4, 1.1, .6], [2.2, .2, 1.3]]) { const w = addTo(g, new THREE.TorusGeometry(.121, .012, 6, 22), ym2, 0, 0, 0); w.rotation.set(r[0], r[1], r[2]); }
+  addTo(g, new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(.1, -.05, 0), new THREE.Vector3(.24, -.1, .06), new THREE.Vector3(.42, -.11, -.04)]), 10, .01, 5), ym, 0, 0, 0);
+  return { g, on: false, x: 0, y: 0, z: 0, vx: 0, vz: 0, air: null, cat: null, n: 0, fade: 0 };
+})();
+
+SFX.woof = () => { tone(340, .09, 'sawtooth', .022, -150); tone(300, .14, 'sawtooth', .026, -160, .14); };
+SFX.yip = () => tone(720, .1, 'triangle', .04, 320);
+SFX.meow = () => { tone(560, .2, 'triangle', .035, 260); tone(820, .32, 'triangle', .03, -380, .17); };
+SFX.purr = () => { for (let i = 0; i < 12; i++) tone(52 + (i % 2) * 7, .075, 'sawtooth', .02, 0, i * .085); };
+SFX.hiss = () => tone(2600, .32, 'sawtooth', .01, -1100);
+
+const ATTENDABLE = new Set(['idle', 'walk', 'sit', 'eat', 'groom', 'visit', 'zoom']);
+const FETCHABLE = new Set(['idle', 'walk', 'sit', 'eat', 'visit', 'zoom', 'attend']);
+const PARTYABLE = new Set(['idle', 'walk', 'sit', 'visit', 'attend']);
+const CALM_CAT = new Set(['idle', 'walk', 'sit', 'groom', 'visit', 'nap']);
+const ZC = { x: 0, z: -.4, r: 3.9 };
+let fetcher = null, fetchCd = 0, petGreet = false, petGreetT = 0, petEmote = null;
+
+function petSet(p, s, t = 2) {
+  if (bowlBy === p && s !== 'eat' && !(s === 'walk' && p.after === 'eat')) bowlBy = null;
+  if (p.perchTarget && !p.perch && s !== 'jump' && !(s === 'walk' && p.after === 'perchUp')) { if (p.perchTarget.by === p) p.perchTarget.by = null; p.perchTarget = null; }
+  if (fetcher === p && s !== 'chase') fetcher = null;
+  p.state = s; p.t = t; p.tmax = t; p.st = 0;
+}
+function petGo(p, x, z, spd, after = 'idle', afterT = 2, afterYaw = null) { p.tx = x; p.tz = z; p.spd = spd; p.after = after; p.afterT = afterT; p.afterYaw = afterYaw; p.stuck = 0; petSet(p, 'walk', 14); }
+function petSpot(p) {
+  for (let k = 0; k < 30; k++) {
+    const a = Math.random() * Math.PI * 2, d = Math.sqrt(Math.random()) * (PET_LIM - .7), x = HUB.x + Math.cos(a) * d, z = HUB.z + Math.sin(a) * d;
+    let ok = Math.hypot(x - P.x, z - P.z) > 1.4 && Math.hypot(x - p.x, z - p.z) > 1.2;
+    if (ok) for (const c of colliders) if (Math.hypot(x - c.x, z - c.z) < c.r + p.rad + .3) { ok = false; break; }
+    if (ok) return { x, z };
+  }
+  return { x: p.x, z: p.z };
+}
+function petSteer(p, mx, mz, dist) {
+  let sx = mx, sz = mz;
+  for (const c of colliders) {
+    const cx = c.x - p.x, cz = c.z - p.z, d = Math.hypot(cx, cz);
+    if (d > c.r + 1.6 || d > dist + c.r) continue;
+    if (cx * mx + cz * mz <= 0) continue;
+    const lat = -cx * mz + cz * mx, need = c.r + p.rad + .2;
+    if (Math.abs(lat) >= need) continue;
+    const side = lat > 0 ? -1 : 1, w = 1.6 * (1 - Math.abs(lat) / need) * (1 - Math.min(1, Math.max(0, d - c.r) / 1.6)) + .2;
+    sx += -mz * side * w; sz += mx * side * w;
+  }
+  const l = Math.hypot(sx, sz) || 1; return [sx / l, sz / l];
+}
+function petResolve(p) {
+  for (const c of colliders) {
+    const ex = p.x - c.x, ez = p.z - c.z, ed = Math.hypot(ex, ez), min = c.r + p.rad;
+    if (ed < min) { if (ed < 1e-4) { p.x += min; continue; } p.x = c.x + ex / ed * min; p.z = c.z + ez / ed * min; }
+  }
+  [p.x, p.z] = hubClamp(p.x, p.z, PET_LIM);
+}
+function petMove(p, dt, tx, tz, spd, arriveR = .2) {
+  const dx = tx - p.x, dz = tz - p.z, d = Math.hypot(dx, dz);
+  if (d < arriveR) { p.stuck = 0; return true; }
+  const [mx, mz] = petSteer(p, dx / d, dz / d, d), step = Math.min(d, spd * dt), ox = p.x, oz = p.z;
+  p.x += mx * step; p.z += mz * step; petResolve(p);
+  const moved = Math.hypot(p.x - ox, p.z - oz);
+  if (moved > 1e-4) p.yawT = Math.atan2(p.x - ox, p.z - oz);
+  p.moving = true; p.speedNow = moved / Math.max(dt, 1e-4);
+  if (moved < spd * dt * .3) p.stuck += dt; else p.stuck = Math.max(0, p.stuck - dt);
+  return false;
+}
+function petJump(p, x1, y1, z1, dur, h, then) {
+  if (Math.hypot(x1 - p.x, z1 - p.z) > .05) p.yawT = Math.atan2(x1 - p.x, z1 - p.z);
+  p.air = { t: 0, dur, x0: p.x, y0: p.y, z0: p.z, x1, y1, z1, h, then };
+}
+function jumpDown(p, then) {
+  const pr = p.perch; if (!pr) { if (then) then(); return; }
+  p.perch = null; pr.by = null; p.perchTarget = null; p.perchNap = false;
+  petSet(p, 'jump', 2);
+  petJump(p, pr.sx + (Math.random() - .5) * .3, 0, pr.sz + (Math.random() - .5) * .3, .48, .32, then || (() => petSet(p, 'idle', 1)));
+}
+const henryOnHub = () => Math.hypot(P.x - HUB.x, P.z - HUB.z) < HUB.r - .3;
+const faceHenry = p => Math.atan2(P.x - p.x, P.z - p.z);
+function petNap(p) { return p.state === 'nap' || (p.state === 'perch' && p.perchNap); }
+
+function petDecide(p) {
+  const r = Math.random(), sleepy = tod === 'night' || WXS.rain > .3 || WXS.snow > .3;
+  if (p.dog) {
+    if (r < (sleepy ? .5 : .1)) { const s = dhWorld(p.mat * .4, 1.02); return petGo(p, s.x, s.z, DOG_SPD.walk, 'nap', sleepy ? 22 + Math.random() * 18 : 9 + Math.random() * 8, DOGHOUSE.ry); }
+    if (r < (sleepy ? .58 : .22) && !bowlBy) { bowlBy = p; return petGo(p, EAT.x, EAT.z, DOG_SPD.walk, 'eat', 3 + Math.random() * 2.5, EAT.yaw); }
+    if (started && henryOnHub() && r < .36) return petSet(p, 'visit', 8);
+    if (!sleepy && !reduceMotion && r < .43) { p.zDir = Math.random() < .5 ? 1 : -1; petSet(p, 'zoom', 4 + Math.random() * 2); if (started && Math.hypot(p.x - P.x, p.z - P.z) < 9) floatText(p.x, 1.25, p.z, 'Zoomies!', 1.3); return; }
+    if (r < .58) return petSet(p, 'sit', 3 + Math.random() * 4);
+    const s = petSpot(p); return petGo(p, s.x, s.z, Math.random() < .3 ? DOG_SPD.trot : DOG_SPD.walk, 'idle', 1.5 + Math.random() * 3);
+  }
+  if (r < (sleepy ? .45 : .18)) { const pr = PERCHES.find(q => !q.by); if (pr) { pr.by = p; p.perchTarget = pr; return petGo(p, pr.sx, pr.sz, CAT_SPD.walk, 'perchUp', 0); } }
+  if (r < (sleepy ? .65 : .3)) return petSet(p, 'nap', 10 + Math.random() * 14);
+  if (started && henryOnHub() && r < .38) return petSet(p, 'visit', 8);
+  if (r < .52) return petSet(p, 'sit', 3 + Math.random() * 5);
+  if (r < .62) return petSet(p, 'groom', 3 + Math.random() * 2);
+  const s = petSpot(p); return petGo(p, s.x, s.z, CAT_SPD.walk, 'idle', 2 + Math.random() * 3);
+}
+function catFlee(p, fx, fz, dist) {
+  let dx = p.x - fx, dz = p.z - fz, dl = Math.hypot(dx, dz);
+  if (dl < .01) { const a = Math.random() * 6.28; dx = Math.cos(a); dz = Math.sin(a); dl = 1; }
+  let [tx, tz] = hubClamp(p.x + dx / dl * dist, p.z + dz / dl * dist, PET_LIM - .5);
+  if (Math.hypot(tx - p.x, tz - p.z) < 1) { const s = petSpot(p); tx = s.x; tz = s.z; }
+  petGo(p, tx, tz, CAT_SPD.run, 'sit', 2 + Math.random() * 2);
+}
+function arriveHenry(p) {
+  const greet = p.greet; p.greet = false;
+  petSet(p, 'sit', 3 + Math.random() * 2.5); p.yawT = faceHenry(p);
+  if (p.dog) p.happy = 3;
+  if (!started) return;
+  if (greet) { floatText(p.x, 1.35, p.z, `Woof!<small>${p.name} came to say hi · press E to pet</small>`, 3.2); SFX.woof(); }
+  else if (!p.dog && Math.random() < .5) { floatText(p.x, 1.0, p.z, 'Mrrp?', 1.3); SFX.meow(); }
+}
+
+/* what you can do with them */
+function petPet(p) {
+  if (!started) { beginGame(); return; }
+  if (p.air || p.state === 'chase' || p.state === 'trick' || p.state === 'jump') return;
+  const high = p.y > .5;
+  faceToward(p.x, p.z, 1.6); emote(high ? 'send' : 'petdown', high ? 1.2 : 1.5);
+  const hy = p.y + (p.dog ? .95 : .72);
+  if (p.dog) {
+    petSet(p, 'petted', 2.2); p.happy = 4; p.yawT = faceHenry(p);
+    spriteBurst(p.x, hy, p.z, heartTex, 6, { size: .26, up: 1.4, spread: .7 });
+    floatText(p.x, hy + .55, p.z, `${['Woof!', 'Arf!', 'Wruff!'][Math.floor(Math.random() * 3)]}<small>${p.name} loves belly rubs</small>`, 1.9);
+    SFX.woof(); markInteract('dog');
+    return;
+  }
+  p.petN = p.petT > 0 ? p.petN + 1 : 1; p.petT = 10;
+  if (p.petN >= 4) {
+    p.petN = 0; p.petT = 0; p.hissCd = 6;
+    floatText(p.x, hy + .55, p.z, `Hss!<small>${p.name} has had enough pets for now</small>`, 2.2); SFX.hiss();
+    const flee = () => catFlee(p, P.x, P.z, 2.8);
+    if (p.perch) jumpDown(p, flee); else flee();
+    return;
+  }
+  const woke = petNap(p);
+  petSet(p, 'petted', 2.4); p.perchNap = false; if (!p.perch) p.yawT = faceHenry(p);
+  spriteBurst(p.x, hy, p.z, heartTex, 5, { size: .24, up: 1.3, spread: .6 });
+  floatText(p.x, hy + .55, p.z, woke ? `Mrrp?<small>You woke ${p.name} up</small>` : `Purrr…<small>${p.name} is purring</small>`, 1.9);
+  if (woke) SFX.meow(); else SFX.purr();
+  markInteract('cat');
+}
+const TRICKS = [['spin', 'Spin'], ['paw', 'High five'], ['roll', 'Roll over'], ['bow', 'Play bow']];
+function dogTrick(p) {
+  if (!started) { beginGame(); return; }
+  if (p.air || p.state === 'trick' || p.state === 'chase') return;
+  const [kind, cmd] = TRICKS[p.trickI++ % TRICKS.length];
+  faceToward(p.x, p.z, 1.6); emote('send', 1.0); say(`${p.name}, ${cmd.toLowerCase()}!`, 1.6);
+  p.trick = kind; petSet(p, 'trick', kind === 'roll' ? 2.1 : 1.8); p.yawT = faceHenry(p); p.happy = 3;
+  SFX.yip();
+}
+function trickDone(p) {
+  const hy = p.y + 1.0;
+  spriteBurst(p.x, hy, p.z, boneTex, 5, { size: .3, up: 1.6, spread: .8 });
+  floatText(p.x, hy + .4, p.z, `Good pup!<small>${p.name} earned a treat</small>`, 1.8); SFX.chime();
+  markInteract('trick'); petSet(p, 'sit', 2.5); p.happy = 3; p.yawT = faceHenry(p);
+}
+function tossYarn(p) {
+  if (!started) { beginGame(); return; }
+  if (yarn.on) { floatText(yarn.x, .8, yarn.z, 'Already playing!', 1.2); return; }
+  if (p.air) return;
+  let dx = p.x - P.x, dz = p.z - P.z, dl = Math.hypot(dx, dz) || 1; dx /= dl; dz /= dl;
+  let [lx, lz] = hubClamp(p.x + dx * 2.2, p.z + dz * 2.2, PET_LIM - .8);
+  if (Math.hypot(lx - p.x, lz - p.z) < 1.2) { const cx = HUB.x - p.x, cz = HUB.z - p.z, cl = Math.hypot(cx, cz) || 1; lx = p.x + cx / cl * 2.2; lz = p.z + cz / cl * 2.2; }
+  for (const c of colliders) { const ex = lx - c.x, ez = lz - c.z, ed = Math.hypot(ex, ez) || 1e-3, min = c.r + .25; if (ed < min) { lx = c.x + ex / ed * min; lz = c.z + ez / ed * min; } }
+  yarn.on = true; yarn.cat = p; yarn.n = 0; yarn.fade = 0; yarn.vx = yarn.vz = 0; yarn.g.visible = true; yarn.g.scale.setScalar(1);
+  yarn.air = { t: 0, dur: .7, x0: P.x + Math.sin(anim.yaw) * .35, y0: P.y + 1.3, z0: P.z + Math.cos(anim.yaw) * .35, x1: lx, z1: lz };
+  yarn.x = yarn.air.x0; yarn.y = yarn.air.y0; yarn.z = yarn.air.z0;
+  faceToward(lx, lz, 1.4); emote('send', 1.1); SFX.whoosh();
+  const go = () => petSet(p, 'stalk', 9);
+  if (p.perch) jumpDown(p, go); else go();
+}
+function pounceLand(p) {
+  yarn.n++; SFX.pop(); markInteract('yarn');
+  const ang = p.yaw + (Math.random() - .5) * 1.6;
+  yarn.vx = Math.sin(ang) * 2.4; yarn.vz = Math.cos(ang) * 2.4;
+  spriteBurst(yarn.x, .3, yarn.z, puffTex, 4, { size: .25, up: .6, spread: .6 });
+  if (yarn.n >= 3) { yarn.vx *= .35; yarn.vz *= .35; yarn.fade = .001; petSet(p, 'proud', 2.6); floatText(p.x, 1.0, p.z, `Got it!<small>${p.name} caught the yarn</small>`, 2); SFX.meow(); }
+  else petSet(p, 'stalk', 6);
+}
+function walkToPet(p) {
+  if (!started) beginGame();
+  const d = Math.hypot(P.x - p.x, P.z - p.z);
+  if (d <= p.radius) { p.act(); return; }
+  if (!p.perch && !p.air && ATTENDABLE.has(p.state)) petSet(p, 'attend', 7);
+  const ux = (P.x - p.x) / d, uz = (P.z - p.z) / d;
+  let ax = p.x + ux, az = p.z + uz;
+  if (!walkable(ax, az)) { ax = p.x; az = p.z; }
+  walkTo({ x: ax, z: az }); pendingAct = p; markAt(ax, az);
+}
+
+function updateYarn(dt) {
+  if (!yarn.on) return;
+  if (yarn.air) {
+    const a = yarn.air; a.t += dt; const u = Math.min(1, a.t / a.dur);
+    yarn.x = lerp(a.x0, a.x1, u); yarn.z = lerp(a.z0, a.z1, u); yarn.y = lerp(a.y0, .12, u) + 3.6 * u * (1 - u);
+    if (u >= 1) { yarn.air = null; yarn.y = .12; SFX.click(); }
+  } else {
+    let nx = yarn.x + yarn.vx * dt, nz = yarn.z + yarn.vz * dt;
+    for (const c of colliders) { const ex = nx - c.x, ez = nz - c.z, ed = Math.hypot(ex, ez), min = c.r + .12; if (ed < min && ed > 1e-4) { const ux = ex / ed, uz = ez / ed, dot = yarn.vx * ux + yarn.vz * uz; if (dot < 0) { yarn.vx -= 1.8 * dot * ux; yarn.vz -= 1.8 * dot * uz; } nx = c.x + ux * min; nz = c.z + uz * min; } }
+    const hx = nx - HUB.x, hz = nz - HUB.z, hr = Math.hypot(hx, hz), lim = PET_LIM - .3;
+    if (hr > lim) { const ux = hx / hr, uz = hz / hr, dot = yarn.vx * ux + yarn.vz * uz; if (dot > 0) { yarn.vx -= 1.8 * dot * ux; yarn.vz -= 1.8 * dot * uz; } nx = HUB.x + ux * lim; nz = HUB.z + uz * lim; }
+    yarn.x = nx; yarn.z = nz;
+    const f = Math.exp(-dt * 2.2); yarn.vx *= f; yarn.vz *= f;
+    const sp = Math.hypot(yarn.vx, yarn.vz);
+    if (sp > .02) { _axis.set(yarn.vz, 0, -yarn.vx).normalize(); yarn.g.rotateOnWorldAxis(_axis, sp * dt / .12); }
+  }
+  if (yarn.fade === 0 && !yarn.air && yarn.cat && !['stalk', 'crouch', 'pounce', 'jump'].includes(yarn.cat.state)) yarn.fade = .001;
+  if (yarn.fade > 0) {
+    yarn.fade += dt;
+    if (yarn.fade > 1.4) { const s = Math.max(0, 1 - (yarn.fade - 1.4) / .4); yarn.g.scale.setScalar(Math.max(.001, s)); if (s <= 0) { yarn.on = false; yarn.g.visible = false; yarn.cat = null; } }
+  }
+  yarn.g.position.set(yarn.x, yarn.y, yarn.z);
+}
+
+function updatePet(p, dt, t) {
+  p.t -= dt; p.st += dt; p.hissCd -= dt; p.happy = Math.max(0, p.happy - dt); p.hop = Math.max(0, p.hop - dt);
+  if (p.petT > 0) { p.petT -= dt; if (p.petT <= 0) p.petN = 0; }
+  p.moving = false; p.speedNow = 0;
+  const dP = Math.hypot(P.x - p.x, P.z - p.z);
+  if (p.air) {
+    const a = p.air; a.t += dt; const u = Math.min(1, a.t / a.dur);
+    p.x = lerp(a.x0, a.x1, u); p.z = lerp(a.z0, a.z1, u); p.y = lerp(a.y0, a.y1, u) + 4 * a.h * u * (1 - u);
+    if (u >= 1) { p.air = null; p.y = a.y1; if (a.then) a.then(); }
+    return;
+  }
+  switch (p.state) {
+    case 'idle': if (p.t <= 0) petDecide(p); break;
+    case 'sit': if (p.happy > 0) p.yawT = faceHenry(p); if (p.t <= 0) petDecide(p); break;
+    case 'nap': case 'groom': if (p.t <= 0) petDecide(p); break;
+    case 'eat': p.yawT = EAT.yaw; if (p.t <= 0) petDecide(p); break;
+    case 'walk': {
+      const arrived = petMove(p, dt, p.tx, p.tz, p.spd, .22);
+      if (!arrived && p.t > 0 && p.stuck < 1.3) break;
+      if (p.after === 'perchUp') {
+        const pr = p.perchTarget;
+        if (arrived && pr && pr.by === p) {
+          petSet(p, 'jump', 2);
+          petJump(p, pr.x, pr.y, pr.z, .5, .45, () => { p.perch = pr; p.perchNap = Math.random() < (tod === 'night' ? .85 : .55); petSet(p, 'perch', (p.perchNap ? 14 : 6) + Math.random() * 10); p.yawT = pr.yaw; });
+        } else petSet(p, 'idle', 1);
+      } else if (p.after === 'eat' && !arrived) petSet(p, 'idle', 1);
+      else { petSet(p, p.after || 'idle', p.afterT || 2); if (p.afterYaw != null) p.yawT = p.afterYaw; }
+      break;
+    }
+    case 'visit': case 'return': {
+      if (!henryOnHub()) { petSet(p, 'idle', 1); break; }
+      const dx = p.x - P.x, dz = p.z - P.z, dl = Math.hypot(dx, dz) || 1;
+      if (dl < 1.35) { arriveHenry(p); break; }
+      const [tx, tz] = hubClamp(P.x + dx / dl * 1.15, P.z + dz / dl * 1.15, PET_LIM - .1);
+      const sp = p.dog ? (p.state === 'return' || p.greet ? DOG_SPD.trot : DOG_SPD.walk) : CAT_SPD.walk;
+      petMove(p, dt, tx, tz, sp, .2);
+      if (p.t <= 0 || p.stuck > 1.5) petSet(p, 'idle', 1);
+      break;
+    }
+    case 'attend': {
+      p.yawT = faceHenry(p);
+      if (p.dog && dP > 1.35 && henryOnHub()) { const ux = (p.x - P.x) / dP, uz = (p.z - P.z) / dP; if (!petMove(p, dt, P.x + ux * 1.15, P.z + uz * 1.15, DOG_SPD.trot, .15)) p.yawT = faceHenry(p); }
+      if (p.t <= 0) petSet(p, 'idle', 1);
+      break;
+    }
+    case 'petted':
+      if (!p.perch) p.yawT = faceHenry(p);
+      if (p.t <= 0) { if (p.perch) petSet(p, 'perch', 4 + Math.random() * 6); else petSet(p, 'sit', 1.5 + Math.random() * 2); }
+      break;
+    case 'trick': if (p.trick !== 'spin') p.yawT = faceHenry(p); if (p.t <= 0) trickDone(p); break;
+    case 'party':
+      p.yawT = faceHenry(p);
+      if (p.t <= 0 || (anim.emote !== 'dance' && anim.emote !== 'cheer')) { petSet(p, 'sit', 2); p.happy = 2; }
+      break;
+    case 'zoom': {
+      const a = Math.atan2(p.z - ZC.z, p.x - ZC.x) + p.zDir * .6;
+      petMove(p, dt, ZC.x + Math.cos(a) * ZC.r, ZC.z + Math.sin(a) * ZC.r, DOG_SPD.run, .05);
+      if (p.t <= 0) { petSet(p, 'sit', 2.5); p.happy = 2.5; }
+      break;
+    }
+    case 'chase': {
+      const bsp = Math.hypot(BALL.vx, BALL.vz), bx = BALL.x - P.x, bz = BALL.z - P.z, bl = Math.hypot(bx, bz) || 1;
+      if (BALL.falling || Math.hypot(BALL.x - HUB.x, BALL.z - HUB.z) > PET_LIM + .6 || p.t <= 0) { petSet(p, 'idle', 1); break; }
+      const db = Math.hypot(BALL.x - p.x, BALL.z - p.z);
+      if (db < BALL.r + p.rad + .14 && bsp < 3) {
+        const v = clamp((bl - 1.7) * 1.3, .5, 4.2);
+        BALL.vx = -bx / bl * v; BALL.vz = -bz / bl * v;
+        fetchCd = 3.5; SFX.woof();
+        if (started) { floatText(p.x, 1.3, p.z, `Fetch!<small>${p.name} nudged the ball back to you</small>`, 2.2); markInteract('fetch'); }
+        petSet(p, 'return', 6); p.happy = 3;
+        break;
+      }
+      petMove(p, dt, db < 1.0 ? BALL.x : BALL.x + bx / bl * .5, db < 1.0 ? BALL.z : BALL.z + bz / bl * .5, DOG_SPD.run, .05);
+      break;
+    }
+    case 'stalk': {
+      if (!yarn.on || yarn.cat !== p || yarn.fade > 0) { petSet(p, 'idle', 1); break; }
+      p.yawT = Math.atan2(yarn.x - p.x, yarn.z - p.z);
+      if (yarn.air) break;
+      if (Math.hypot(yarn.x - p.x, yarn.z - p.z) < .95) { petSet(p, 'crouch', .75); break; }
+      petMove(p, dt, yarn.x, yarn.z, CAT_SPD.trot, .8);
+      if (p.t <= 0 || p.stuck > 1.5) { yarn.fade = .001; petSet(p, 'idle', 1); }
+      break;
+    }
+    case 'crouch':
+      p.yawT = Math.atan2(yarn.x - p.x, yarn.z - p.z);
+      if (p.t <= 0) {
+        const dx = yarn.x - p.x, dz = yarn.z - p.z, dl = Math.hypot(dx, dz) || 1;
+        petSet(p, 'pounce', 2); SFX.pop();
+        const [jx, jz] = hubClamp(yarn.x - dx / dl * .2, yarn.z - dz / dl * .2, PET_LIM);
+        petJump(p, jx, 0, jz, .42, .38, () => pounceLand(p));
+      }
+      break;
+    case 'proud': case 'jump': case 'pounce': if (p.t <= 0) petSet(p, 'idle', .5); break;
+    case 'perch':
+      if (!p.perch) { petSet(p, 'idle', 1); break; }
+      p.x = p.perch.x; p.z = p.perch.z; p.y = p.perch.y;
+      p.yawT = !p.perchNap && dP < 4 ? faceHenry(p) : p.perch.yaw;
+      if (p.t <= 0) jumpDown(p);
+      break;
+    default: petSet(p, 'idle', 1);
+  }
+}
+
+function posePet(p, dt, t) {
+  const R = p.rig, k = 1 - Math.exp(-dt * 9), st = p.state, u = p.tmax ? clamp(1 - p.t / p.tmax, 0, 1) : 0;
+  const napping = petNap(p);
+  const tg = { sit: 0, lie: 0, crouch: 0, bow: 0, leap: 0, paw: 0, eat: 0, groom: 0, closed: 0 };
+  let wagRate = 5, wagAmt = .16, hop = 0, spin = 0, roll = 0, tilt = 0;
+  if (napping) { tg.lie = 1; tg.closed = 1; wagAmt = .03; wagRate = 1.5; }
+  else if (st === 'perch' || st === 'sit' || st === 'proud' || (st === 'attend' && !p.moving)) tg.sit = 1;
+  else if (st === 'petted') { tg.sit = 1; if (p.dog) { tilt = Math.sin(p.st * 3) * .22; } else { tg.closed = .85; tilt = Math.sin(p.st * 2.4) * .25; } }
+  else if (st === 'eat') tg.eat = 1;
+  else if (st === 'groom') { tg.sit = 1; tg.groom = 1; }
+  else if (st === 'crouch') tg.crouch = 1;
+  else if (st === 'party') { hop = Math.abs(Math.sin(p.st * 9)) * .2; spin = Math.sin(p.st * 4.5) * .7; }
+  else if (st === 'trick') {
+    if (p.trick === 'spin') { spin = ease(u) * Math.PI * 2; hop = Math.sin(u * Math.PI) * .22; }
+    else if (p.trick === 'paw') { tg.sit = 1; tg.paw = clamp(Math.min((u - .15) / .15, (.9 - u) / .15), 0, 1); }
+    else if (p.trick === 'roll') { tg.lie = clamp(Math.min(u / .12, (1 - u) / .12), 0, 1); roll = ease(clamp((u - .15) / .65, 0, 1)) * Math.PI * 2; }
+    else if (p.trick === 'bow') tg.bow = clamp(Math.min(u / .15, (1 - u) / .15), 0, 1);
+  }
+  if (p.air) tg.leap = 1;
+  if (p.hop > 0) hop = Math.sin((1 - p.hop / .35) * Math.PI) * .25;
+  if (p.happy > 0 || st === 'party' || st === 'trick' || st === 'zoom' || st === 'chase') { wagRate = 17; wagAmt = .45; }
+  if (reduceMotion) { hop = 0; if (st === 'party') spin = 0; }
+  // blink
+  p.blink -= dt; if (p.blink < 0) p.blink = 2.4 + Math.random() * 3;
+  if (p.blink < .12) tg.closed = Math.max(tg.closed, 1);
+  const Q = p.pose;
+  for (const key in tg) Q[key] += (tg[key] - Q[key]) * (key === 'closed' ? 1 - Math.exp(-dt * 30) : k);
+  // gait
+  p.gait = lerp(p.gait, p.moving ? clamp(p.speedNow / (p.dog ? 2 : 1.5), 0, 1) : 0, 1 - Math.exp(-dt * 10));
+  if (p.moving) p.walkPh += p.speedNow * dt * (p.dog ? 9 : 12);
+  const s = Math.sin(p.walkPh), a = p.gait * .7, gal = clamp((p.speedNow - (p.dog ? 3.2 : 2.6)) / 1.4, 0, 1);
+  const trot = [s, -s, -s, s], bound = [s, s, -s, -s];
+  const C = p.dog ? { rx: -.5, dy: -.06, dz: .12, back: -1.35, head: .42, lieY: -.2, lieF: -1.45, lieB: -1.25, crY: -.08 } : { rx: -.6, dy: -.04, dz: .1, back: -1.4, head: .5, lieY: -.14, lieF: -1.45, lieB: -1.3, crY: -.07 };
+  const legs = [0, 1, 2, 3].map(i => {
+    const front = i < 2;
+    let r = lerp(trot[i], bound[i] * 1.15, gal) * a;
+    r += front ? Q.sit * -C.rx + Q.lie * C.lieF + Q.bow * -1.5 + Q.leap * -1.0 + Q.crouch * -.45 : Q.sit * C.back + Q.lie * C.lieB + Q.bow * -.45 + Q.leap * 1.0 + Q.crouch * -.65;
+    if (i === 1) r += Q.paw * -1.9 + Q.groom * -2.2;
+    return r;
+  });
+  legs.forEach((r, i) => { R.legs[i].rotation.x = r; R.legs[i].scale.y = 1 - (p.dog ? .3 : .5) * Q.lie; });
+  const bob = Math.abs(Math.cos(p.walkPh)) * .025 * a;
+  const by = (p.dog ? -.24 : 0) + Q.sit * C.dy + Q.lie * C.lieY + Q.crouch * C.crY - Q.bow * .04 + bob + hop;
+  R.body.position.set(0, by, Q.sit * C.dz);
+  R.body.rotation.set(Q.sit * C.rx + Q.bow * .45 + Q.crouch * .12 + Q.eat * .12 + Math.sin(p.walkPh) * .1 * gal, 0, st === 'crouch' ? Math.sin(t * 28) * .1 * Q.crouch : 0);
+  if (p.dog) R.roll.rotation.z = roll;
+  // head
+  let hy = 0;
+  const lookH = (p.dog ? dPet(p) < 4.5 : dPet(p) < 2.6) && !napping && !['eat', 'groom', 'zoom', 'chase', 'stalk', 'crouch'].includes(st);
+  if (lookH) hy = clamp(angDiff(faceHenry(p), p.yaw + spin), -1, 1) * .9;
+  else if (st === 'idle' || st === 'sit' || st === 'perch') hy = Math.sin(t * .6 + p.walkPh) * .45;
+  p.headYaw = lerp(p.headYaw, hy, k);
+  R.head.position.set(0, R.headY - Q.eat * .22 - Q.lie * (p.dog ? .1 : .06) - Q.groom * .03, R.headZ + Q.eat * .06);
+  R.head.rotation.set(Q.sit * C.head + Q.lie * .28 + Q.eat * (.85 + Math.sin(t * 9) * .1) - Q.bow * .35 + Q.groom * (.35 + Math.sin(t * 8) * .08) - Q.crouch * .1, p.headYaw - Q.groom * .3, tilt + Q.groom * .3);
+  for (const e of R.eyes) e.scale.y = e.userData.sy * (1 - .88 * Q.closed);
+  // ears and tail
+  if (p.dog) {
+    R.tongue.visible = p.happy > 0 || st === 'party' || st === 'zoom' || p.speedNow > 3;
+    R.ears.forEach((e, i) => { e.rotation.x = (p.ear === 'flop' ? Math.sin(p.walkPh + i) * .25 * a : 0) - (p.happy > 0 ? .25 : 0); });
+    R.tail.rotation.set((p.tail === 'long' ? -(Q.lie * .7 + Q.sit * .6) : 0), Math.sin(t * wagRate + p.walkPh * .2) * wagAmt, 0);
+  } else {
+    R.ears.forEach((e, i) => { e.rotation.y = Math.max(0, Math.sin(t * 2.3 + i * 2 + p.walkPh)) ** 24 * .5 * (1 - Q.lie); });
+    const down = Math.max(Q.sit, Q.lie);
+    R.tail.rotation.x = -.95 - .3 * Q.sit - .75 * Q.lie - .3 * Q.crouch;
+    R.segs.forEach((sg, i) => { sg.rotation.x = .28 * (1 - down) + (st === 'crouch' ? .1 : 0); sg.rotation.z = Math.sin(t * (st === 'crouch' ? 9 : 1.7) - i * .7) * (.12 + i * .05) * (1 - Q.lie * .8) + down * .42; });
+    R.body.scale.y = st === 'petted' && !reduceMotion ? 1 + Math.sin(t * 55) * .012 : 1;
+  }
+  // place it
+  p.yaw += angDiff(p.yawT, p.yaw) * (1 - Math.exp(-dt * (p.state === 'zoom' || p.state === 'chase' ? 12 : 8)));
+  R.root.position.set(p.x, p.y, p.z); R.root.rotation.y = p.yaw + spin;
+  p.blob.position.set(p.x, (p.perch ? p.perch.y : 0) + .03, p.z); p.blob.scale.setScalar(clamp(1 - (p.air ? (p.y - (p.air.y1 || 0)) * .4 : 0), .5, 1));
+  p.hit.position.set(p.x, p.y + .35, p.z);
+  p.tag.position.set(p.x, p.y + (p.dog ? 1.08 : .82) + hop, p.z);
+  const show = (dPet(p) < 3.4 && started) || (hoverObj && hoverObj.pet === p) || st === 'petted' || st === 'trick';
+  if (show !== p.tagOn) { p.tagOn = show; p.tagEl.style.opacity = show ? '1' : '0'; }
+  if (napping && !reduceMotion) { p.zzT -= dt; if (p.zzT <= 0) { p.zzT = 1.5; spriteBurst(p.x + Math.sin(p.yaw) * .2, p.y + (p.dog ? .7 : .5), p.z + Math.cos(p.yaw) * .2, zTex, 1, { size: .2, up: .45, spread: .15, life: 1.9 }); } }
+}
+const dPet = p => Math.hypot(P.x - p.x, P.z - p.z);
+
+function updatePets(dt, t) {
+  fetchCd -= dt;
+  // the first dog trots over to say hi once the game starts
+  if (started && !petGreet) {
+    petGreetT += dt;
+    if (petGreetT > 2.4) { petGreet = true; const m = PETS[0]; if (!m.air && !m.perch && ATTENDABLE.has(m.state)) { m.greet = true; petSet(m, 'visit', 9); } }
+  }
+  // dogs join in when Henry dances or cheers, cats stay unimpressed
+  if (anim.emote !== petEmote) {
+    petEmote = anim.emote;
+    if (petEmote === 'dance' || petEmote === 'cheer' || petEmote === 'wave') {
+      let barked = false;
+      for (const p of PETS) {
+        const d = dPet(p); if (d > 5.5 || p.air || p.perch) continue;
+        if (p.dog && petEmote === 'wave') { p.happy = Math.max(p.happy, 2.5); continue; }
+        if (p.dog && PARTYABLE.has(p.state)) { petSet(p, 'party', 3.6); p.happy = 4; barked = true; }
+        else if (!p.dog && petEmote === 'dance' && d < 4 && started && !petNap(p) && Math.random() < .7) floatText(p.x, 1.0, p.z, `…<small>${p.name} is not impressed</small>`, 1.8);
+      }
+      if (barked && started) SFX.woof();
+    }
+  }
+  // fetch: the nearest awake dog chases a kicked ball and noses it back
+  const bsp = Math.hypot(BALL.vx, BALL.vz);
+  if (!fetcher && fetchCd <= 0 && !BALL.falling && bsp > 2 && Math.hypot(BALL.x - HUB.x, BALL.z - HUB.z) < PET_LIM + .4) {
+    let best = null, bd = 9;
+    for (const p of PETS) if (p.dog && !p.air && FETCHABLE.has(p.state)) { const d = Math.hypot(BALL.x - p.x, BALL.z - p.z); if (d < bd) { bd = d; best = p; } }
+    if (best) { petSet(best, 'chase', 7); fetcher = best; best.happy = 3; if (started) SFX.yip(); }
+  }
+  for (const p of PETS) updatePet(p, dt, t);
+  // cats hiss at dogs that come too close; bodies don't overlap each other, Henry or the ball
+  for (const p of PETS) {
+    if (p.air || p.perch) continue;
+    if (!p.dog && p.hissCd <= 0 && CALM_CAT.has(p.state)) {
+      for (const q of PETS) if (q.dog && !q.air && Math.hypot(q.x - p.x, q.z - p.z) < .85) {
+        p.hissCd = 14; catFlee(p, q.x, q.z, 2.2); p.hop = .35;
+        if (started && dPet(p) < 10) { floatText(p.x, .95, p.z, 'Hss!', 1.2); SFX.hiss(); }
+        break;
+      }
+    }
+    for (const q of PETS) {
+      if (q === p || q.air || q.perch) continue;
+      const ex = p.x - q.x, ez = p.z - q.z, ed = Math.hypot(ex, ez), min = p.rad + q.rad + .06;
+      if (ed < min && ed > 1e-4) { const push = (min - ed) / 2; p.x += ex / ed * push; p.z += ez / ed * push; q.x -= ex / ed * push; q.z -= ez / ed * push; }
+    }
+    const hx = p.x - P.x, hz = p.z - P.z, hd = Math.hypot(hx, hz), hmin = p.rad + .38;
+    if (hd < hmin && hd > 1e-4 && jumpY < .6) { p.x = P.x + hx / hd * hmin; p.z = P.z + hz / hd * hmin; }
+    const mx = p.x - H.x, mz = p.z - H.z, md = Math.hypot(mx, mz), mmin = p.rad + .2;
+    if (md < mmin && md > 1e-4 && hamState !== 'wheel') { p.x = H.x + mx / md * mmin; p.z = H.z + mz / md * mmin; }
+    if (!BALL.falling && p !== fetcher) {
+      const ex = BALL.x - p.x, ez = BALL.z - p.z, ed = Math.hypot(ex, ez), min = BALL.r + p.rad;
+      if (ed < min && ed > 1e-4 && BALL.y < .5) {
+        const ux = ex / ed, uz = ez / ed, dot = BALL.vx * ux + BALL.vz * uz;
+        if (dot < 0) { BALL.vx -= 1.6 * dot * ux; BALL.vz -= 1.6 * dot * uz; }
+        BALL.x = p.x + ux * min; BALL.z = p.z + uz * min;
+        if (!p.dog && dot < -1 && CALM_CAT.has(p.state) && started) { p.hop = .35; catFlee(p, BALL.x, BALL.z, 1.6); floatText(p.x, .9, p.z, '!', .9); }
+      }
+    }
+    petResolve(p);
+  }
+  // Henry stops short of a pet he walked over to, instead of bumping into it
+  if (pendingAct && pendingAct.pet && path.length && Math.hypot(P.x - pendingAct.x, P.z - pendingAct.z) < 1.25) { path = []; onArrive(); }
+  for (const p of PETS) {
+    p.sub = petNap(p) ? `${p.breed} · napping` : p.perch ? `${p.breed} · on the cat tree` : p.breed;
+    posePet(p, dt, t);
+  }
+  updateYarn(dt);
+  if (catToy && !reduceMotion) catToy.rotation.z = Math.sin(t * 1.7) * .16 + Math.sin(t * 3.1) * WXS.wind * .3;
 }
 
 /* ---- butterflies on GreenPath and the grove ---- */
@@ -2030,7 +2707,7 @@ function hoverAt(e, h) {
   renderer.domElement.style.cursor = h ? 'pointer' : '';
   if (!h || photo) { tip.hidden = true; return; }
   const u = h.object.userData;
-  const label = u.station ? `${u.station.name} · ${u.station.tag}` : u.prop ? u.prop.label : u.ham ? 'Pet the hamster' : u.ball ? 'Kick the ball' : '';
+  const label = u.station ? `${u.station.name} · ${u.station.tag}` : u.prop ? u.prop.label : u.pet ? `${u.pet.name} · ${u.pet.breed}` : u.ham ? 'Pet the hamster' : u.ball ? 'Kick the ball' : '';
   tip.textContent = label; tip.hidden = !label;
   const r = stage.getBoundingClientRect(); tip.style.left = (e.clientX - r.left + 16) + 'px'; tip.style.top = (e.clientY - r.top + 14) + 'px';
 }
@@ -2044,18 +2721,229 @@ function updateExtras(dt, t) {
     a.needsUpdate = true;
     flies.material.size = .26 + Math.sin(t * 3) * .05;
   }
-  updateBall(dt); updatePads(dt, t); updateButterflies(dt, t); updatePlanes(dt);
+  updateBall(dt); updatePets(dt, t); updateButterflies(dt, t); updatePlanes(dt);
   if (photo && !drag) camYaw += dt * .08;
   // hover ring under whatever the pointer is on
   let hp = null;
-  if (hoverObj && !photo) { const u = hoverObj; hp = u.station ? u.station : u.prop ? u.prop : u.ham ? H : u.ball ? { x: BALL.x, z: BALL.z } : null; }
+  if (hoverObj && !photo) { const u = hoverObj; hp = u.station ? u.station : u.prop ? u.prop : u.pet ? u.pet : u.ham ? H : u.ball ? { x: BALL.x, z: BALL.z } : null; }
   hoverRing.visible = !!hp;
-  if (hp) { hoverRing.position.set(hp.x, groundY(hp.x, hp.z) + .045, hp.z); const s = (hoverObj.ham || hoverObj.ball ? .6 : 1.2) * (1 + Math.sin(t * 5) * .06); hoverRing.scale.setScalar(s); }
+  if (hp) { hoverRing.position.set(hp.x, (hp.pet && hp.perch ? hp.perch.y : groundY(hp.x, hp.z)) + .045, hp.z); const s = (hoverObj.ham || hoverObj.ball ? .6 : hoverObj.pet ? .7 : 1.2) * (1 + Math.sin(t * 5) * .06); hoverRing.scale.setScalar(s); }
   if (rippleT < 1) { rippleT = Math.min(1, rippleT + dt / .6); ripple.scale.setScalar(.6 + rippleT * 2.2); ripple.material.opacity = .9 * (1 - rippleT); }
   destDot.visible = path.length > 0 && !photo;
   if (destDot.visible) { const e2 = path[path.length - 1]; destDot.position.set(e2.x, groundY(e2.x, e2.z) + .05, e2.z); destDot.scale.setScalar(1 + Math.sin(t * 6) * .15); }
 }
-setTod('day'); applyTod(1);
+
+/* ================= live local time + weather ================= */
+// Time and date come from the visitor's own clock. Weather comes from Open-Meteo for the visitor's
+// approximate area (IP lookup via GeoJS, or the browser's precise location if they click the pin).
+// Nothing is sent anywhere else; the last location is cached in this browser for six hours.
+const WXS = { ov: 0, fog: 0, rain: 0, snow: 0, wind: .2, flash: 0 };          // weather currently shown (smoothed)
+const WXT = { ov: 0, fog: 0, rain: 0, snow: 0, wind: .2, storm: false };       // weather we are easing toward
+let hemiBase = hemi.intensity, wxUmbrella = false, wxGreeted = false, startedAt = 0, lightT = 3, lastWxKey = '';
+const _hsl = {}, _white = new THREE.Color('#ffffff'), grassBase = mat.grass.color.clone(), grassDarkBase = mat.grassDark.color.clone();
+function overcast(c) { if (WXS.ov > .001) { c.getHSL(_hsl); c.setHSL(_hsl.h, _hsl.s * (1 - .7 * WXS.ov), _hsl.l * (1 - .14 * WXS.ov)); } return c; }
+
+const WMO = {
+  0: ['Clear sky', 'clear'], 1: ['Mainly clear', 'clear'], 2: ['Partly cloudy', 'partly'], 3: ['Overcast', 'cloudy'],
+  45: ['Fog', 'fog'], 48: ['Freezing fog', 'fog'],
+  51: ['Light drizzle', 'drizzle'], 53: ['Drizzle', 'drizzle'], 55: ['Heavy drizzle', 'drizzle'], 56: ['Freezing drizzle', 'drizzle'], 57: ['Freezing drizzle', 'drizzle'],
+  61: ['Light rain', 'rain1'], 63: ['Rain', 'rain2'], 65: ['Heavy rain', 'rain3'], 66: ['Freezing rain', 'rain1'], 67: ['Freezing rain', 'rain2'],
+  71: ['Light snow', 'snow1'], 73: ['Snow', 'snow2'], 75: ['Heavy snow', 'snow3'], 77: ['Snow grains', 'snow1'],
+  80: ['Rain showers', 'rain1'], 81: ['Rain showers', 'rain2'], 82: ['Heavy showers', 'rain3'], 85: ['Snow showers', 'snow1'], 86: ['Heavy snow showers', 'snow3'],
+  95: ['Thunderstorm', 'storm'], 96: ['Thunderstorm, hail', 'storm'], 99: ['Thunderstorm, hail', 'storm'],
+};
+const WKIND = {
+  clear: { ov: 0, fog: 0, rain: 0, snow: 0, storm: false, icon: 'clear' },
+  partly: { ov: .3, fog: 0, rain: 0, snow: 0, storm: false, icon: 'partly' },
+  cloudy: { ov: .75, fog: 0, rain: 0, snow: 0, storm: false, icon: 'cloud' },
+  fog: { ov: .55, fog: 1, rain: 0, snow: 0, storm: false, icon: 'fog' },
+  drizzle: { ov: .7, fog: .2, rain: .3, snow: 0, storm: false, icon: 'rain' },
+  rain1: { ov: .75, fog: .1, rain: .5, snow: 0, storm: false, icon: 'rain' },
+  rain2: { ov: .85, fog: .15, rain: .8, snow: 0, storm: false, icon: 'rain' },
+  rain3: { ov: .95, fog: .25, rain: 1, snow: 0, storm: false, icon: 'rain' },
+  snow1: { ov: .6, fog: .1, rain: 0, snow: .45, storm: false, icon: 'snow' },
+  snow2: { ov: .7, fog: .15, rain: 0, snow: .75, storm: false, icon: 'snow' },
+  snow3: { ov: .85, fog: .3, rain: 0, snow: 1, storm: false, icon: 'snow' },
+  storm: { ov: 1, fog: .2, rain: 1, snow: 0, storm: true, icon: 'storm' },
+};
+const PREVIEW = { clear: ['Clear sky', 'clear'], rain: ['Rain', 'rain2'], snow: ['Snow', 'snow2'], storm: ['Thunderstorm', 'storm'] };
+const WX_ORDER = ['live', 'clear', 'rain', 'snow', 'storm'];
+const WX = { mode: 'live', live: null, status: 'loading', loc: null };
+const WICON = {
+  partly: SVG('<path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4"/><path d="M15.9 13A4 4 0 0 0 8.1 11"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/>'),
+  cloud: SVG('<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>'),
+  rain: SVG('<path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M16 14v6M8 14v6M12 16v6"/>'),
+  snow: SVG('<path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M8 15h.01M8 19h.01M12 17h.01M12 21h.01M16 15h.01M16 19h.01"/>'),
+  storm: SVG('<path d="M6 16.3A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 .5 9"/><path d="m13 12-3 5h4l-3 5"/>'),
+  fog: SVG('<path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M16 17H7M17 21H9"/>'),
+};
+$('#wxPin').innerHTML = SVG('<path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>');
+if (!navigator.geolocation) $('#wxPin').hidden = true;
+
+function wxNow() {
+  if (WX.mode !== 'live') { const [label, k] = PREVIEW[WX.mode]; return { label, ...WKIND[k], wind: k === 'storm' ? 45 : 12 }; }
+  if (!WX.live) return { label: '', ...WKIND.clear, wind: 8 };
+  const [label, k] = WMO[WX.live.code] || ['Changeable', 'partly'];
+  return { label, ...WKIND[k], wind: WX.live.wind || 0 };
+}
+function applyWeatherTarget() {
+  const w = wxNow();
+  Object.assign(WXT, { ov: w.ov, fog: w.fog, rain: w.rain, snow: w.snow, storm: w.storm, wind: clamp(w.wind / 35, 0, 1.3) });
+  const key = `${WX.mode}:${w.rain > 0 ? 'r' : ''}${w.snow > 0 ? 's' : ''}${w.storm ? 't' : ''}${w.fog > .5 ? 'f' : ''}`;
+  if (started && lastWxKey && key !== lastWxKey) {
+    const live = WX.mode === 'live';
+    if (w.storm) say(live ? 'Stormy where you are. The case studies stay dry in here.' : 'Thunder! Hold on to your hat.', 3.4);
+    else if (w.rain > 0) say(live ? "It's raining where you are. Good thing I brought an umbrella." : 'Umbrella time.', 3.4);
+    else if (w.snow > 0) say(live ? 'Snow where you are! Stay warm.' : 'Snow day!', 3);
+    else if (w.fog > .5) say('Foggy today. Follow the lamps.', 3);
+  }
+  lastWxKey = key;
+}
+function renderWx() {
+  const now = new Date(), w = wxNow();
+  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const date = now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+  const icKey = w.icon === 'clear' ? tod : w.icon, ic = w.icon === 'clear' ? ICON[tod] : WICON[w.icon];
+  const el = $('#wxIcon'); if (el.dataset.k !== icKey) { el.dataset.k = icKey; el.innerHTML = ic; }
+  let temp = '—', desc;
+  if (WX.mode !== 'live') desc = `Preview · ${w.label}`;
+  else if (WX.live) { temp = `${Math.round(WX.live.temp)}°C`; desc = `${w.label}${WX.loc && WX.loc.place ? ' · ' + WX.loc.place : ''}`; }
+  else desc = WX.status === 'loading' ? 'Checking your weather…' : 'Weather unavailable · tap to preview';
+  if ($('#wxTime').textContent !== time) $('#wxTime').textContent = time;
+  if ($('#wxDate').textContent !== date) $('#wxDate').textContent = date;
+  if ($('#wxTemp').textContent !== temp) $('#wxTemp').textContent = temp;
+  if ($('#wxDesc').textContent !== desc) { $('#wxDesc').textContent = desc; $('#wxBtn').title = `${date}, ${time} · ${desc}. Click to preview other weather.`; }
+}
+
+async function getJSON(url, ms = 7000) {
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), ms);
+  try { const r = await fetch(url, { signal: ctl.signal }); if (!r.ok) throw new Error('HTTP ' + r.status); return await r.json(); }
+  finally { clearTimeout(timer); }
+}
+async function locate() {
+  try { const c = JSON.parse(localStorage.getItem('hq-loc') || 'null'); if (c && Date.now() - c.t < 6 * 3600e3) return c; } catch (err) { }
+  let loc = null;
+  try { const j = await getJSON('https://get.geojs.io/v1/ip/geo.json'); if (j && j.latitude) loc = { lat: +j.latitude, lon: +j.longitude, place: j.city || j.region || j.country || '' }; } catch (err) { }
+  if (!loc) { try { const j = await getJSON('https://ipwho.is/'); if (j && j.success !== false && j.latitude != null) loc = { lat: +j.latitude, lon: +j.longitude, place: j.city || j.country || '' }; } catch (err) { } }
+  if (loc) { loc.t = Date.now(); loc.src = 'ip'; try { localStorage.setItem('hq-loc', JSON.stringify(loc)); } catch (err) { } }
+  return loc;
+}
+async function refreshWeather() {
+  try {
+    if (!WX.loc) WX.loc = await locate();
+    if (!WX.loc) throw new Error('no location');
+    const u = `https://api.open-meteo.com/v1/forecast?latitude=${WX.loc.lat.toFixed(3)}&longitude=${WX.loc.lon.toFixed(3)}&current=temperature_2m,weather_code,wind_speed_10m,is_day&daily=sunrise,sunset&timezone=auto&forecast_days=1&temperature_unit=celsius`;
+    const j = await getJSON(u);
+    WX.live = { code: j.current.weather_code, temp: j.current.temperature_2m, wind: j.current.wind_speed_10m, sunrise: j.daily && j.daily.sunrise && j.daily.sunrise[0], sunset: j.daily && j.daily.sunset && j.daily.sunset[0], offset: j.utc_offset_seconds || 0, at: Date.now() };
+    WX.status = 'live';
+  } catch (err) { if (!WX.live) WX.status = 'offline'; }
+  applyWeatherTarget(); renderWx();
+  if (todMode === 'auto') setTod(autoTod(), true);
+}
+function usePreciseLocation() {
+  if (!navigator.geolocation) { toast('Location is not available in this browser.', 2.6); return; }
+  toast('Asking your browser for your location…', 2.4);
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude, place: '', src: 'gps', t: Date.now() };
+    try { const j = await getJSON(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${loc.lat}&longitude=${loc.lon}&localityLanguage=en`); loc.place = j.city || j.locality || j.principalSubdivision || ''; } catch (err) { }
+    WX.loc = loc; try { localStorage.setItem('hq-loc', JSON.stringify(loc)); } catch (err) { }
+    WX.mode = 'live'; await refreshWeather();
+    toast(WX.live ? `<b>Weather updated</b> for ${esc(loc.place || 'your location')}` : 'Location found, but the weather service did not answer.', 2.8);
+  }, () => toast("Location wasn't shared, so the weather uses your approximate area.", 3.2), { timeout: 10000, maximumAge: 600000 });
+}
+
+/* ---- auto time of day from the visitor's clock (and real sunrise/sunset once weather is live) ---- */
+let todMode = 'auto';
+const hm = s => { const m = /T(\d\d):(\d\d)/.exec(s || ''); return m ? +m[1] * 60 + +m[2] : null; };
+function autoTod() {
+  const now = new Date(); let mins = now.getHours() * 60 + now.getMinutes(), rise = 6 * 60 + 15, set = 18 * 60 + 15;
+  const w = WX.live;
+  if (w && hm(w.sunrise) != null && hm(w.sunset) != null) { const d = new Date(Date.now() + w.offset * 1000); mins = d.getUTCHours() * 60 + d.getUTCMinutes(); rise = hm(w.sunrise); set = hm(w.sunset); }
+  if (mins >= rise + 40 && mins < set - 45) return 'day';
+  if ((mins >= set - 45 && mins < set + 35) || (mins >= rise - 35 && mins < rise + 40)) return 'sunset';
+  return 'night';
+}
+
+/* ---- rain, snow, lightning, umbrella ---- */
+const RAIN_N = 1200, rainPos = new Float32Array(RAIN_N * 6), rainD = Array.from({ length: RAIN_N }, () => ({ x: 0, y: -999, z: 0, s: 15 + Math.random() * 8 }));
+const rainGeo = new THREE.BufferGeometry(); rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPos, 3));
+const rain = new THREE.LineSegments(rainGeo, new THREE.LineBasicMaterial({ color: '#dbe8ff', transparent: true, opacity: .55, depthWrite: false }));
+rain.frustumCulled = false; rain.visible = false; scene.add(rain);
+const SNOW_N = 900, snowPos = new Float32Array(SNOW_N * 3), snowD = Array.from({ length: SNOW_N }, () => ({ x: 0, y: -999, z: 0, s: 1 + Math.random() * 1.2, ph: Math.random() * 10 }));
+const snowGeo = new THREE.BufferGeometry(); snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPos, 3));
+const snow = new THREE.Points(snowGeo, new THREE.PointsMaterial({ color: '#ffffff', map: puffTex, size: .26, transparent: true, opacity: .95, depthWrite: false }));
+snow.frustumCulled = false; snow.visible = false; scene.add(snow);
+const umbrella = new THREE.Group(); umbrella.position.set(0, -.47, .04); umbrella.visible = false; henryRig.arms[0].add(umbrella);
+put(umbrella, new THREE.CylinderGeometry(.018, .018, 1.8, 6), mat.navy, 0, .9, 0);
+{ const canopy = mesh(new THREE.ConeGeometry(.8, .38, 10, 1, true), new THREE.MeshStandardMaterial({ color: '#ec6a4e', side: THREE.DoubleSide, roughness: .55 })); canopy.position.y = 1.8; umbrella.add(canopy); }
+put(umbrella, new THREE.SphereGeometry(.035, 8, 6), mat.navy, 0, 2.0, 0);
+const stormClouds = new THREE.Group(); scene.add(stormClouds);
+const stormMat = new THREE.MeshStandardMaterial({ color: '#aeb6c4', roughness: 1, transparent: true, opacity: 0, depthWrite: false });
+for (let i = 0; i < 12; i++) {
+  const g = new THREE.Group(), a = i / 12 * Math.PI * 2 + Math.random() * .4, d = 22 + Math.random() * 38;
+  for (let k = 0; k < 6; k++) { const m = new THREE.Mesh(cloudGeo, stormMat); m.position.set((k - 3) * 1.1, Math.random() * .6, (Math.random() - .5) * 1.4); m.scale.set(1.3 + Math.random() * .6, .7 + Math.random() * .3, 1.2); g.add(m); }
+  g.position.set(Math.cos(a) * d, 18 + Math.random() * 7, Math.sin(a) * d - 6); g.scale.setScalar(2.4 + Math.random() * 1.6); stormClouds.add(g);
+}
+stormClouds.visible = false;
+SFX.thunder = () => { tone(62, 1.5, 'sawtooth', .045, -24); tone(44, 1.9, 'triangle', .06, -10, .12); };
+
+function updatePrecip(dt, t) {
+  const cx = camTarget.x, cy = camTarget.y, cz = camTarget.z, drift = .6 + WXS.wind * 5;
+  const nR = Math.floor(RAIN_N * WXS.rain); rain.visible = nR > 0;
+  if (nR > 0) {
+    for (let i = 0; i < nR; i++) {
+      const d = rainD[i]; d.y -= d.s * dt; d.x += drift * dt;
+      if (d.y < cy - 6 || Math.abs(d.x - cx) > 24 || Math.abs(d.z - cz) > 24) { d.x = cx + (Math.random() - .5) * 46; d.z = cz + (Math.random() - .5) * 46; d.y = cy + 4 + Math.random() * 18; }
+      const o = i * 6; rainPos[o] = d.x; rainPos[o + 1] = d.y; rainPos[o + 2] = d.z; rainPos[o + 3] = d.x - drift * .04; rainPos[o + 4] = d.y + .6; rainPos[o + 5] = d.z;
+    }
+    rainGeo.attributes.position.needsUpdate = true; rainGeo.setDrawRange(0, nR * 2);
+  }
+  const nS = Math.floor(SNOW_N * WXS.snow); snow.visible = nS > 0;
+  if (nS > 0) {
+    for (let i = 0; i < nS; i++) {
+      const d = snowD[i]; d.y -= d.s * dt; d.x += (Math.sin(t * 1.3 + d.ph) * .5 + WXS.wind * 1.5) * dt; d.z += Math.cos(t * 1.1 + d.ph) * .4 * dt;
+      if (d.y < cy - 6 || Math.abs(d.x - cx) > 22 || Math.abs(d.z - cz) > 22) { d.x = cx + (Math.random() - .5) * 42; d.z = cz + (Math.random() - .5) * 42; d.y = cy + 2 + Math.random() * 14; }
+      snowPos[i * 3] = d.x; snowPos[i * 3 + 1] = d.y; snowPos[i * 3 + 2] = d.z;
+    }
+    snowGeo.attributes.position.needsUpdate = true; snowGeo.setDrawRange(0, nS);
+  }
+}
+function updateWeather(dt, t) {
+  if (started && !startedAt) startedAt = t;
+  const k = 1 - Math.exp(-dt * 1.4);
+  const before = WXS.ov + WXS.fog;
+  for (const key of ['ov', 'fog', 'rain', 'snow', 'wind']) WXS[key] += (WXT[key] - WXS[key]) * k;
+  if (Math.abs(WXS.ov + WXS.fog - before) > .0015) applyTod(todK < 1 ? ease(todK) : 1);
+  updatePrecip(dt, t);
+  stormMat.opacity = WXS.ov * .85; stormClouds.visible = stormMat.opacity > .02;
+  mat.grass.color.copy(grassBase).lerp(_white, WXS.snow * .55); mat.grassDark.color.copy(grassDarkBase).lerp(_white, WXS.snow * .45);
+  wxUmbrella = WXS.rain > .15; umbrella.visible = wxUmbrella;
+  henryRig.pen.visible = !wxUmbrella && anim.emote !== 'drink';
+  if (WXT.storm) {
+    lightT -= dt;
+    if (lightT <= 0) { WXS.flash = 1; lightT = 4 + Math.random() * 6; setTimeout(() => SFX.thunder(), 300 + Math.random() * 900); }
+  }
+  if (WXS.flash > 0) WXS.flash = Math.max(0, WXS.flash - dt * 3.2);
+  const fl = WXS.flash > 0 ? WXS.flash * (.6 + .4 * Math.sin(t * 60)) : 0;
+  hemi.intensity = hemiBase + fl * 2.2;
+  $('#flash').style.opacity = (fl * .35).toFixed(3);
+  if (!wxGreeted && started && WX.live && WX.mode === 'live' && t - startedAt > 7.5) {
+    wxGreeted = true; const w = wxNow();
+    say(`It's ${Math.round(WX.live.temp)}°C and ${w.label.toLowerCase()}${WX.loc && WX.loc.place ? ' in ' + WX.loc.place : ' where you are'} right now.`, 4);
+  }
+}
+
+$('#wxBtn').addEventListener('click', () => {
+  WX.mode = WX_ORDER[(WX_ORDER.indexOf(WX.mode) + 1) % WX_ORDER.length];
+  applyWeatherTarget(); renderWx(); SFX.click();
+  toast(WX.mode === 'live' ? `<b>Live weather</b>${WX.live ? '' : ' · not available right now'}` : `<b>Weather preview</b> · ${PREVIEW[WX.mode][0]}`, 2);
+});
+$('#wxPin').addEventListener('click', usePreciseLocation);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && (!WX.live || Date.now() - WX.live.at > 15 * 60e3)) refreshWeather(); });
+setInterval(() => { renderWx(); if (todMode === 'auto') { const a = autoTod(); if (a !== tod) setTod(a, true); } }, 1000);
+setInterval(refreshWeather, 15 * 60e3);
+setTod(autoTod(), true); todFrom = todTo; todK = 1; applyTod(1);
+applyWeatherTarget(); renderWx(); refreshWeather();
 
 /* ================= resize ================= */
 function resize() {
@@ -2075,6 +2963,7 @@ function frame(now) {
   updatePlayer(dt);
   updatePrompt();
   updateExtras(dt, t);
+  updateWeather(dt, t);
   // camera
   if (!started) { introT += dt; if (!reduceMotion) camYaw = Math.sin(introT * .12) * .5; camTarget.lerp(tmpV.set(0, 0, -7), .05); }
   else camTarget.lerp(tmpV.set(P.x, P.y + 1.2, P.z), 1 - Math.exp(-dt * 6));
@@ -2082,13 +2971,13 @@ function frame(now) {
   placeCamera();
   // ambient animation
   if (!reduceMotion) {
-    windBlades.rotation.z += dt * 1.3;
+    windBlades.rotation.z += dt * (1.3 + WXS.wind * 3);
     heart.rotation.y = Math.sin(t * .8) * .5; heart.position.y = 5.4 + Math.sin(t * 1.2) * .2;
     heart.scale.setScalar(1 + Math.max(0, Math.sin(t * 3.2)) ** 6 * .12 + heartPulse * .6);
-    banners.forEach((b, i) => { b.rotation.y = Math.sin(t * 2 + i) * .25; });
+    banners.forEach((b, i) => { b.rotation.y = Math.sin(t * (2 + WXS.wind * 3) + i) * (.25 + WXS.wind * .3); });
     floaters.forEach(f => { f.m.position.y = f.base + Math.sin(t * .8 + f.ph) * .18; });
     orbs.forEach(o => { o.m.position.y = o.base + Math.sin(t * 1.5 + o.ph) * .12; });
-    clouds.forEach(c => { c.g.position.x += c.speed * dt; if (c.g.position.x > 95) c.g.position.x = -95; });
+    clouds.forEach(c => { c.g.position.x += c.speed * (1 + WXS.wind * 2.5) * dt; if (c.g.position.x > 95) c.g.position.x = -95; });
     steam.forEach(s => { const p = (t * .35 + s.ph) % 1; s.s.position.set(Math.sin(p * 6 + s.ph * 9) * .08, .7 + p * 1.1, 0); s.s.scale.setScalar(.25 + p * .45); s.s.material.opacity = .7 * (1 - p); });
   } else heart.scale.setScalar(1 + heartPulse * .6);
   heartPulse = Math.max(0, heartPulse - dt * 1.4);
