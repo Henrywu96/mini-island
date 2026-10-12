@@ -12,19 +12,19 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Henry Wu · Quest Island | UI/UX Portfolio</title>
-<meta name="description" content="Henry Wu's UI/UX design portfolio as a playable 3D sky island that follows your local time and weather: case studies (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
+<title>Henry Wu · Quest Town | UI/UX Portfolio</title>
+<meta name="description" content="Henry Wu's UI/UX design portfolio as a playable 3D storybook town that follows your local time and weather: case studies (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
 <meta name="theme-color" content="#cfe6fb">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Henry Wu · Quest Island">
-<meta property="og:description" content="Henry Wu's UI/UX design portfolio as a playable 3D sky island that follows your local time and weather: case studies (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
+<meta property="og:title" content="Henry Wu · Quest Town">
+<meta property="og:description" content="Henry Wu's UI/UX design portfolio as a playable 3D storybook town that follows your local time and weather: case studies (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2072%22%3E%3Cpath%20d%3D%22M32%200%20L64%2010%20L64%2038%20C64%2056%2048%2066%2032%2072%20C16%2066%200%2056%200%2038%20L0%2010%20Z%22%20fill%3D%22%23202b45%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2248%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2234%22%20fill%3D%22%23ffd166%22%3EH%3C/text%3E%3C/svg%3E">
 <style>[hidden]{display:none!important}img{max-width:100%}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 <style>
-/* Layout: full-bleed 3D sky world; HUD cards float in the corners like a game overlay;
+/* Layout: full-bleed 3D storybook town; HUD cards float in the corners like a game overlay;
    quest details open in a right-hand drawer (a bottom sheet on phones). Palette and type follow henrywu.link. */
 :root{
   --sky:#cfe6fb;
@@ -315,7 +315,7 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
 </head>
 <body>
 <div id="app">
-  <div id="stage" aria-label="3D island world with Henry's portfolio"></div>
+  <div id="stage" aria-label="3D town with Henry's portfolio"></div>
   <div id="vignette" aria-hidden="true"></div>
   <div id="flash" aria-hidden="true"></div>
 
@@ -393,7 +393,7 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
 
   <div class="hud minimap card">
     <div class="mm-cap"><span>Map</span><span>click to travel</span></div>
-    <canvas id="mm" width="320" height="320" aria-label="Island map"></canvas>
+    <canvas id="mm" width="320" height="320" aria-label="Town map"></canvas>
   </div>
 
   <aside class="hud panel card" id="panel" aria-labelledby="pTitle" hidden><div class="p-scroll" id="panelBody"></div></aside>
@@ -407,7 +407,7 @@ kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 
       <div class="crest" aria-hidden="true">H</div>
       <h1>HENRY WU</h1>
       <p class="kicker">UI/UX Designer · Portfolio</p>
-      <p class="tag">Crafting simple, engaging, and code-ready digital experiences. Walk the sky islands, open each quest, and play with what you find. The sky follows your local time and weather.</p>
+      <p class="tag">Crafting simple, engaging, and code-ready digital experiences. Stroll around a little storybook town, open each quest, and play with what you find. The sky follows your local time and weather.</p>
       <div class="start-actions">
         <button class="btn primary" id="btnStart">Start exploring</button>
         <button class="btn" id="btnStartQuick">Quick view instead</button>
@@ -606,27 +606,44 @@ function jitter(geo, amt, h) {
   }
   p.needsUpdate = true;
 }
+// each former island is now a town square (cobblestone) or a park (grass) at street level
+const DISTRICT = { hub: 'plaza', studyflow: 'plaza', workshop: 'plaza', bridgly: 'park', greenpath: 'park', grove: 'park', lookout: 'park' };
+const cobbleImg = canvasTex(256, 256, (c, w, h) => {
+  c.fillStyle = '#bba891'; c.fillRect(0, 0, w, h);
+  const rows = 8, rh = h / rows;
+  for (let r = 0; r < rows; r++) for (let x = (r % 2) * -16 - 16; x < w + 16; x += 32) {
+    const v = Math.random(); c.fillStyle = `hsl(${26 + v * 12}, ${18 + v * 12}%, ${71 + Math.random() * 9}%)`;
+    rrPath(c, x + 2.5, r * rh + 2.5, 27, rh - 5, 8); c.fill();
+  }
+});
+function cobble(rx, ry) { const t = cobbleImg.clone(); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); t.needsUpdate = true; return t; }
+mat.curb = M('#eadfce'); mat.inlay = M('#f4ece0');
 ISLANDS.forEach(is => {
   const g = new THREE.Group(); g.position.set(is.x, 0, is.z); scene.add(g);
-  const top = put(g, new THREE.CylinderGeometry(is.r, is.r * .985, .45, 64), mat.grass, 0, -.225, 0, false);
+  const plaza = DISTRICT[is.id] === 'plaza';
+  const top = put(g, new THREE.CylinderGeometry(is.r, is.r, .12, 72), plaza ? new THREE.MeshStandardMaterial({ map: cobble(is.r / 2.2, is.r / 2.2), roughness: .95 }) : mat.grass, 0, -.06, 0, false);
   walkMeshes.push(top);
-  const lip = put(g, new THREE.TorusGeometry(is.r - .03, .1, 8, 64), mat.grassDark, 0, -.06, 0, false); lip.rotation.x = Math.PI / 2;
-  put(g, new THREE.CylinderGeometry(is.r * .985, is.r * .9, .8, 48), mat.dirt, 0, -.85, 0, false);
-  const cg = new THREE.ConeGeometry(is.r * .9, is.depth, 18, 6); cg.rotateX(Math.PI); jitter(cg, is.r * .1, is.depth); cg.computeVertexNormals();
-  put(g, cg, mat.rock, 0, -1.25 - is.depth / 2, 0, false);
-  const n = is.r > 4 ? 3 : 1;
-  for (let i = 0; i < n; i++) {
-    const a = srand() * 6.28, d = is.r * (.45 + srand() * .35);
-    const rk = put(g, new THREE.DodecahedronGeometry((.3 + srand() * .35) * is.r / 5, 0), mat.rock, Math.cos(a) * d, -2.2 - srand() * 2 - is.depth * .35, Math.sin(a) * d, false);
-    floaters.push({ m: rk, base: rk.position.y, ph: srand() * 6 });
-  }
+  const lip = put(g, new THREE.TorusGeometry(is.r, plaza ? .1 : .07, 6, 80), plaza ? mat.curb : mat.grassDark, 0, -.02, 0, false); lip.rotation.x = Math.PI / 2;
+  if (is.id === 'hub') for (const [r1, r2] of [[3.0, 3.3], [6.4, 6.6]]) { const ring = new THREE.Mesh(new THREE.RingGeometry(r1, r2, 80), mat.inlay); ring.rotation.x = -Math.PI / 2; ring.position.y = .004; ring.receiveShadow = true; g.add(ring); }
 });
 
 /* ================= bridges + walk graph ================= */
 const BRIDGES = [];
-const plankGeo = new THREE.BoxGeometry(2.2, .1, .34), postGeo = new THREE.CylinderGeometry(.06, .07, .95, 6);
-const sagAmt = len => Math.min(.35, len * .04);
-const sagY = (t, len) => -sagAmt(len) * Math.sin(Math.PI * clamp(t, 0, 1));
+const boxes = [], TOWN_R = 40.5, LAWN_Y = -.06;
+const POND = { x: 0, z: 16.2, r: 3.4 };
+// push a circle (x, z, r) out of an oriented box; returns the new centre, or null when they don't touch
+function boxPush(x, z, r, b) {
+  const dx = x - b.x, dz = z - b.z;
+  let lx = dx * b.c - dz * b.s, lz = dx * b.s + dz * b.c;
+  const qx = clamp(lx, -b.hw, b.hw), qz = clamp(lz, -b.hd, b.hd), ex = lx - qx, ez = lz - qz, d = Math.hypot(ex, ez);
+  if (d >= r) return null;
+  if (d > 1e-6) { lx = qx + ex / d * r; lz = qz + ez / d * r; }
+  else if (b.hw - Math.abs(lx) < b.hd - Math.abs(lz)) lx = Math.sign(lx || 1) * (b.hw + r);
+  else lz = Math.sign(lz || 1) * (b.hd + r);
+  return [b.x + lx * b.c + lz * b.s, b.z - lx * b.s + lz * b.c];
+}
+const sagAmt = len => 0;
+const sagY = (t, len) => 0;
 LINKS.forEach(([a, b]) => {
   const A = ISL[a], B = ISL[b];
   const dx = B.x - A.x, dz = B.z - A.z, d = Math.hypot(dx, dz), ux = dx / d, uz = dz / d;
@@ -635,17 +652,9 @@ LINKS.forEach(([a, b]) => {
   const ia = Math.max(.5, A.r - 1.8), ib = Math.max(.5, B.r - 1.8);
   BRIDGES.push({ a, b, p1, p2, ux, uz, len, in1: { x: A.x + ux * ia, z: A.z + uz * ia }, in2: { x: B.x - ux * ib, z: B.z - uz * ib } });
   const g = new THREE.Group(); g.position.set(p1.x, 0, p1.z); g.rotation.y = Math.atan2(ux, uz); scene.add(g);
-  const n = Math.max(3, Math.round(len / .42));
-  for (let i = 0; i < n; i++) {
-    const t = (i + .5) / n, pl = put(g, plankGeo, i % 2 ? mat.wood : mat.wood2, (srand() - .5) * .06, sagY(t, len) - .06, t * len);
-    pl.rotation.x = Math.atan(sagAmt(len) * Math.PI / len * Math.cos(Math.PI * t)); pl.rotation.y = (srand() - .5) * .06;
-  }
-  for (const side of [-1, 1]) {
-    const pts = []; for (let k = 0; k <= 14; k++) { const t = k / 14; pts.push(new THREE.Vector3(side * 1.1, sagY(t, len) + .85, t * len)); }
-    g.add(mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 28, .035, 6), mat.rope, false));
-    const np = Math.max(2, Math.round(len / 2.2));
-    for (let k = 0; k <= np; k++) { const t = k / np; put(g, postGeo, mat.wood2, side * 1.1, sagY(t, len) + .42, t * len); }
-  }
+  const wid = b === 'lookout' ? 1.9 : 2.4;
+  put(g, new THREE.BoxGeometry(wid, .1, len), new THREE.MeshStandardMaterial({ map: cobble(wid / 4, len / 4), roughness: .95 }), 0, -.045, len / 2, false);
+  for (const side of [-1, 1]) put(g, new THREE.BoxGeometry(.16, .1, Math.max(.1, len - 1.3)), mat.curb, side * (wid / 2 + .07), -.025, len / 2, false);
   const hit = new THREE.Mesh(new THREE.BoxGeometry(2.2, .1, len), hitMat); hit.position.set(0, -.1, len / 2); g.add(hit); walkMeshes.push(hit);
 });
 function segInfo(x, z, b) {
@@ -654,15 +663,11 @@ function segInfo(x, z, b) {
   return { t, d: Math.hypot(x - (b.p1.x + vx * tc), z - (b.p1.z + vz * tc)) };
 }
 function inIsland(x, z, pad = .45) { for (const is of ISLANDS) if ((x - is.x) ** 2 + (z - is.z) ** 2 < (is.r - pad) ** 2) return is; return null; }
-function walkable(x, z) {
-  if (inIsland(x, z)) return true;
-  for (const b of BRIDGES) { const s = segInfo(x, z, b); if (s.t >= 0 && s.t <= 1 && s.d <= .8) return true; }
-  return false;
-}
+function walkable(x, z) { return Math.hypot(x, z) < TOWN_R && Math.hypot(x - POND.x, z - POND.z) > POND.r + .25; }
 function groundY(x, z) {
   if (inIsland(x, z, 0)) return 0;
-  for (const b of BRIDGES) { const s = segInfo(x, z, b); if (s.t >= 0 && s.t <= 1 && s.d <= 1.1) return sagY(s.t, b.len); }
-  return 0;
+  for (const b of BRIDGES) { const s = segInfo(x, z, b); if (s.t >= 0 && s.t <= 1 && s.d <= 1.25) return sagY(s.t, b.len); }
+  return LAWN_Y;
 }
 function islandOf(p) {
   const is = inIsland(p.x, p.z, 0); if (is) return is.id;
@@ -684,14 +689,86 @@ function route(a, b) {
   while (prev[c]) { steps.unshift(prev[c]); c = prev[c].from; }
   return steps;
 }
-function buildPath(from, to) {
-  const pts = [];
-  for (const s of route(islandOf(from), islandOf(to))) {
-    const fwd = s.br.a === s.from;
-    pts.push(fwd ? s.br.in1 : s.br.in2, fwd ? s.br.in2 : s.br.in1);
+const NAV_X0 = -42, NAV_Z0 = -45, NAV_CS = .5, NAV_W = 168, NAV_H = 176;
+let NAV = null;
+const navIdx = (x, z) => clamp(Math.floor((z - NAV_Z0) / NAV_CS), 0, NAV_H - 1) * NAV_W + clamp(Math.floor((x - NAV_X0) / NAV_CS), 0, NAV_W - 1);
+const navX = k => NAV_X0 + (k % NAV_W + .5) * NAV_CS, navZ = k => NAV_Z0 + (Math.floor(k / NAV_W) + .5) * NAV_CS;
+function navGrid() {
+  if (NAV) { while (NAV.nc < colliders.length) NAV.mark(colliders[NAV.nc++]); return NAV; } // trees planted later join the grid
+  const block = new Uint8Array(NAV_W * NAV_H), infl = .36;
+  for (let k = 0; k < block.length; k++) { const x = navX(k), z = navZ(k); if (Math.hypot(x, z) > TOWN_R - infl || Math.hypot(x - POND.x, z - POND.z) < POND.r + .25 + infl) block[k] = 1; }
+  const area = (x, z, R, test) => {
+    const i0 = Math.max(0, Math.floor((x - R - NAV_X0) / NAV_CS)), i1 = Math.min(NAV_W - 1, Math.floor((x + R - NAV_X0) / NAV_CS));
+    const j0 = Math.max(0, Math.floor((z - R - NAV_Z0) / NAV_CS)), j1 = Math.min(NAV_H - 1, Math.floor((z + R - NAV_Z0) / NAV_CS));
+    for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) { const k = j * NAV_W + i; if (!block[k] && test(navX(k), navZ(k))) block[k] = 1; }
+  };
+  const mark = c => area(c.x, c.z, c.r + infl, (x, z) => Math.hypot(x - c.x, z - c.z) < c.r + infl);
+  colliders.forEach(mark);
+  for (const b of boxes) area(b.x, b.z, Math.hypot(b.hw, b.hd) + infl, (x, z) => !!boxPush(x, z, infl, b));
+  NAV = { block, mark, nc: colliders.length };
+  return NAV;
+}
+function navNearestFree(k0) {
+  const { block } = NAV; if (!block[k0]) return k0;
+  const seen = new Uint8Array(block.length), q = [k0]; seen[k0] = 1;
+  for (let h = 0; h < q.length && h < 40000; h++) {
+    const k = q[h]; if (!block[k]) return k;
+    const i = k % NAV_W, j = (k - i) / NAV_W;
+    for (const [di, dj] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const ni = i + di, nj = j + dj; if (ni < 0 || nj < 0 || ni >= NAV_W || nj >= NAV_H) continue; const nk = nj * NAV_W + ni; if (!seen[nk]) { seen[nk] = 1; q.push(nk); } }
   }
-  pts.push({ x: to.x, z: to.z });
-  return pts;
+  return -1;
+}
+function navSearch(s, t) {
+  const { block } = NAV, N = block.length, g = new Float32Array(N).fill(1e9), came = new Int32Array(N).fill(-1), closed = new Uint8Array(N);
+  const ti = t % NAV_W, tj = (t - ti) / NAV_W;
+  const hh = k => { const i = k % NAV_W, j = (k - i) / NAV_W, dx = Math.abs(i - ti), dz = Math.abs(j - tj); return Math.max(dx, dz) + .4142 * Math.min(dx, dz); };
+  const hk = [], hf = [];
+  const push = (k, f) => { let n = hk.length; hk.push(k); hf.push(f); while (n > 0) { const p = (n - 1) >> 1; if (hf[p] <= hf[n]) break; [hk[p], hk[n]] = [hk[n], hk[p]]; [hf[p], hf[n]] = [hf[n], hf[p]]; n = p; } };
+  const pop = () => { const top = hk[0], lk = hk.pop(), lf = hf.pop(); if (hk.length) { hk[0] = lk; hf[0] = lf; let n = 0; for (;;) { const l = 2 * n + 1, r = l + 1; let m = n; if (l < hk.length && hf[l] < hf[m]) m = l; if (r < hk.length && hf[r] < hf[m]) m = r; if (m === n) break; [hk[m], hk[n]] = [hk[n], hk[m]]; [hf[m], hf[n]] = [hf[n], hf[m]]; n = m; } } return top; };
+  g[s] = 0; push(s, hh(s));
+  let best = s, bestH = hh(s);
+  while (hk.length) {
+    const k = pop(); if (k === t) break; if (closed[k]) continue; closed[k] = 1;
+    const hk0 = hh(k); if (hk0 < bestH) { bestH = hk0; best = k; }
+    const i = k % NAV_W, j = (k - i) / NAV_W;
+    for (let dj = -1; dj <= 1; dj++) for (let di = -1; di <= 1; di++) {
+      if (!di && !dj) continue;
+      const ni = i + di, nj = j + dj; if (ni < 0 || nj < 0 || ni >= NAV_W || nj >= NAV_H) continue;
+      const nk = nj * NAV_W + ni; if (block[nk] || closed[nk]) continue;
+      if (di && dj && (block[j * NAV_W + ni] || block[nj * NAV_W + i])) continue;
+      const ng = g[k] + (di && dj ? 1.4142 : 1);
+      if (ng < g[nk]) { g[nk] = ng; came[nk] = k; push(nk, ng + hh(nk)); }
+    }
+  }
+  // an enclosed spot: go to the closest place that can be reached instead
+  const end = s === t || came[t] >= 0 ? t : best;
+  const cells = []; for (let k = end; k >= 0 && k !== s; k = came[k]) cells.push(k);
+  cells.reached = end === t;
+  return cells.reverse();
+}
+function navLOS(ax, az, bx, bz) {
+  const n = Math.ceil(Math.hypot(bx - ax, bz - az) / (NAV_CS * .45));
+  for (let i = 1; i <= n; i++) { const u = i / n; if (NAV.block[navIdx(ax + (bx - ax) * u, az + (bz - az) * u)]) return false; }
+  return true;
+}
+function buildPath(from, to) {
+  navGrid();
+  let s = navIdx(from.x, from.z), t = navIdx(to.x, to.z);
+  const exact = !NAV.block[t] && walkable(to.x, to.z);
+  s = navNearestFree(s); t = navNearestFree(t);
+  if (s < 0 || t < 0) return [{ x: to.x, z: to.z }];
+  const cells = navSearch(s, t);
+  const pts = cells.map(k => ({ x: navX(k), z: navZ(k) }));
+  if (!cells.reached) { if (!pts.length) return []; }
+  else if (exact) { if (pts.length) pts[pts.length - 1] = { x: to.x, z: to.z }; else pts.push({ x: to.x, z: to.z }); }
+  else if (!pts.length) pts.push({ x: navX(t), z: navZ(t) });
+  const out = []; let ax = from.x, az = from.z, i = -1;
+  while (i < pts.length - 1) {
+    let j = pts.length - 1;
+    while (j > i + 1 && !navLOS(ax, az, pts[j].x, pts[j].z)) j--;
+    out.push(pts[j]); ax = pts[j].x; az = pts[j].z; i = j;
+  }
+  return out;
 }
 
 /* ================= decor ================= */
@@ -930,12 +1007,17 @@ function drawBoard() {
 })();
 
 /* ---- trees, rocks, tufts, flowers ---- */
+function planter(x, z) {
+  put(scene, new THREE.CylinderGeometry(.62, .66, .24, 22), mat.curb, x, .12, z);
+  put(scene, new THREE.CylinderGeometry(.54, .54, .02, 22), M('#8a6a4a'), x, .245, z, false);
+  colliders.push({ x, z, r: .62 });
+}
 [['hub', 5, 'leaf'], ['bridgly', 5, 'blossom'], ['greenpath', 7, 'leaf'], ['studyflow', 3, 'leaf'], ['grove', 3, 'leaf'], ['workshop', 3, 'leaf'], ['lookout', 0, 'leaf']].forEach(([id, n, kind]) => {
-  const is = ISL[id];
-  for (let i = 0; i < n; i++) { const p = freeSpot(is, 1.0, 1.8); if (p) tree(p.x, p.z, .8 + srand() * .55, kind); }
-  for (let i = 0; i < Math.round(is.r * 1.2); i++) { const p = freeSpot(is, .5, 1.4); if (!p) continue; const r = put(scene, G.rock, mat.rock, p.x, .1, p.z); r.scale.setScalar(.5 + srand() * .9); r.rotation.set(srand() * 3, srand() * 3, 0); }
-  for (let i = 0; i < Math.round(is.r * 9) && tn < 420; i++) { const p = freeSpot(is, .3, 1.2); if (!p) continue; dummy.position.set(p.x, .14, p.z); dummy.rotation.set((srand() - .5) * .4, srand() * 3, (srand() - .5) * .4); dummy.scale.setScalar(.7 + srand() * .8); dummy.updateMatrix(); tufts.setMatrixAt(tn++, dummy.matrix); }
-  for (let i = 0; i < Math.round(is.r * 5) && fn < 260; i++) { const p = freeSpot(is, .4, 1.3); if (!p) continue; dummy.position.set(p.x, .2, p.z); dummy.rotation.set(0, 0, 0); dummy.scale.setScalar(.8 + srand() * .6); dummy.updateMatrix(); flowers.setMatrixAt(fn, dummy.matrix); flowers.setColorAt(fn++, FLOWER_COLS[Math.floor(srand() * FLOWER_COLS.length)]); }
+  const is = ISL[id], plaza = DISTRICT[id] === 'plaza';
+  for (let i = 0; i < n; i++) { const p = freeSpot(is, 1.0, 1.8); if (p) { tree(p.x, p.z, .8 + srand() * .55, kind); if (plaza) planter(p.x, p.z); } }
+  if (!plaza) for (let i = 0; i < Math.round(is.r * 1.2); i++) { const p = freeSpot(is, .5, 1.4); if (!p) continue; const r = put(scene, G.rock, mat.rock, p.x, .1, p.z); r.scale.setScalar(.5 + srand() * .9); r.rotation.set(srand() * 3, srand() * 3, 0); }
+  if (!plaza) for (let i = 0; i < Math.round(is.r * 9) && tn < 420; i++) { const p = freeSpot(is, .3, 1.2); if (!p) continue; dummy.position.set(p.x, .14, p.z); dummy.rotation.set((srand() - .5) * .4, srand() * 3, (srand() - .5) * .4); dummy.scale.setScalar(.7 + srand() * .8); dummy.updateMatrix(); tufts.setMatrixAt(tn++, dummy.matrix); }
+  if (!plaza) for (let i = 0; i < Math.round(is.r * 5) && fn < 260; i++) { const p = freeSpot(is, .4, 1.3); if (!p) continue; dummy.position.set(p.x, .2, p.z); dummy.rotation.set(0, 0, 0); dummy.scale.setScalar(.8 + srand() * .6); dummy.updateMatrix(); flowers.setMatrixAt(fn, dummy.matrix); flowers.setColorAt(fn++, FLOWER_COLS[Math.floor(srand() * FLOWER_COLS.length)]); }
 });
 tufts.count = tn; flowers.count = fn; scene.add(tufts, flowers);
 
@@ -948,8 +1030,223 @@ function cloud(x, y, z, s, speed) {
   for (let i = 0; i < n; i++) { const m = new THREE.Mesh(cloudGeo, cloudMat); m.position.set((i - n / 2) * .9 + srand() * .4, srand() * .5, (srand() - .5) * 1.2); m.scale.set(1 + srand() * .6, .7 + srand() * .4, 1 + srand() * .5); g.add(m); }
   g.position.set(x, y, z); g.scale.setScalar(s); scene.add(g); clouds.push({ g, speed });
 }
-for (let i = 0; i < 14; i++) { const a = srand() * Math.PI * 2, d = 16 + srand() * 62; cloud(Math.cos(a) * d, -9 - srand() * 7, Math.sin(a) * d - 5, 2 + srand() * 2.8, .25 + srand() * .4); }
-for (let i = 0; i < 4; i++) { const a = srand() * Math.PI * 2, d = 45 + srand() * 35; cloud(Math.cos(a) * d, 2 + srand() * 9, Math.sin(a) * d - 10, 1.4 + srand() * 1.8, .4 + srand() * .5); }
+for (let i = 0; i < 7; i++) { const a = srand() * Math.PI * 2, d = 55 + srand() * 60; cloud(Math.cos(a) * d, 20 + srand() * 12, Math.sin(a) * d - 10, 2.6 + srand() * 2.4, .3 + srand() * .4); }
+
+/* ================= the town around the squares and parks ================= */
+// Everything here is decoration outside the walkable plazas and streets: houses, fences, lamps, a pond,
+// lawns and the woods and hills on the horizon. Repeated parts are instanced so the whole town is a handful of draw calls.
+const GROUND_Y = -.06;
+const trand = (() => { let s = 20261012; return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; })();
+const tpick = arr => arr[Math.floor(trand() * arr.length)];
+const aDiff = (a, b) => { const T = Math.PI * 2, d = a - b; return ((d + Math.PI) % T + T) % T - Math.PI; };
+const lawnMat = M('#97cc79'), lawnBase = lawnMat.color.clone(), _snowWhite = new THREE.Color('#ffffff');
+{
+  const ground = mesh(new THREE.CircleGeometry(420, 72), lawnMat, false); ground.rotation.x = -Math.PI / 2; ground.position.y = GROUND_Y; scene.add(ground); walkMeshes.push(ground);
+}
+
+// houses between the camera and Henry turn see-through, so the town never hides him
+const CUT = { uCamPos: { value: new THREE.Vector3() }, uTarget: { value: new THREE.Vector3() }, uCut: { value: 0 } };
+function seeThrough(m) {
+  m.onBeforeCompile = (sh) => {
+    sh.uniforms.uCamPos = CUT.uCamPos; sh.uniforms.uTarget = CUT.uTarget; sh.uniforms.uCut = CUT.uCut;
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vTownWorld;')
+      .replace('#include <project_vertex>', '#include <project_vertex>\n  vec4 townW = vec4(transformed, 1.0);\n  #ifdef USE_INSTANCING\n  townW = instanceMatrix * townW;\n  #endif\n  vTownWorld = (modelMatrix * townW).xyz;');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform vec3 uCamPos;\nuniform vec3 uTarget;\nuniform float uCut;\nvarying vec3 vTownWorld;')
+      .replace('#include <clipping_planes_fragment>', `#include <clipping_planes_fragment>
+  if (uCut > 0.5) {
+    vec3 seg = uTarget - uCamPos;
+    float tt = clamp(dot(vTownWorld - uCamPos, seg) / max(dot(seg, seg), 1e-4), 0.0, 1.0);
+    float dd = length(vTownWorld - (uCamPos + seg * tt));
+    if (tt < 0.97 && dd < 1.9 && mod(floor(gl_FragCoord.x) + floor(gl_FragCoord.y), 2.0) < 1.0) discard;
+  }`);
+  };
+  m.customProgramCacheKey = () => 'town-see-through';
+  return m;
+}
+const H_MAT = {
+  wall: seeThrough(M('#ffffff', { roughness: .92 })), roof: seeThrough(M('#ffffff', { roughness: .75, flatShading: true, emissive: '#ffffff', emissiveIntensity: 0 })),
+  trim: seeThrough(M('#ffffff', { roughness: .7 })), door: seeThrough(M('#ffffff', { roughness: .6 })),
+  win: seeThrough(new THREE.MeshStandardMaterial({ color: '#cfe0ee', emissive: '#ffc46b', emissiveIntensity: 0, roughness: .3 })),
+  leaf: seeThrough(M('#ffffff', { flatShading: true, emissive: '#ffffff', emissiveIntensity: 0 })), trunk: seeThrough(M('#a8724a')),
+};
+// the trees already standing in the squares and parks fade the same way
+for (const m of [mat.leaf, mat.leaf2, mat.blossom, mat.blossom2, mat.trunk]) seeThrough(m);
+const roofGeo = (() => {
+  // unit gable prism: ridge along x at y = 1, eaves at z = ±.5
+  const A = [-.5, 0, -.5], B = [.5, 0, -.5], C = [.5, 0, .5], D = [-.5, 0, .5], E = [-.5, 1, 0], F = [.5, 1, 0];
+  const tris = [[D, C, F], [D, F, E], [B, A, E], [B, E, F], [A, D, E], [C, B, F], [A, B, C], [A, C, D]];
+  const pos = [], cen = [0, .33, 0];
+  for (const [p, q, r] of tris) {
+    const u = q.map((v, i) => v - p[i]), w = r.map((v, i) => v - p[i]);
+    const n = [u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0]];
+    const mid = [0, 1, 2].map(i => (p[i] + q[i] + r[i]) / 3 - cen[i]);
+    pos.push(...(n[0] * mid[0] + n[1] * mid[1] + n[2] * mid[2] >= 0 ? [...p, ...q, ...r] : [...p, ...r, ...q]));
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals(); return g;
+})();
+const unitBox = new THREE.BoxGeometry(1, 1, 1);
+function inst(geo, m, n, cast = true) { const im = new THREE.InstancedMesh(geo, m, n); im.castShadow = cast; im.receiveShadow = true; im.count = 0; im.frustumCulled = false; scene.add(im); return im; }
+const _tq = new THREE.Quaternion(), _tp = new THREE.Vector3(), _ts = new THREE.Vector3(), _tm = new THREE.Matrix4(), _tc = new THREE.Color(), _te = new THREE.Euler();
+function addInst(im, x, y, z, yaw, sx, sy, sz, color, rx = 0) {
+  _te.set(rx, yaw, 0, 'YXZ'); _tq.setFromEuler(_te); _tm.compose(_tp.set(x, y, z), _tq, _ts.set(sx, sy, sz));
+  const i = im.count++; im.setMatrixAt(i, _tm); im.setColorAt(i, _tc.set(color));
+}
+const lampHeadMat = new THREE.MeshStandardMaterial({ color: '#fff3d6', emissive: '#ffd58a', emissiveIntensity: .25 }); lampMats.push(lampHeadMat);
+const TOWN = {
+  walls: inst(unitBox, H_MAT.wall, 140), gables: inst(roofGeo, H_MAT.wall, 140), roofs: inst(roofGeo, H_MAT.roof, 140),
+  doors: inst(unitBox, H_MAT.door, 140), frames: inst(unitBox, H_MAT.trim, 1300), wins: inst(unitBox, H_MAT.win, 1300, false),
+  boxes: inst(unitBox, H_MAT.trim, 400), chimneys: inst(unitBox, H_MAT.trim, 140), paths: inst(unitBox, M('#ffffff', { roughness: .95 }), 140, false),
+  awnings: inst(unitBox, H_MAT.trim, 80), trunks: inst(new THREE.CylinderGeometry(.13, .2, 1, 7), H_MAT.trunk, 460), crowns: inst(new THREE.IcosahedronGeometry(1, 0), H_MAT.leaf, 920),
+  posts: inst(new THREE.CylinderGeometry(.05, .07, 1, 8), mat.navy, 60), heads: inst(new THREE.SphereGeometry(.16, 12, 10), lampHeadMat, 60, false), caps: inst(new THREE.ConeGeometry(.22, .14, 12), mat.navy, 60),
+};
+
+// where things may go: not on a plaza, park, street or the pond, and not on top of another house
+const HOUSES = [];
+function townFree(x, z, rad, lim = TOWN_R - .5) {
+  if (Math.hypot(x, z) > lim) return false;
+  for (const is of ISLANDS) if (Math.hypot(x - is.x, z - is.z) < is.r + rad + .9) return false;
+  for (const b of BRIDGES) if (segInfo(x, z, b).d < 1.5 + rad) return false;
+  if (Math.hypot(x - POND.x, z - POND.z) < POND.r + rad + .9) return false;
+  for (const h of HOUSES) if (Math.hypot(x - h.x, z - h.z) < h.rad + rad + .45) return false;
+  return true;
+}
+const WALLS = ['#f8dccd', '#fbe6b8', '#d9eed9', '#d8e6f6', '#f5cdcd', '#fff1de', '#e9dbf4', '#f3e2c7'];
+const ROOFS = ['#e07a5f', '#c8553d', '#3f4d73', '#6d8fbf', '#8a5a44', '#d98c5f', '#5b8c6a', '#b55d6f'];
+const DOORS = ['#3f4d73', '#e07a5f', '#5b8c6a', '#8a5a44', '#2a3656', '#b55d6f'];
+const BLOOMS = ['#f27b78', '#ffd166', '#c9b6ff', '#f6a68f', '#ffffff'];
+const AWNS = ['#ec6a4e', '#3b82f6', '#2fb67c', '#ffd166', '#b55d6f'];
+function tryHouse(x, z, yaw, w, d, h, pathLen, shop) {
+  const rad = Math.hypot(w, d) / 2;
+  if (!townFree(x, z, rad)) return false;
+  HOUSES.push({ x, z, yaw, w, d, h, rad, pathLen, shop, rh: .85 + trand() * .55, wall: tpick(WALLS), roof: tpick(ROOFS), door: tpick(DOORS) });
+  boxes.push({ x, z, c: Math.cos(yaw), s: Math.sin(yaw), hw: w / 2 + .05, hd: d / 2 + .16 });
+  return true;
+}
+// 1) houses lining the streets, facing the street
+for (const b of BRIDGES) {
+  if (b.b === 'lookout') continue;
+  const nx = -b.uz, nz = b.ux;
+  for (const side of [-1, 1]) {
+    let s = 1.6 + trand() * .8;
+    while (s < b.len - 1.4) {
+      const w = 2.4 + trand() * 1.0, d = 2.3 + trand() * .6, off = 1.3 + 1.45 + d / 2;
+      const x = b.p1.x + b.ux * s + nx * side * off, z = b.p1.z + b.uz * s + nz * side * off;
+      tryHouse(x, z, Math.atan2(-nx * side, -nz * side), w, d, 2.0 + trand() * .6, 1.45, b.a === 'hub' && b.b === 'workshop');
+      s += w + .9 + trand() * .8;
+    }
+  }
+}
+// 2) a ring of houses around each square and park, facing in; 3) a taller back row behind them
+for (const [row, gap] of [[0, 1.6], [1, 7.2]]) {
+  for (const is of ISLANDS) {
+    if (is.id === 'lookout' && row) continue;
+    const d0 = 2.5, R = is.r + gap + d0 / 2;
+    let a = trand() * Math.PI * 2;
+    const end = a + Math.PI * 2;
+    while (a < end) {
+      const w = 2.4 + trand() * 1.1, d = 2.3 + trand() * .6, two = row === 1 && trand() < .55;
+      const x = is.x + Math.cos(a) * R, z = is.z + Math.sin(a) * R;
+      tryHouse(x, z, Math.atan2(is.x - x, is.z - z), w, d, two ? 3.2 + trand() * .6 : 2.0 + trand() * .6, row ? 0 : R - d / 2 - is.r, row === 0 && (is.id === 'hub' || is.id === 'workshop'));
+      a += (w + 1.0 + trand() * .7) / R;
+    }
+  }
+}
+// build every house out of instanced parts
+for (const H of HOUSES) {
+  const c = Math.cos(H.yaw), s = Math.sin(H.yaw);
+  const at = (lx, lz) => [H.x + lx * c + lz * s, H.z - lx * s + lz * c];
+  const P3 = (im, lx, ly, lz, sx, sy, sz, col, yawOff = 0, rx = 0) => { const [x, z] = at(lx, lz); addInst(im, x, GROUND_Y + ly, z, H.yaw + yawOff, sx, sy, sz, col, rx); };
+  const { w, d, h, rh } = H;
+  P3(TOWN.walls, 0, h / 2, 0, w, h, d, H.wall);
+  P3(TOWN.gables, 0, h, 0, w - .02, rh - .04, d - .02, H.wall);
+  P3(TOWN.roofs, 0, h - .02, 0, w + .34, rh + .04, d + .42, H.roof);
+  if (trand() < .7) P3(TOWN.chimneys, w * .26, h + rh * .55, -d * .16, .32, rh + .3, .32, '#b9644a');
+  const narrow = w < 2.75, doorX = narrow ? -w * .2 : 0;
+  P3(TOWN.doors, doorX, .5, d / 2 + .03, .56, 1.0, .06, H.door);
+  P3(TOWN.frames, doorX, .53, d / 2 + .015, .7, 1.12, .04, '#fffaf4');
+  const wy = Math.min(h * .52, 1.25), cols = narrow ? [w * .22] : [-w * .3, w * .3];
+  for (const wx of cols) {
+    P3(TOWN.frames, wx, wy, d / 2 + .015, .6, .62, .04, '#fffaf4'); P3(TOWN.wins, wx, wy, d / 2 + .035, .46, .48, .03, '#cfe0ee');
+    P3(TOWN.boxes, wx, wy - .4, d / 2 + .09, .58, .14, .16, tpick(BLOOMS));
+  }
+  if (h > 2.9) for (const wx of narrow ? [doorX, w * .22] : [-w * .3, 0, w * .3]) { P3(TOWN.frames, wx, h - .72, d / 2 + .015, .56, .62, .04, '#fffaf4'); P3(TOWN.wins, wx, h - .72, d / 2 + .035, .42, .48, .03, '#cfe0ee'); }
+  for (const sd of [-1, 1]) { P3(TOWN.frames, sd * (w / 2 + .015), wy, 0, .6, .62, .04, '#fffaf4', Math.PI / 2); P3(TOWN.wins, sd * (w / 2 + .035), wy, 0, .46, .48, .03, '#cfe0ee', Math.PI / 2); }
+  if (H.shop) P3(TOWN.awnings, 0, Math.min(h * .8, 2.0), d / 2 + .34, w * .78, .06, .72, tpick(AWNS), 0, .38);
+  if (H.pathLen > .2) P3(TOWN.paths, doorX, .015, d / 2 + H.pathLen / 2, .74, .04, H.pathLen + .05, '#e3d5c1');
+}
+// street lamps, alternating sides
+for (const b of BRIDGES) {
+  if (b.b === 'lookout') continue;
+  const nx = -b.uz, nz = b.ux;
+  for (let s = 2.4, k = 0; s < b.len - 1.6; s += 4.6, k++) {
+    const side = k % 2 ? 1 : -1, x = b.p1.x + b.ux * s + nx * side * 1.62, z = b.p1.z + b.uz * s + nz * side * 1.62;
+    addInst(TOWN.posts, x, GROUND_Y + 1.0, z, 0, 1, 2.0, 1, '#ffffff'); addInst(TOWN.heads, x, GROUND_Y + 2.08, z, 0, 1, 1, 1, '#ffffff'); addInst(TOWN.caps, x, GROUND_Y + 2.25, z, 0, 1, 1, 1, '#ffffff'); colliders.push({ x, z, r: .12 });
+  }
+}
+// a duck pond south of the square
+const ducks = [];
+{
+  const water = new THREE.Mesh(new THREE.CircleGeometry(POND.r, 56), new THREE.MeshStandardMaterial({ color: '#8fd0ee', roughness: .12, metalness: .1, emissive: '#3b82f6', emissiveIntensity: .05 }));
+  water.rotation.x = -Math.PI / 2; water.position.set(POND.x, GROUND_Y + .025, POND.z); water.receiveShadow = true; scene.add(water);
+  const rim = put(scene, new THREE.TorusGeometry(POND.r, .16, 8, 64), mat.curb, POND.x, GROUND_Y + .02, POND.z, false); rim.rotation.x = Math.PI / 2;
+  for (const [a, r, s] of [[.6, 2.3, .34], [2.2, 2.6, .28], [3.9, 1.9, .3], [5.1, 2.7, .26]]) { const pad = new THREE.Mesh(new THREE.CircleGeometry(s, 16, .3, Math.PI * 1.8), M('#6fb85a')); pad.rotation.x = -Math.PI / 2; pad.position.set(POND.x + Math.cos(a) * r, GROUND_Y + .032, POND.z + Math.sin(a) * r); scene.add(pad); }
+  for (let i = 0; i < 9; i++) { const a = 1.2 + i * .19, r = POND.r + .1; const reed = put(scene, new THREE.ConeGeometry(.05, .7 + (i % 3) * .2, 5), mat.grassDark, POND.x + Math.cos(a) * r, GROUND_Y + .35, POND.z + Math.sin(a) * r); reed.rotation.z = (i % 2 - .5) * .2; }
+  const duckM = M('#fffaf0', { roughness: .6 }), beakM = M('#f59e3b'), eyeM = M('#1b1b1f');
+  for (const [r, ph, dir, sc] of [[1.7, 0, 1, 1], [1.7, .9, 1, .62], [2.5, 3, -1, 1]]) {
+    const g = new THREE.Group(); g.scale.setScalar(sc); scene.add(g);
+    const body = put(g, new THREE.SphereGeometry(.17, 14, 10), duckM, 0, .07, 0); body.scale.set(1, .7, 1.35);
+    put(g, new THREE.SphereGeometry(.1, 12, 10), duckM, 0, .22, .16);
+    const beak = put(g, new THREE.ConeGeometry(.04, .1, 8), beakM, 0, .2, .27); beak.rotation.x = Math.PI / 2;
+    for (const sd of [-1, 1]) put(g, new THREE.SphereGeometry(.014, 6, 6), eyeM, sd * .06, .25, .22, false);
+    const tail = put(g, new THREE.ConeGeometry(.06, .14, 6), duckM, 0, .14, -.22); tail.rotation.x = -2.2;
+    ducks.push({ g, r, ph, dir });
+  }
+  bench(POND.x - 1.2, POND.z - POND.r - 1.0, Math.PI);
+}
+// trees in the yards between houses, the woods around town and hills on the horizon
+const LEAVES = ['#7cc463', '#9bd57a', '#6ab258', '#f7a7a3', '#8fcf6e'];
+function townTree(x, z, s, solid) {
+  if (solid) colliders.push({ x, z, r: .32 * s }); addInst(TOWN.trunks, x, GROUND_Y + .55 * s, z, 0, s, 1.1 * s, s, '#a8724a'); const col = tpick(LEAVES); addInst(TOWN.crowns, x, GROUND_Y + 1.55 * s, z, trand() * 6, .85 * s, .95 * s, .85 * s, col); addInst(TOWN.crowns, x + .3 * s, GROUND_Y + 2.05 * s, z + .1 * s, trand() * 6, .58 * s, .62 * s, .58 * s, col); }
+for (let k = 0, placed = 0; k < 900 && placed < 70; k++) {
+  const a = trand() * Math.PI * 2, r = 9 + trand() * 31, x = Math.cos(a) * r, z = Math.sin(a) * r - 3, s = .8 + trand() * .55;
+  if (townFree(x, z, .9 * s)) { townTree(x, z, s, true); HOUSES.push({ x, z, rad: .9 * s, tree: true }); placed++; }
+}
+for (let a = 0; a < Math.PI * 2; a += 2.3 / (TOWN_R + 1.2)) { const r = TOWN_R + .9 + trand() * 1.4; townTree(Math.cos(a) * r, Math.sin(a) * r, 1.1 + trand() * .7); }
+for (let i = 0; i < 210; i++) { const a = trand() * Math.PI * 2, r = TOWN_R + 3 + trand() * 38; townTree(Math.cos(a) * r, Math.sin(a) * r, 1.3 + trand() * 1.1); }
+{
+  const hillM = M('#9fcf83', { flatShading: true }), hillM2 = M('#b3d98f', { flatShading: true });
+  for (let i = 0; i < 20; i++) {
+    const a = i / 20 * Math.PI * 2 + trand() * .2, r = 125 + trand() * 50, s = 20 + trand() * 16;
+    const hill = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 1), i % 2 ? hillM : hillM2); hill.scale.set(s * 1.5, s * (.32 + trand() * .18), s * 1.2);
+    hill.position.set(Math.cos(a) * r, -2, Math.sin(a) * r); hill.rotation.y = trand() * 3; scene.add(hill);
+  }
+}
+// tufts and flowers on the lawns
+{
+  const lt = new THREE.InstancedMesh(G.tuft, mat.grassDark, 900), lf = new THREE.InstancedMesh(G.flower, new THREE.MeshStandardMaterial({ roughness: .6 }), 360);
+  let nt = 0, nf = 0;
+  for (let k = 0; k < 6000 && (nt < 900 || nf < 360); k++) {
+    const a = trand() * Math.PI * 2, r = 4 + Math.sqrt(trand()) * 38, x = Math.cos(a) * r, z = Math.sin(a) * r - 3;
+    if (!townFree(x, z, .25)) continue;
+    if (nt < 900) { dummy.position.set(x, GROUND_Y + .14, z); dummy.rotation.set((trand() - .5) * .4, trand() * 3, (trand() - .5) * .4); dummy.scale.setScalar(.7 + trand() * .8); dummy.updateMatrix(); lt.setMatrixAt(nt++, dummy.matrix); }
+    if (nf < 360 && trand() < .35) { dummy.position.set(x + .2, GROUND_Y + .2, z + .1); dummy.rotation.set(0, 0, 0); dummy.scale.setScalar(.8 + trand() * .6); dummy.updateMatrix(); lf.setMatrixAt(nf, dummy.matrix); lf.setColorAt(nf++, FLOWER_COLS[Math.floor(trand() * FLOWER_COLS.length)]); }
+  }
+  lt.count = nt; lf.count = nf; lt.receiveShadow = lf.receiveShadow = true; lt.frustumCulled = lf.frustumCulled = false; scene.add(lt, lf);
+}
+for (const im of Object.values(TOWN)) { im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true; }
+
+function updateTown(dt, t) {
+  CUT.uCut.value = started && !photo ? 1 : 0;
+  CUT.uCamPos.value.copy(camera.position); CUT.uTarget.value.set(P.x, P.y + 1.0, P.z);
+  ducks.forEach((dk, i) => {
+    const a = t * .22 * dk.dir + dk.ph;
+    dk.g.position.set(POND.x + Math.cos(a) * dk.r, GROUND_Y + .02 + Math.sin(t * 2.2 + i) * .012, POND.z + Math.sin(a) * dk.r);
+    dk.g.rotation.y = Math.atan2(-Math.sin(a) * dk.dir, Math.cos(a) * dk.dir);
+  });
+  const snowK = typeof WXS !== 'undefined' ? WXS.snow : 0;
+  H_MAT.roof.emissiveIntensity = snowK * .35; H_MAT.leaf.emissiveIntensity = snowK * .25;
+  lawnMat.color.copy(lawnBase).lerp(_snowWhite, snowK * .6);
+}
 
 /* ================= textures for markers ================= */
 const markTex = canvasTex(96, 96, (c) => { c.fillStyle = '#ffd166'; c.beginPath(); c.arc(48, 48, 40, 0, 7); c.fill(); c.lineWidth = 6; c.strokeStyle = '#ffffff'; c.stroke(); c.fillStyle = '#202b45'; c.font = `700 60px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('!', 48, 52); });
@@ -1287,9 +1584,9 @@ function panelHTML(id) {
   if (st.kind === 'skills') {
     return headHTML(st, 'Abilities unlocked', glyphHTML(st)) +
       `<ul class="skills">${SKILLS.map(([n, svg]) => `<li>${svgIcon(svg)}${esc(n)}</li>`).join('')}</ul>
-      <div class="eyebrow">Toolbelt · ${found.size} of ${TOOLS.length} found on the island</div>
+      <div class="eyebrow">Toolbelt · ${found.size} of ${TOOLS.length} found around town</div>
       <ul class="toolchips">${TOOLS.map(t => `<li class="${found.has(t.n) ? 'got' : ''}" style="--tc:${t.c}"><i></i>${t.n}</li>`).join('')}</ul>
-      <p class="p-note">Each tool is a spinning coin somewhere on the islands. One is hiding on a bridge.</p>
+      <p class="p-note">Each tool is a spinning coin somewhere around town. One is hiding on a street.</p>
       <div class="p-actions" style="margin-top:16px">${nextBtn(id)}</div>`;
   }
   if (st.kind === 'about') {
@@ -1348,11 +1645,11 @@ function quickHTML() {
     return `<article class="q-case"><img class="p-icon" src="${st.icon}" alt="" width="56" height="56"><div>
       <div class="p-eyebrow"><span class="rar r-${q.rarity.toLowerCase()}">${q.rarity}</span>${esc(q.timeline)}</div>
       <h3>${esc(st.name)}</h3><p>${esc(q.lede)}</p>${tldrHTML(q)}
-      <div class="p-actions"><a class="btn primary" href="${SITE}" target="_blank" rel="noopener">Full case study ↗</a><button class="btn" data-go="${id}">Show on the island</button></div></div></article>`;
+      <div class="p-actions"><a class="btn primary" href="${SITE}" target="_blank" rel="noopener">Full case study ↗</a><button class="btn" data-go="${id}">Show in town</button></div></div></article>`;
   }).join('');
   const side = ['emberline', 'jobtracker'].map(id => { const s = SIDE[id]; return `<a href="${s.url}" target="_blank" rel="noopener"><span class="rar r-live">Live site ↗</span><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p></a>`; }).join('');
   return `<div class="q-wrap">
-    <div class="q-bar"><span class="eyebrow" style="margin:0">Quick view</span><button class="btn" data-back>← Back to the island</button></div>
+    <div class="q-bar"><span class="eyebrow" style="margin:0">Quick view</span><button class="btn" data-back>← Back to town</button></div>
     <section class="q-hero card"><img src="img/henry.webp" alt="Illustrated Henry Wu"><div>
       <h1>HENRY WU</h1><div class="pc-role">UI/UX Designer</div>
       <p>UI/UX Design · Web Design · Web Development. Crafting simple, engaging, and code-ready digital experiences.</p>
@@ -1444,7 +1741,7 @@ function markInteract(id) {
   track('island_interaction', { interaction_id: id });
   didInt.add(id); addXP(2); renderTracker(); SFX.pop();
   const total = Object.keys(INTERACTIONS).length;
-  if (didInt.size === total) setTimeout(() => toast(`<b>All ${total} interactions found.</b> You really explored the island!`, 4), 900);
+  if (didInt.size === total) setTimeout(() => toast(`<b>All ${total} interactions found.</b> You really explored the town!`, 4), 900);
 }
 function flipHourglass() {
   if (hg.flip > 0) return;
@@ -1547,7 +1844,7 @@ function renderBuffs() {
   const html = chips.join(''), el = $('#buffs'); if (el.innerHTML !== html) el.innerHTML = html;
   document.querySelectorAll('#dock [data-emote]').forEach(b => b.classList.toggle('on', anim.emote === b.dataset.emote || (b.dataset.emote === 'pet' && hamState === 'pet')));
 }
-const TIPS = ['Glowing totems open my case studies.', 'Press 2 and I will dance.', 'One tool coin is hiding on a bridge.', 'Kick the beach ball. My hamster will chase it.', 'Mochi and Bean love belly rubs. Walk up and press E.', 'Kick the ball near a dog to play fetch.', 'Press N to see the island at night.', 'Try turning the hourglass on StudyFlow island.', 'Press F at the coffee booth for a speed boost.', 'Press T for a guided tour of my work.', 'Toss some yarn for the cats with F.'];
+const TIPS = ['Glowing totems open my case studies.', 'Press 2 and I will dance.', 'One tool coin is hiding on a street.', 'Kick the beach ball. My hamster will chase it.', 'Mochi and Bean love belly rubs. Walk up and press E.', 'Say hi to the ducks on the pond south of the square.', 'Kick the ball near a dog to play fetch.', 'Press N to see the island at night.', 'Try turning the hourglass on StudyFlow island.', 'Press F at the coffee booth for a speed boost.', 'Press T for a guided tour of my work.', 'Toss some yarn for the cats with F.'];
 let tipI = 0;
 
 /* ---- walking ---- */
@@ -1580,6 +1877,7 @@ function onArrive() {
 }
 function tryMove(nx, nz) {
   for (const c of colliders) { const dx = nx - c.x, dz = nz - c.z, d = Math.hypot(dx, dz), min = c.r + .32; if (d < min && d > 1e-4) { nx = c.x + dx / d * min; nz = c.z + dz / d * min; } }
+  for (const b of boxes) { const r = boxPush(nx, nz, .32, b); if (r) { nx = r[0]; nz = r[1]; } }
   return walkable(nx, nz) ? [nx, nz] : null;
 }
 // auto-walk steers around posts, trees and props instead of pushing into them
@@ -1596,7 +1894,7 @@ function steer(mx, mz, dist) {
   }
   const l = Math.hypot(sx, sz) || 1; return [sx / l, sz / l];
 }
-let near = null;
+let near = null, wpRef = null, wpBest = 1e9, wpT = 0;
 function updatePlayer(dt) {
   let ix = 0, iz = 0;
   const free = started && panel.hidden && quick.hidden && !photo;
@@ -1624,6 +1922,13 @@ function updatePlayer(dt) {
   if (r) { P.x = r[0]; P.z = r[1]; } else { vel.set(0, 0, 0); }
   const moved = Math.hypot(P.x - ox, P.z - oz);
   if (path.length && moved < .4 * dt) { stuckT += dt; if (stuckT > 1.1) { path = []; pendingOpen = null; pendingAct = null; stuckT = 0; } } else stuckT = 0;
+  if (path.length) {
+    const wp = path[0], dw = Math.hypot(wp.x - P.x, wp.z - P.z);
+    if (wp !== wpRef) { wpRef = wp; wpBest = dw; wpT = 0; } else if (dw < wpBest - .05) { wpBest = dw; wpT = 0; } else wpT += dt;
+    const goal = pendingOpen || (pendingAct && !pendingAct.pet ? pendingAct : null);
+    if (goal && Math.hypot(P.x - goal.x, P.z - goal.z) < goal.radius - .4) { path = []; onArrive(); }
+    else if (wpT > 1.6) { if (goal && Math.hypot(P.x - goal.x, P.z - goal.z) <= goal.radius) { path = []; onArrive(); } else { path = []; pendingOpen = null; pendingAct = null; } wpT = 0; }
+  }
   speedNow = moved / Math.max(dt, 1e-4);
   if (speedNow > .4) { heading = Math.atan2(vel.x, vel.z); idleT = 0; if (anim.emote && anim.emote !== 'drink') endEmote(); }
   if (jumpY > 0 || vy > 0) { vy -= 24 * dt; jumpY += vy * dt; if (jumpY <= 0) { jumpY = 0; vy = 0; } }
@@ -1743,7 +2048,7 @@ renderer.domElement.addEventListener('pointerup', e => {
   const sh = pick(e, stationHits);
   if (sh) { const u = sh.object.userData; if (u.station) walkToStation(u.station.id); else if (u.prop) walkToProp(u.prop); else if (u.pet) walkToPet(u.pet); else if (u.ham) petHamster(); else if (u.ball) { walkTo({ x: BALL.x, z: BALL.z }); markAt(BALL.x, BALL.z); } return; }
   const wh = pick(e, walkMeshes);
-  if (wh && walkable(wh.point.x, wh.point.z)) { walkTo({ x: wh.point.x, z: wh.point.z }); markAt(wh.point.x, wh.point.z); }
+  if (wh) { walkTo({ x: wh.point.x, z: wh.point.z }); if (path.length) { const e2 = path[path.length - 1]; markAt(e2.x, e2.z); } }
 });
 renderer.domElement.addEventListener('pointercancel', () => { drag = null; });
 renderer.domElement.addEventListener('wheel', e => { e.preventDefault(); camDistTarget = clamp(camDistTarget + e.deltaY * .012, 8, 30); }, { passive: false });
@@ -1755,10 +2060,15 @@ const toMM = (x, z) => [160 + (x - MM.cx) * MM.s, 160 + (z - MM.cz) * MM.s];
 function drawMinimap() {
   if (!mm.offsetParent) return;
   mg.clearRect(0, 0, 320, 320);
-  mg.fillStyle = '#e3f0fc'; rrPath(mg, 0, 0, 320, 320, 24); mg.fill();
-  mg.strokeStyle = '#c98d5a'; mg.lineCap = 'round'; mg.lineWidth = 2 * MM.s * .8;
+  mg.fillStyle = '#d6eac2'; rrPath(mg, 0, 0, 320, 320, 24); mg.fill();
+  mg.save(); rrPath(mg, 0, 0, 320, 320, 24); mg.clip();
+  { const [px, py] = toMM(POND.x, POND.z); mg.fillStyle = '#9fd3ef'; mg.beginPath(); mg.arc(px, py, POND.r * MM.s, 0, 7); mg.fill(); }
+  mg.fillStyle = '#efb9a0';
+  for (const h of HOUSES) { if (h.tree) continue; const [hx, hy] = toMM(h.x, h.z); mg.save(); mg.translate(hx, hy); mg.rotate(-h.yaw); mg.fillRect(-h.w / 2 * MM.s, -h.d / 2 * MM.s, h.w * MM.s, h.d * MM.s); mg.restore(); }
+  mg.restore();
+  mg.strokeStyle = '#f1e8da'; mg.lineCap = 'round'; mg.lineWidth = 2.4 * MM.s;
   for (const b of BRIDGES) { const [a1, a2] = toMM(b.p1.x, b.p1.z), [b1, b2] = toMM(b.p2.x, b.p2.z); mg.beginPath(); mg.moveTo(a1, a2); mg.lineTo(b1, b2); mg.stroke(); }
-  for (const is of ISLANDS) { const [x, y] = toMM(is.x, is.z); mg.fillStyle = '#a6db86'; mg.strokeStyle = '#86c867'; mg.lineWidth = 3; mg.beginPath(); mg.arc(x, y, is.r * MM.s, 0, 7); mg.fill(); mg.stroke(); }
+  for (const is of ISLANDS) { const [x, y] = toMM(is.x, is.z), pz = DISTRICT[is.id] === 'plaza'; mg.fillStyle = pz ? '#f4ecdf' : '#a6db86'; mg.strokeStyle = pz ? '#dcc9ae' : '#86c867'; mg.lineWidth = 3; mg.beginPath(); mg.arc(x, y, is.r * MM.s, 0, 7); mg.fill(); mg.stroke(); }
   for (const t of TOOLS) { if (found.has(t.n)) continue; const [x, y] = toMM(t.at[0], t.at[1]); mg.fillStyle = '#ffd166'; mg.strokeStyle = '#fff'; mg.lineWidth = 2; mg.beginPath(); mg.arc(x, y, 5, 0, 7); mg.fill(); mg.stroke(); }
   for (const pt of PETS) { const [x, y] = toMM(pt.x, pt.z); mg.fillStyle = pt.fur; mg.strokeStyle = '#fff'; mg.lineWidth = 2; mg.beginPath(); mg.arc(x, y, 4.5, 0, 7); mg.fill(); mg.stroke(); }
   for (const st of STATIONS) {
@@ -1889,6 +2199,7 @@ function applyTod(k) {
   sunDisc.material.color.copy(mix(A.disc, B.disc, k)); sunDisc.material.opacity = 1 - .9 * WXS.ov; sunDisc.position.set(L(A.discP[0], B.discP[0]), L(A.discP[1], B.discP[1]), L(A.discP[2], B.discP[2]));
   lampMats.forEach(m => { m.emissiveIntensity = L(A.lamp, B.lamp); });
   lampLights.forEach(l => { l.intensity = L(A.light, B.light); });
+  H_MAT.win.emissiveIntensity = Math.max(0, L(A.lamp, B.lamp) - .25) * .55;
   stars.material.opacity = L(A.stars, B.stars) * (1 - WXS.ov); stars.visible = stars.material.opacity > .01;
   flies.material.opacity = L(A.flies, B.flies); flies.visible = flies.material.opacity > .01;
   renderer.toneMappingExposure = L(A.exp, B.exp);
@@ -1927,11 +2238,7 @@ scene.add(ball);
 const BALL = { x: -2.8, z: 3.2, vx: 0, vz: 0, y: 0, vy: 0, r: .38, falling: false, home: { x: -2.8, z: 3.2 }, cd: 0, gy: 0 };
 const ballHit = new THREE.Mesh(new THREE.SphereGeometry(.7, 8, 6), hitMat); ballHit.userData.ball = true; scene.add(ballHit); stationHits.push(ballHit);
 const _axis = new THREE.Vector3();
-function onGround(x, z) {
-  if (inIsland(x, z, .05)) return true;
-  for (const b of BRIDGES) { const s = segInfo(x, z, b); if (s.t >= 0 && s.t <= 1 && s.d <= 1.05) return true; }
-  return false;
-}
+function onGround(x, z) { return walkable(x, z); }
 function updateBall(dt) {
   BALL.cd -= dt;
   if (BALL.falling) {
@@ -1954,11 +2261,23 @@ function updateBall(dt) {
       const ex = nx2 - c.x, ez = nz2 - c.z, ed = Math.hypot(ex, ez), min = c.r + BALL.r;
       if (ed < min && ed > 1e-4) { const ux = ex / ed, uz = ez / ed, dot = BALL.vx * ux + BALL.vz * uz; if (dot < 0) { BALL.vx -= 1.7 * dot * ux; BALL.vz -= 1.7 * dot * uz; } nx2 = c.x + ux * min; nz2 = c.z + uz * min; }
     }
+    for (const b of boxes) {
+      const r = boxPush(nx2, nz2, BALL.r, b); if (!r) continue;
+      const ex = r[0] - nx2, ez = r[1] - nz2, el = Math.hypot(ex, ez) || 1, ux = ex / el, uz = ez / el, dot = BALL.vx * ux + BALL.vz * uz;
+      if (dot < 0) { BALL.vx -= 1.7 * dot * ux; BALL.vz -= 1.7 * dot * uz; }
+      nx2 = r[0]; nz2 = r[1];
+    }
+    if (!onGround(BALL.x, BALL.z)) { const is = ISLANDS.reduce((a, b) => Math.hypot(BALL.x - b.x, BALL.z - b.z) < Math.hypot(BALL.x - a.x, BALL.z - a.z) ? b : a); BALL.x += (is.x - BALL.x) * .1; BALL.z += (is.z - BALL.z) * .1; nx2 = BALL.x; nz2 = BALL.z; }
+    else if (!onGround(nx2, nz2)) {
+      if (onGround(nx2, BALL.z)) { BALL.vz = -BALL.vz * .6; nz2 = BALL.z; }
+      else if (onGround(BALL.x, nz2)) { BALL.vx = -BALL.vx * .6; nx2 = BALL.x; }
+      else { BALL.vx = -BALL.vx * .6; BALL.vz = -BALL.vz * .6; nx2 = BALL.x; nz2 = BALL.z; }
+      if (Math.hypot(BALL.vx, BALL.vz) > 1.5 && BALL.cd <= 0) { SFX.kick(); BALL.cd = .2; }
+    }
     BALL.x = nx2; BALL.z = nz2;
     const f = Math.exp(-dt * (BALL.y > .05 ? .3 : 1.3)); BALL.vx *= f; BALL.vz *= f;
     BALL.vy -= 20 * dt; BALL.y += BALL.vy * dt; if (BALL.y < 0) { BALL.y = 0; BALL.vy = Math.abs(BALL.vy) > 1.2 ? -BALL.vy * .45 : 0; }
-    if (!onGround(BALL.x, BALL.z)) { BALL.falling = true; BALL.y += BALL.gy; floatText(BALL.x, 1.2, BALL.z, 'Whoops!', 1.2); }
-    else BALL.gy = groundY(BALL.x, BALL.z);
+    BALL.gy = groundY(BALL.x, BALL.z);
   }
   ball.position.set(BALL.x, (BALL.falling ? 0 : BALL.gy) + BALL.r + BALL.y, BALL.z);
   const sp = Math.hypot(BALL.vx, BALL.vz);
@@ -2985,6 +3304,7 @@ function frame(now) {
   else camTarget.lerp(tmpV.set(P.x, P.y + 1.2, P.z), 1 - Math.exp(-dt * 6));
   camDist = lerp(camDist, camDistTarget, 1 - Math.exp(-dt * (started ? 2.5 : 1)));
   placeCamera();
+  updateTown(dt, t);
   // ambient animation
   if (!reduceMotion) {
     windBlades.rotation.z += dt * (1.3 + WXS.wind * 3);

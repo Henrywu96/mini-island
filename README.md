@@ -1,25 +1,27 @@
-# Henry's Quest Island
+# Henry's Quest Town
 
-A playable 3D version of my UI/UX design portfolio. Walk a small sky island, open each case study at its quest totem, and play with the things you find along the way.
+A playable 3D version of my UI/UX design portfolio. Stroll around a little storybook town, open each case study at its quest totem, and play with the things you find along the way.
 
 Main portfolio: [henrywu.link](https://henrywu.link/) · [LinkedIn](https://www.linkedin.com/in/min-tzu-wu-7910851b4/)
 
-## What's on the island
+## Around town
 
-| Island | What you find |
+Walk anywhere on the streets, squares and lawns. Only the houses, trees and the duck pond get in your way, and clicking a spot finds a route around them.
+
+| Place | What you find |
 | --- | --- |
-| Bridgly | Featured case study (Legendary). Send a hug to the lookout cottage. |
-| GreenPath | Case study (Epic). Log a green action and watch a tree grow. |
-| StudyFlow | Case study (Rare). Turn the hourglass to start a focus session. |
-| Side Quests | Emberline Coffee and the Job Tracking Web App, both linked to their live sites. Brew a coffee, move a job card. |
-| Skill Tree | Six UX abilities hanging from the tree. Shake it. |
-| Home Base | About me, contact, a hamster wheel, a beach ball, and two dogs and two cats who live there. |
+| Bridgly Garden | Featured case study (Legendary) in a blossom park. Send a hug to the cottage down the lane. |
+| GreenPath Garden | Case study (Epic) by the windmill. Log a green action and watch a tree grow. |
+| StudyFlow Square | Case study (Rare). Turn the hourglass to start a focus session. |
+| Market Square | Side quests: Emberline Coffee and the Job Tracking Web App, both linked to their live sites. Brew a coffee, move a job card. |
+| Skill Tree Park | Six UX abilities hanging from the tree. Shake it. |
+| Town Square | About me, contact, a hamster wheel, a beach ball, and two dogs and two cats who live there. Ducks paddle on the pond just south of it. |
 
 There are also 7 tool coins to collect, 16 interactions to discover, a guided tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
 
 ## Dogs and cats
 
-Mochi (a Shiba) and Bean (a Border collie) share the doghouse; Mango (an orange tabby) and Sesame (a tuxedo cat) own the cat tree. They wander Home Base on their own, nap, eat, groom, get the zoomies and come over to say hi.
+Mochi (a Shiba) and Bean (a Border collie) share the doghouse; Mango (an orange tabby) and Sesame (a tuxedo cat) own the cat tree. They wander the town square on their own, nap, eat, groom, get the zoomies and come over to say hi.
 
 - Walk up to one and press `E` to pet it. Cats only put up with so many pets in a row.
 - Press `F` to ask a dog for a trick (spin, high five, roll over, play bow) or to toss a ball of yarn for a cat to pounce on.
@@ -29,16 +31,16 @@ Mochi (a Shiba) and Bean (a Border collie) share the doghouse; Mango (an orange 
 
 ## Live local time and weather
 
-The island follows each visitor's own day:
+The town follows each visitor's own day:
 
 - **Date and time** come from the visitor's clock and are shown in the weather card at the top.
 - **Sky** switches automatically between day, sunset and night, using the real sunrise and sunset times for the visitor's area once the weather has loaded. The sun button (`N`) can override it.
-- **Weather** comes from [Open-Meteo](https://open-meteo.com/), is shown in degrees Celsius and refreshes every 15 minutes. Rain, snow, fog, overcast skies, wind and thunderstorms all show up on the island, and Henry opens an umbrella when it rains.
+- **Weather** comes from [Open-Meteo](https://open-meteo.com/), is shown in degrees Celsius and refreshes every 15 minutes. Rain, snow, fog, overcast skies, wind and thunderstorms all show up in town, windows and street lamps light up after dark, and Henry opens an umbrella when it rains.
 - Clicking the weather card previews clear sky, rain, snow and a thunderstorm, then returns to live weather.
 
-**Privacy:** the approximate area is looked up from the visitor's IP address with [GeoJS](https://www.geojs.io/) (fallback: [ipwho.is](https://ipwho.is/)). The pin button asks the browser for a precise location instead, and its place name comes from [BigDataCloud](https://www.bigdatacloud.com/). The location is only cached in the visitor's own browser for six hours and is not sent to analytics. If any of these services are unreachable, the island still works and simply shows the local time.
+**Privacy:** the approximate area is looked up from the visitor's IP address with [GeoJS](https://www.geojs.io/) (fallback: [ipwho.is](https://ipwho.is/)). The pin button asks the browser for a precise location instead, and its place name comes from [BigDataCloud](https://www.bigdatacloud.com/). The location is only cached in the visitor's own browser for six hours and is not sent to analytics. If any of these services are unreachable, the town still works and simply shows the local time.
 
-**Analytics:** the site uses [Google Analytics 4](https://marketingplatform.google.com/about/analytics/) to count visits and see which case studies and features people use (for example opening a case study, Quick view, the guided tour and island interactions). It collects no names, emails or precise locations. You can block it with any content blocker or by opting out with the [Google Analytics opt-out add-on](https://tools.google.com/dlpage/gaoptout).
+**Analytics:** the site uses [Google Analytics 4](https://marketingplatform.google.com/about/analytics/) to count visits and see which case studies and features people use (for example opening a case study, Quick view, the guided tour and town interactions). It collects no names, emails or precise locations. You can block it with any content blocker or by opting out with the [Google Analytics opt-out add-on](https://tools.google.com/dlpage/gaoptout).
 
 ## Controls
 
