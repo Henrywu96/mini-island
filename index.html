@@ -483,6 +483,9 @@ const QUEST = {
 const SIDE = {
   emberline: { title: 'Emberline Coffee', desc: 'A cinematic coffee product landing page crafted around brand storytelling and an immersive browsing experience.', tags: ['Web Design', 'UI Design', 'Branding'], url: 'https://henrywu96.github.io/emberline-landing/' },
   jobtracker: { title: 'Job Tracking Web App', desc: 'A focused workspace for organizing job applications and keeping every opportunity moving forward.', tags: ['Web App', 'UX UI', 'Development'], url: 'https://mern-project-job.onrender.com/landing' },
+  edmontonlrt: { title: 'Edmonton LRT Live', desc: 'An interactive Edmonton LRT map with tiny 3D trains across the Capital, Metro and Valley lines, driven by ETS schedules.', tags: ['Transit', 'Three.js', 'React'], url: 'https://henrywu96.github.io/edmonton-lrt-live/' },
+  arcline: { title: 'Arcline One', desc: 'A cinematic electric-vehicle landing page with a 3D car configurator, paint options and range calculator.', tags: ['Web Design', 'EV', '3D Interaction'], url: 'https://henrywu96.github.io/arcline-landing/' },
+  stackyard: { title: 'Stackyard Warehouse Ops', desc: 'A live-feeling 3D warehouse dashboard with automated vehicles, pallet racks and simulated fulfillment tasks.', tags: ['3D Dashboard', 'Simulation', 'Operations'], url: 'https://henrywu96.github.io/stackyard-warehouse-ops/' },
 };
 const SKILLS = [
   ['UX Research', '<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/>'],
@@ -508,6 +511,9 @@ const GLYPH_SVG = {
   star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/>',
   cup: '<path d="M4 9h12v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 3c-.8 1 .8 2 0 3M12 3c-.8 1 .8 2 0 3"/>',
   board: '<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M9 4v16M15 4v16"/><path d="M5 8h2M11 8h2M17 8h2M5 11h2M11 11h2"/>',
+  train: '<rect x="4" y="5" width="16" height="14" rx="4"/><path d="M8 5V2h8v3M4 12h16M7 22l3-3M17 22l-3-3M8 9h2M14 9h2"/>',
+  car: '<path d="M5 16 3 13l2-5h14l2 5-2 3H5z"/><path d="m7 8 2-4h6l2 4M6 16v3M18 16v3M7 13h2M15 13h2"/>',
+  warehouse: '<path d="M3 21V8l9-5 9 5v13M3 10h18M7 21v-8h10v8M7 17h10M11 13v8"/>',
 };
 
 /* ================= world layout ================= */
@@ -519,15 +525,19 @@ const ISLANDS = [
   { id: 'studyflow', x: 21, z: -9, r: 6, depth: 6 },
   { id: 'grove', x: -17, z: 15, r: 5.6, depth: 5.5 },
   { id: 'workshop', x: 17, z: 15, r: 5.6, depth: 5.5 },
+  { id: 'studio', x: 0, z: 31, r: 7, depth: 6.5 },
 ];
 const ISL = Object.fromEntries(ISLANDS.map(i => [i.id, i]));
-const LINKS = [['hub', 'bridgly'], ['hub', 'greenpath'], ['hub', 'studyflow'], ['hub', 'grove'], ['hub', 'workshop'], ['bridgly', 'lookout']];
+const LINKS = [['hub', 'bridgly'], ['hub', 'greenpath'], ['hub', 'studyflow'], ['hub', 'grove'], ['hub', 'workshop'], ['bridgly', 'lookout'], ['grove', 'studio'], ['workshop', 'studio']];
 const STATIONS = [
   { id: 'bridgly', island: 'bridgly', x: 0, z: -23.4, kind: 'quest', name: 'Bridgly', tag: 'Legendary', color: '#e6a400', icon: 'img/bridgly.webp', verb: 'Accept quest', radius: 2.8, iy: 2.75, col: .95 },
   { id: 'greenpath', island: 'greenpath', x: -21.3, z: -9.3, kind: 'quest', name: 'GreenPath', tag: 'Epic', color: '#8b5cf6', icon: 'img/greenpath.webp', verb: 'Accept quest', radius: 2.8, iy: 2.75, col: .95 },
   { id: 'studyflow', island: 'studyflow', x: 21.3, z: -9.3, kind: 'quest', name: 'StudyFlow', tag: 'Rare', color: '#3b82f6', icon: 'img/studyflow.webp', verb: 'Accept quest', radius: 2.8, iy: 2.75, col: .95 },
   { id: 'emberline', island: 'workshop', x: 15.1, z: 17.2, kind: 'side', name: 'Emberline Coffee', tag: 'Live site', color: '#ec6a4e', glyph: 'cup', verb: 'Visit booth', radius: 2.5, iy: 2.9, col: .95 },
   { id: 'jobtracker', island: 'workshop', x: 19.6, z: 13.4, kind: 'side', name: 'Job Tracker', tag: 'Live site', color: '#ec6a4e', glyph: 'board', verb: 'Visit booth', radius: 2.5, iy: 2.9, col: .85 },
+  { id: 'edmontonlrt', island: 'studio', x: -3.7, z: 32, kind: 'side', name: 'Edmonton LRT Live', tag: 'Live site', color: '#2f6fdd', glyph: 'train', verb: 'Visit station', radius: 2.6, iy: 3.5, col: .8 },
+  { id: 'arcline', island: 'studio', x: 0, z: 27.8, kind: 'side', name: 'Arcline One', tag: 'Live site', color: '#57677d', glyph: 'car', verb: 'Explore showroom', radius: 2.6, iy: 3.5, col: .8 },
+  { id: 'stackyard', island: 'studio', x: 3.7, z: 32, kind: 'side', name: 'Stackyard Ops', tag: 'Live site', color: '#e99a34', glyph: 'warehouse', verb: 'Inspect warehouse', radius: 2.6, iy: 3.5, col: .8 },
   { id: 'skills', island: 'grove', x: -15.9, z: 13.9, kind: 'skills', name: 'Skill Tree', tag: 'Abilities', color: '#2fb67c', glyph: 'star', verb: 'Inspect the tree', radius: 2.8, iy: 2.1, col: 0 },
   { id: 'about', island: 'hub', x: -3.6, z: -4.4, kind: 'about', name: 'Character Sheet', tag: 'About me', color: '#ec6a4e', glyph: 'person', verb: 'Read', radius: 2.5, iy: 2.4, col: 1.0 },
   { id: 'contact', island: 'hub', x: 3.6, z: -4.4, kind: 'contact', name: 'Get in Touch', tag: 'Contact', color: '#3b82f6', glyph: 'mail', verb: 'Open mailbox', radius: 2.3, iy: 2.4, col: .45 },
@@ -607,7 +617,7 @@ function jitter(geo, amt, h) {
   p.needsUpdate = true;
 }
 // each former island is now a town square (cobblestone) or a park (grass) at street level
-const DISTRICT = { hub: 'plaza', studyflow: 'plaza', workshop: 'plaza', bridgly: 'park', greenpath: 'park', grove: 'park', lookout: 'park' };
+const DISTRICT = { hub: 'plaza', studyflow: 'plaza', workshop: 'plaza', studio: 'plaza', bridgly: 'park', greenpath: 'park', grove: 'park', lookout: 'park' };
 const cobbleImg = canvasTex(256, 256, (c, w, h) => {
   c.fillStyle = '#bba891'; c.fillRect(0, 0, w, h);
   const rows = 8, rh = h / rows;
@@ -809,9 +819,9 @@ let tn = 0, fn = 0; const dummy = new THREE.Object3D();
 /* ---- hub ---- */
 function signpost() {
   const g = new THREE.Group(); g.position.set(0, 0, 1.2); scene.add(g);
-  put(g, new THREE.CylinderGeometry(.09, .1, 2.7, 8), mat.wood2, 0, 1.35, 0);
-  put(g, new THREE.SphereGeometry(.14, 10, 8), mat.coral, 0, 2.75, 0);
-  const dests = [['bridgly', 'Bridgly'], ['studyflow', 'StudyFlow'], ['greenpath', 'GreenPath'], ['workshop', 'Side Quests'], ['grove', 'Skill Tree']];
+  put(g, new THREE.CylinderGeometry(.09, .1, 3.35, 8), mat.wood2, 0, 1.675, 0);
+  put(g, new THREE.SphereGeometry(.14, 10, 8), mat.coral, 0, 3.45, 0);
+  const dests = [['bridgly', 'Bridgly'], ['studyflow', 'StudyFlow'], ['greenpath', 'GreenPath'], ['workshop', 'Market'], ['grove', 'Skill Tree'], ['studio', 'Live Demos']];
   dests.forEach(([id, label], i) => {
     const is = ISL[id], dx = is.x, dz = is.z - 1.2, d = Math.hypot(dx, dz), ux = dx / d, uz = dz / d;
     const face = (txt, flip) => canvasTex(320, 64, (c, w, h) => {
@@ -819,7 +829,7 @@ function signpost() {
       c.fillText(flip ? `‹  ${txt}` : `${txt}  ›`, w / 2, h / 2 + 2);
     });
     const mats = [mat.wood, mat.wood, mat.wood, mat.wood, new THREE.MeshStandardMaterial({ map: face(label, false), roughness: .8 }), new THREE.MeshStandardMaterial({ map: face(label, true), roughness: .8 })];
-    const b = mesh(new THREE.BoxGeometry(1.55, .3, .06), mats); b.position.set(ux * .82, 2.3 - i * .36, uz * .82); b.rotation.y = Math.atan2(-uz, ux); g.add(b);
+    const b = mesh(new THREE.BoxGeometry(1.55, .3, .06), mats); b.position.set(ux * .82, 2.9 - i * .35, uz * .82); b.rotation.y = Math.atan2(-uz, ux); g.add(b);
   });
 }
 signpost();
@@ -1006,13 +1016,86 @@ function drawBoard() {
   board.position.set(0, 1.45, 0); board.rotation.x = -.1; g.add(board);
 })();
 
+
+/* ---- Live Demos District: three handmade low-poly project miniatures ---- */
+function demoSign(group, title, y, width = 2.5) {
+  const tex = canvasTex(512, 120, (c, w, h) => {
+    c.fillStyle = '#fffaf4'; rrPath(c, 0, 0, w, h, 16); c.fill();
+    c.fillStyle = '#26334b'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.font = '700 55px ' + FONT; c.fillText(title, w / 2, h / 2 + 3, w - 36);
+  });
+  const board = new THREE.Mesh(new THREE.PlaneGeometry(width, .56), new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide, toneMapped: false }));
+  board.position.set(0, y, -1.26); group.add(board);
+}
+function createLiveDemoMiniatures() {
+  // Edmonton LRT: tiny blue, red and green trains on three tracks.
+  {
+    const g = new THREE.Group(); g.position.set(-3.7, .02, 32); scene.add(g);
+    const concrete = M('#dbe3eb'), steel = M('#6f7886', { metalness: .3, roughness: .6 });
+    put(g, new THREE.BoxGeometry(3, .14, 2.8), concrete, 0, .08, 0);
+    [['#2f6fdd', -.8], ['#e0393e', 0], ['#2fa35f', .8]].forEach(([col, x]) => {
+      const paint = M(col, { roughness: .5 });
+      for (const rx of [-.27, .27]) put(g, new THREE.BoxGeometry(.055, .035, 2.2), steel, x + rx, .19, -.06);
+      put(g, new THREE.BoxGeometry(.53, .47, 1.25), paint, x, .48, -.02);
+      put(g, new THREE.BoxGeometry(.55, .12, 1.18), M('#f5fafc'), x, .76, -.02);
+      put(g, new THREE.BoxGeometry(.4, .22, .025), M('#cce9f6'), x, .5, -.66);
+      put(g, new THREE.BoxGeometry(.3, .06, .025), M('#ffecaa'), x, .29, -.68);
+    });
+    for (const x of [-1.37, 1.37]) put(g, new THREE.BoxGeometry(.085, 2.05, .085), steel, x, 1.15, 1.08);
+    put(g, new THREE.BoxGeometry(3, .12, .95), M('#28445f'), 0, 2.2, .75);
+    demoSign(g, 'EDMONTON LRT', 2.14, 2.65);
+  }
+  // Arcline One: electric car with headlights, wheels and showroom arch.
+  {
+    const g = new THREE.Group(); g.position.set(0, .02, 27.8); scene.add(g);
+    const graphite = M('#303c4e', { metalness: .35, roughness: .3 });
+    const silver = M('#cbd7df', { metalness: .55, roughness: .26 });
+    put(g, new THREE.CylinderGeometry(1.45, 1.45, .17, 32), M('#e9edf1'), 0, .1, 0);
+    put(g, new THREE.TorusGeometry(1.35, .075, 10, 56, Math.PI), M('#5c6f89', { metalness: .6 }), 0, 1.02, .75);
+    put(g, new THREE.BoxGeometry(1.8, .36, .97), silver, 0, .57, -.18);
+    put(g, new THREE.BoxGeometry(1.05, .35, .8), M('#87b8c9'), 0, .92, -.14);
+    put(g, new THREE.BoxGeometry(1.82, .1, 1.02), graphite, 0, .4, -.18);
+    for (const x of [-.91, .91]) for (const z of [-.55, .2]) {
+      const wheel = put(g, new THREE.CylinderGeometry(.24, .24, .12, 16), graphite, x, .37, z);
+      wheel.rotation.z = Math.PI / 2;
+      const hub = put(g, new THREE.CylinderGeometry(.1, .1, .125, 12), silver, x * 1.005, .37, z);
+      hub.rotation.z = Math.PI / 2;
+    }
+    put(g, new THREE.BoxGeometry(1.5, .055, .025), M('#d6f4ff', { emissive: '#84ddff', emissiveIntensity: .6 }), 0, .68, -.68);
+    demoSign(g, 'ARCLINE ONE', 2.55, 2.35);
+  }
+  // Stackyard: blue warehouse racks, pallets and a small orange AGV.
+  {
+    const g = new THREE.Group(); g.position.set(3.7, .02, 32); scene.add(g);
+    const steel = M('#346aa0', { metalness: .22, roughness: .6 });
+    const orange = M('#eda844'), box = M('#c69c69');
+    put(g, new THREE.BoxGeometry(3, .13, 2.75), M('#dbe3e4'), 0, .08, 0);
+    for (const x of [-1.2, 1.2]) for (const z of [.22, 1.02]) put(g, new THREE.BoxGeometry(.11, 2.35, .1), steel, x, 1.37, z);
+    for (const y of [.45, 1.17, 1.91]) {
+      put(g, new THREE.BoxGeometry(2.57, .1, .92), steel, 0, y, .62);
+      for (const x of [-.79, 0, .79]) put(g, new THREE.BoxGeometry(.54, .43, .58), x === 0 ? orange : box, x, y + .27, .62);
+    }
+    const agv = new THREE.Group(); agv.position.set(0, .15, -.73); g.add(agv);
+    put(agv, new THREE.BoxGeometry(.84, .34, .55), orange, 0, .31, .08);
+    put(agv, new THREE.BoxGeometry(.55, .34, .42), M('#455b70'), 0, .64, .1);
+    for (const x of [-.43, .43]) for (const z of [-.12, .28]) {
+      const wheel = put(agv, new THREE.CylinderGeometry(.12, .12, .11, 10), M('#344156'), x, .14, z);
+      wheel.rotation.z = Math.PI / 2;
+    }
+    for (const x of [-.23, .23]) put(agv, new THREE.BoxGeometry(.085, .06, .8), M('#738397'), x, .2, -.63);
+    put(agv, new THREE.BoxGeometry(.09, .95, .08), M('#344c68'), 0, .76, -.36);
+    demoSign(g, 'STACKYARD', 2.82, 2.4);
+  }
+}
+createLiveDemoMiniatures();
+
 /* ---- trees, rocks, tufts, flowers ---- */
 function planter(x, z) {
   put(scene, new THREE.CylinderGeometry(.62, .66, .24, 22), mat.curb, x, .12, z);
   put(scene, new THREE.CylinderGeometry(.54, .54, .02, 22), M('#8a6a4a'), x, .245, z, false);
   colliders.push({ x, z, r: .62 });
 }
-[['hub', 5, 'leaf'], ['bridgly', 5, 'blossom'], ['greenpath', 7, 'leaf'], ['studyflow', 3, 'leaf'], ['grove', 3, 'leaf'], ['workshop', 3, 'leaf'], ['lookout', 0, 'leaf']].forEach(([id, n, kind]) => {
+[['hub', 5, 'leaf'], ['bridgly', 5, 'blossom'], ['greenpath', 7, 'leaf'], ['studyflow', 3, 'leaf'], ['grove', 3, 'leaf'], ['workshop', 3, 'leaf'], ['studio', 0, 'leaf'], ['lookout', 0, 'leaf']].forEach(([id, n, kind]) => {
   const is = ISL[id], plaza = DISTRICT[id] === 'plaza';
   for (let i = 0; i < n; i++) { const p = freeSpot(is, 1.0, 1.8); if (p) { tree(p.x, p.z, .8 + srand() * .55, kind); if (plaza) planter(p.x, p.z); } }
   if (!plaza) for (let i = 0; i < Math.round(is.r * 1.2); i++) { const p = freeSpot(is, .5, 1.4); if (!p) continue; const r = put(scene, G.rock, mat.rock, p.x, .1, p.z); r.scale.setScalar(.5 + srand() * .9); r.rotation.set(srand() * 3, srand() * 3, 0); }
@@ -1261,6 +1344,9 @@ function glyphTex(kind, color) {
     if (kind === 'star') { c.beginPath(); for (let i = 0; i < 10; i++) { const r = i % 2 ? 14 : 32, a = -Math.PI / 2 + i * Math.PI / 5; c.lineTo(64 + Math.cos(a) * r, 66 + Math.sin(a) * r); } c.closePath(); c.fill(); }
     if (kind === 'cup') { rrPath(c, 34, 54, 46, 38, 10); c.stroke(); c.beginPath(); c.arc(82, 72, 10, -Math.PI / 2, Math.PI / 2); c.stroke(); c.lineWidth = 6; for (const sx of [48, 64]) { c.beginPath(); c.moveTo(sx, 46); c.quadraticCurveTo(sx - 6, 38, sx, 32); c.quadraticCurveTo(sx + 6, 26, sx, 20); c.stroke(); } }
     if (kind === 'board') { rrPath(c, 28, 32, 72, 64, 10); c.stroke(); c.lineWidth = 6; for (const lx of [52, 76]) { c.beginPath(); c.moveTo(lx, 38); c.lineTo(lx, 90); c.stroke(); } c.fillRect(34, 44, 12, 9); c.fillRect(34, 59, 12, 9); c.fillRect(58, 44, 12, 9); c.fillRect(82, 44, 12, 9); }
+    if (kind === 'train') { rrPath(c, 32, 28, 64, 64, 12); c.stroke(); c.beginPath(); c.moveTo(32, 55); c.lineTo(96, 55); c.stroke(); for (const sx of [48, 80]) { c.beginPath(); c.arc(sx, 71, 5, 0, 7); c.fill(); } c.beginPath(); c.moveTo(44, 96); c.lineTo(34, 106); c.moveTo(84, 96); c.lineTo(94, 106); c.stroke(); }
+    if (kind === 'car') { c.beginPath(); c.moveTo(24, 78); c.lineTo(30, 57); c.lineTo(42, 50); c.lineTo(52, 35); c.lineTo(80, 35); c.lineTo(91, 50); c.lineTo(100, 57); c.lineTo(104, 78); c.closePath(); c.stroke(); c.beginPath(); c.moveTo(34, 56); c.lineTo(94, 56); c.stroke(); for (const sx of [36, 92]) { c.beginPath(); c.arc(sx, 83, 7, 0, 7); c.fill(); } }
+    if (kind === 'warehouse') { c.beginPath(); c.moveTo(25, 100); c.lineTo(25, 48); c.lineTo(64, 27); c.lineTo(103, 48); c.lineTo(103, 100); c.stroke(); c.strokeRect(42, 63, 44, 37); c.beginPath(); c.moveTo(42, 76); c.lineTo(86, 76); c.moveTo(42, 89); c.lineTo(86, 89); c.stroke(); }
   });
 }
 const loader = new THREE.TextureLoader();
@@ -1647,7 +1733,7 @@ function quickHTML() {
       <h3>${esc(st.name)}</h3><p>${esc(q.lede)}</p>${tldrHTML(q)}
       <div class="p-actions"><a class="btn primary" href="${SITE}" target="_blank" rel="noopener">Full case study ↗</a><button class="btn" data-go="${id}">Show in town</button></div></div></article>`;
   }).join('');
-  const side = ['emberline', 'jobtracker'].map(id => { const s = SIDE[id]; return `<a href="${s.url}" target="_blank" rel="noopener"><span class="rar r-live">Live site ↗</span><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p></a>`; }).join('');
+  const side = ['emberline', 'jobtracker', 'edmontonlrt', 'arcline', 'stackyard'].map(id => { const s = SIDE[id]; return `<a href="${s.url}" target="_blank" rel="noopener"><span class="rar r-live">Live site ↗</span><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p></a>`; }).join('');
   return `<div class="q-wrap">
     <div class="q-bar"><span class="eyebrow" style="margin:0">Quick view</span><button class="btn" data-back>← Back to town</button></div>
     <section class="q-hero card"><img src="img/henry.webp" alt="Illustrated Henry Wu"><div>
@@ -1655,7 +1741,7 @@ function quickHTML() {
       <p>UI/UX Design · Web Design · Web Development. Crafting simple, engaging, and code-ready digital experiences.</p>
       <div class="p-actions"><a class="btn primary" href="${LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a><a class="btn" href="${SITE}" target="_blank" rel="noopener">henrywu.link ↗</a></div></div></section>
     <section class="q-sec card"><h2>Case studies</h2><div class="q-cards">${cases}</div></section>
-    <section class="q-sec card"><h2>Side projects</h2><div class="q-side">${side}</div></section>
+    <section class="q-sec card"><h2>Live projects</h2><div class="q-side">${side}</div></section>
     <div class="q-two">
       <section class="q-sec card"><h2>Skills</h2><ul class="skills">${SKILLS.map(([n, svg]) => `<li>${svgIcon(svg)}${esc(n)}</li>`).join('')}</ul><div class="eyebrow">Tools</div><p style="margin:0;color:var(--slate)">Figma, Framer, FigJam, Notion, Maze, Lottie, Spline</p></section>
       <section class="q-sec card"><h2>About</h2><p class="headline">UI/UX Designer. Hamster Lover. Problem Solver.</p><p style="margin:0;color:var(--slate)">I'm Henry Wu, a UI/UX designer who crafts meaningful digital experiences with empathy and curiosity. When I'm not designing, you'll find me hanging out with my hamster, gaming, or working out.</p></section>
@@ -2055,7 +2141,7 @@ renderer.domElement.addEventListener('wheel', e => { e.preventDefault(); camDist
 
 /* ================= minimap ================= */
 const mm = $('#mm'), mg = mm.getContext('2d');
-const MM = { cx: 0, cz: -5, s: 320 / 66 };
+const MM = { cx: 0, cz: 1, s: 320 / 84 };
 const toMM = (x, z) => [160 + (x - MM.cx) * MM.s, 160 + (z - MM.cz) * MM.s];
 function drawMinimap() {
   if (!mm.offsetParent) return;
