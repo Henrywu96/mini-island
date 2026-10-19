@@ -11,13 +11,14 @@ Walk anywhere on the streets, squares and lawns. Only the houses, trees and the 
 | Place | What you find |
 | --- | --- |
 | Bridgly Garden | Featured case study (Legendary) in a blossom park. Send a hug to the cottage down the lane. |
-| GreenPath Garden | Case study (Epic) by the windmill. Log a green action and watch a tree grow. |
-| StudyFlow Square | Case study (Rare). Turn the hourglass to start a focus session. |
+| LRT Station Park | Edmonton LRT Live: a loop of track, a live map board and a two-car train. Press `F` to dispatch it. |
+| Stackyard Yard | Stackyard Ops: warehouse racks, a delivery van and an AGV that picks and ships an order when you press `F`. |
+| Arcline Showroom | Arcline One on a turntable. Press `F` to change the paint. |
 | Market Square | Side quests: Emberline Coffee and the Job Tracking Web App, both linked to their live sites. Brew a coffee, move a job card. |
 | Skill Tree Park | Six UX abilities hanging from the tree. Shake it. |
 | Town Square | About me, contact, a hamster wheel, a beach ball, and two dogs and two cats who live there. Ducks paddle on the pond just south of it. |
 
-There are also 7 tool coins to collect, 16 interactions to discover, a guided tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
+There are also 7 tool coins to collect, 17 interactions to discover, a guided tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
 
 ## Dogs and cats
 

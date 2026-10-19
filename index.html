@@ -13,11 +13,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Henry Wu · Quest Town | UI/UX Portfolio</title>
-<meta name="description" content="Henry Wu's UI/UX design portfolio as a playable 3D storybook town that follows your local time and weather: case studies (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
+<meta name="description" content="Henry Wu's UI/UX design portfolio as a playable 3D storybook town that follows your local time and weather: a Bridgly case study, side projects, skills and contact.">
 <meta name="theme-color" content="#cfe6fb">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Henry Wu · Quest Town">
-<meta property="og:description" content="Henry Wu's UI/UX design portfolio as a playable 3D storybook town that follows your local time and weather: case studies (Bridgly, GreenPath, StudyFlow), side projects, skills and contact.">
+<meta property="og:description" content="Henry Wu's UI/UX design portfolio as a playable 3D storybook town that follows your local time and weather: a Bridgly case study, side projects, skills and contact.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2072%22%3E%3Cpath%20d%3D%22M32%200%20L64%2010%20L64%2038%20C64%2056%2048%2066%2032%2072%20C16%2066%200%2056%200%2038%20L0%2010%20Z%22%20fill%3D%22%23202b45%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2248%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-weight%3D%22700%22%20font-size%3D%2234%22%20fill%3D%22%23ffd166%22%3EH%3C/text%3E%3C/svg%3E">
 <style>[hidden]{display:none!important}img{max-width:100%}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -498,7 +498,7 @@ const SKILLS = [
 const TOOLS = [
   { n: 'Figma', a: 'Fi', c: '#a259ff', at: [5.4, 3.2] },
   { n: 'Framer', a: 'Fr', c: '#1f6bff', at: [8.6, -26.7] },
-  { n: 'FigJam', a: 'FJ', c: '#f2683a', at: [-23.4, -5.2] },
+  { n: 'FigJam', a: 'FJ', c: '#f2683a', at: [-25.7, -6.5] },
   { n: 'Notion', a: 'N', c: '#2f3437', at: [23.4, -5.2] },
   { n: 'Maze', a: 'Mz', c: '#ff8a2a', at: [-19.6, 17.6] },
   { n: 'Lottie', a: 'Lo', c: '#14b8a6', at: [18.8, 18.5] },
@@ -521,31 +521,35 @@ const ISLANDS = [
   { id: 'hub', x: 0, z: 0, r: 8.5, depth: 7.5 },
   { id: 'bridgly', x: 0, z: -23, r: 6.2, depth: 6.5 },
   { id: 'lookout', x: 9.2, z: -27.2, r: 2.4, depth: 3 },
-  { id: 'greenpath', x: -21, z: -9, r: 6, depth: 6 },
-  { id: 'studyflow', x: 21, z: -9, r: 6, depth: 6 },
+  { id: 'transit', x: -21, z: -9, r: 6, depth: 6 },
+  { id: 'yard', x: 21, z: -9, r: 6, depth: 6 },
   { id: 'grove', x: -17, z: 15, r: 5.6, depth: 5.5 },
   { id: 'workshop', x: 17, z: 15, r: 5.6, depth: 5.5 },
   { id: 'studio', x: 0, z: 31, r: 7, depth: 6.5 },
 ];
 const ISL = Object.fromEntries(ISLANDS.map(i => [i.id, i]));
-const LINKS = [['hub', 'bridgly'], ['hub', 'greenpath'], ['hub', 'studyflow'], ['hub', 'grove'], ['hub', 'workshop'], ['bridgly', 'lookout'], ['grove', 'studio'], ['workshop', 'studio']];
+const LINKS = [['hub', 'bridgly'], ['hub', 'transit'], ['hub', 'yard'], ['hub', 'grove'], ['hub', 'workshop'], ['bridgly', 'lookout'], ['grove', 'studio'], ['workshop', 'studio']];
 const STATIONS = [
   { id: 'bridgly', island: 'bridgly', x: 0, z: -23.4, kind: 'quest', name: 'Bridgly', tag: 'Legendary', color: '#e6a400', icon: 'img/bridgly.webp', verb: 'Accept quest', radius: 2.8, iy: 2.75, col: .95 },
   { id: 'greenpath', island: 'greenpath', x: -21.3, z: -9.3, kind: 'quest', name: 'GreenPath', tag: 'Epic', color: '#8b5cf6', icon: 'img/greenpath.webp', verb: 'Accept quest', radius: 2.8, iy: 2.75, col: .95 },
   { id: 'studyflow', island: 'studyflow', x: 21.3, z: -9.3, kind: 'quest', name: 'StudyFlow', tag: 'Rare', color: '#3b82f6', icon: 'img/studyflow.webp', verb: 'Accept quest', radius: 2.8, iy: 2.75, col: .95 },
+  { id: 'edmontonlrt', island: 'transit', x: -21, z: -9, kind: 'side', name: 'Edmonton LRT Live', tag: 'Live site', color: '#2f6fdd', glyph: 'train', verb: 'Visit station', radius: 2.6, iy: 3.05, col: .6 },
+  { id: 'skills', island: 'grove', x: -15.9, z: 13.9, kind: 'skills', name: 'Skill Tree', tag: 'Abilities', color: '#2fb67c', glyph: 'star', verb: 'Inspect the tree', radius: 2.8, iy: 2.1, col: 0 },
+  { id: 'arcline', island: 'studio', x: 0, z: 31.2, kind: 'side', name: 'Arcline One', tag: 'Live site', color: '#57677d', glyph: 'car', verb: 'Explore showroom', radius: 3.7, iy: 4.85, col: 2.4 },
   { id: 'emberline', island: 'workshop', x: 15.1, z: 17.2, kind: 'side', name: 'Emberline Coffee', tag: 'Live site', color: '#ec6a4e', glyph: 'cup', verb: 'Visit booth', radius: 2.5, iy: 2.9, col: .95 },
   { id: 'jobtracker', island: 'workshop', x: 19.6, z: 13.4, kind: 'side', name: 'Job Tracker', tag: 'Live site', color: '#ec6a4e', glyph: 'board', verb: 'Visit booth', radius: 2.5, iy: 2.9, col: .85 },
-  { id: 'edmontonlrt', island: 'studio', x: -3.7, z: 32, kind: 'side', name: 'Edmonton LRT Live', tag: 'Live site', color: '#2f6fdd', glyph: 'train', verb: 'Visit station', radius: 2.6, iy: 3.5, col: .8 },
-  { id: 'arcline', island: 'studio', x: 0, z: 27.8, kind: 'side', name: 'Arcline One', tag: 'Live site', color: '#57677d', glyph: 'car', verb: 'Explore showroom', radius: 2.6, iy: 3.5, col: .8 },
-  { id: 'stackyard', island: 'studio', x: 3.7, z: 32, kind: 'side', name: 'Stackyard Ops', tag: 'Live site', color: '#e99a34', glyph: 'warehouse', verb: 'Inspect warehouse', radius: 2.6, iy: 3.5, col: .8 },
-  { id: 'skills', island: 'grove', x: -15.9, z: 13.9, kind: 'skills', name: 'Skill Tree', tag: 'Abilities', color: '#2fb67c', glyph: 'star', verb: 'Inspect the tree', radius: 2.8, iy: 2.1, col: 0 },
+  { id: 'stackyard', island: 'yard', x: 19.3, z: -9.5, kind: 'side', name: 'Stackyard Ops', tag: 'Live site', color: '#e99a34', glyph: 'warehouse', verb: 'Inspect warehouse', radius: 2.5, iy: 2.35, col: .5 },
   { id: 'about', island: 'hub', x: -3.6, z: -4.4, kind: 'about', name: 'Character Sheet', tag: 'About me', color: '#ec6a4e', glyph: 'person', verb: 'Read', radius: 2.5, iy: 2.4, col: 1.0 },
   { id: 'contact', island: 'hub', x: 3.6, z: -4.4, kind: 'contact', name: 'Get in Touch', tag: 'Contact', color: '#3b82f6', glyph: 'mail', verb: 'Open mailbox', radius: 2.3, iy: 2.4, col: .45 },
 ];
+/* Hidden for now: GreenPath and StudyFlow case studies. Their old squares became the LRT park and the
+   Stackyard yard, so bringing them back means giving each one a square again before removing it here. */
+const HIDDEN = new Set(['greenpath', 'studyflow']);
+for (let i = STATIONS.length - 1; i >= 0; i--) if (HIDDEN.has(STATIONS[i].id)) STATIONS.splice(i, 1);
 const SBY = Object.fromEntries(STATIONS.map(s => [s.id, s]));
 const ORDER = STATIONS.map(s => s.id);
 const colliders = STATIONS.filter(s => s.col).map(s => ({ x: s.x, z: s.z, r: s.col }));
-const keepouts = STATIONS.map(s => ({ x: s.x, z: s.z, r: 2.1 })).concat(TOOLS.map(t => ({ x: t.at[0], z: t.at[1], r: 1.1 })), [[24, -12.3], [-19, -12.6], [0, -26.3], [-2.2, -6.6], [5.6, .9], [-5.6, .9], [20.2, 16.9], [-2.8, 3.2]].map(([x, z]) => ({ x, z, r: 2 })));
+const keepouts = STATIONS.map(s => ({ x: s.x, z: s.z, r: 2.1 })).concat(TOOLS.map(t => ({ x: t.at[0], z: t.at[1], r: 1.1 })), [[0, -26.3], [-2.2, -6.6], [5.6, .9], [-5.6, .9], [20.2, 16.9], [-2.8, 3.2]].map(([x, z]) => ({ x, z, r: 2 })));
 
 /* ================= renderer, scene ================= */
 const stage = $('#stage');
@@ -617,7 +621,7 @@ function jitter(geo, amt, h) {
   p.needsUpdate = true;
 }
 // each former island is now a town square (cobblestone) or a park (grass) at street level
-const DISTRICT = { hub: 'plaza', studyflow: 'plaza', workshop: 'plaza', studio: 'plaza', bridgly: 'park', greenpath: 'park', grove: 'park', lookout: 'park' };
+const DISTRICT = { hub: 'plaza', yard: 'plaza', workshop: 'plaza', studio: 'plaza', bridgly: 'park', transit: 'park', grove: 'park', lookout: 'park' };
 const cobbleImg = canvasTex(256, 256, (c, w, h) => {
   c.fillStyle = '#bba891'; c.fillRect(0, 0, w, h);
   const rows = 8, rh = h / rows;
@@ -804,6 +808,9 @@ function freeSpot(is, margin = .8, clear = 1.6) {
     let ok = true;
     for (const ax of bridgeAxesOf(is.id)) { const along = px * ax.ux + pz * ax.uz, perp = Math.abs(px * ax.uz - pz * ax.ux); if (along > -1 && perp < clear) { ok = false; break; } }
     if (ok && is.id === 'hub' && Math.hypot(x, z - 4.2) < 2) ok = false;
+    if (ok && is.id === 'transit' && d < 4.75) ok = false;
+    if (ok && is.id === 'yard' && px > -3.1 && px < 5 && pz > -3.7 && pz < 4.2) ok = false;
+    if (ok && is.id === 'studio' && Math.hypot(px, pz - .2) < 4.3) ok = false;
     if (ok) for (const k2 of keepouts) if (Math.hypot(x - k2.x, z - k2.z) < k2.r) { ok = false; break; }
     if (ok) for (const c of colliders) if (Math.hypot(x - c.x, z - c.z) < c.r + .6) { ok = false; break; }
     if (ok) return { x, z };
@@ -821,7 +828,7 @@ function signpost() {
   const g = new THREE.Group(); g.position.set(0, 0, 1.2); scene.add(g);
   put(g, new THREE.CylinderGeometry(.09, .1, 3.35, 8), mat.wood2, 0, 1.675, 0);
   put(g, new THREE.SphereGeometry(.14, 10, 8), mat.coral, 0, 3.45, 0);
-  const dests = [['bridgly', 'Bridgly'], ['studyflow', 'StudyFlow'], ['greenpath', 'GreenPath'], ['workshop', 'Market'], ['grove', 'Skill Tree'], ['studio', 'Live Demos']];
+  const dests = [['bridgly', 'Bridgly'], ['yard', 'Stackyard'], ['transit', 'LRT Station'], ['workshop', 'Market'], ['grove', 'Skill Tree'], ['studio', 'Showroom']];
   dests.forEach(([id, label], i) => {
     const is = ISL[id], dx = is.x, dz = is.z - 1.2, d = Math.hypot(dx, dz), ux = dx / d, uz = dz / d;
     const face = (txt, flip) => canvasTex(320, 64, (c, w, h) => {
@@ -915,36 +922,232 @@ bench(-2.5, -20.6, Math.PI / 2); bench(2.5, -20.6, -Math.PI / 2);
   colliders.push({ x: 10, z: -27.9, r: .75 });
 })();
 
-/* ---- GreenPath windmill ---- */
-const windBlades = (() => {
-  const x = -24, z = -12.3, g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = Math.atan2(-x, -z); scene.add(g);
-  put(g, new THREE.CylinderGeometry(.42, .78, 3.6, 10), mat.cream, 0, 1.8, 0);
-  put(g, new THREE.ConeGeometry(.64, .8, 10), mat.coral, 0, 3.98, 0);
-  put(g, new THREE.BoxGeometry(.32, .5, .05), mat.wood2, 0, .25, .66);
-  const blades = new THREE.Group(); blades.position.set(0, 3.35, .62); g.add(blades);
-  put(blades, new THREE.SphereGeometry(.14, 10, 8), mat.navy, 0, 0, 0);
-  for (let i = 0; i < 4; i++) { const arm = new THREE.Group(); arm.rotation.z = i * Math.PI / 2; blades.add(arm); put(arm, new THREE.BoxGeometry(.06, 1.75, .04), mat.wood2, 0, .95, 0); put(arm, new THREE.BoxGeometry(.32, 1.25, .02), mat.cream, .17, 1.15, .02); }
-  colliders.push({ x, z, r: .85 }); return blades;
+/* ---- Edmonton LRT park: a loop of track, a platform, a live map board and a train you can dispatch ---- */
+const TR = ISL.transit, TRACK_R = 3.9;
+const LRT_LINES = [['Capital', '#2f6fdd'], ['Metro', '#e0393e'], ['Valley', '#2fa35f']];
+const LRT_SPAN = 1.52 / TRACK_R, LRT_PARK = -Math.PI / 2 + LRT_SPAN / 2;
+for (const a of [2.35, 3.05, 3.75]) tree(TR.x + Math.cos(a) * 5.05, TR.z + Math.sin(a) * 5.05, .85, a > 3 ? 'leaf' : 'blossom');
+const LRT_MAP = [
+  ['#2f6fdd', [[236, 50], [204, 92], [162, 118], [152, 150], [142, 204]]],
+  ['#e0393e', [[86, 56], [118, 84], [150, 110], [162, 118], [152, 150], [148, 174]]],
+  ['#2fa35f', [[164, 124], [202, 142], [246, 166], [292, 200]]],
+];
+const lrt = { phi: LRT_PARK, t: 1, dur: 9, line: 0, cars: [], paints: [], idle: 9, bctx: null, btex: null, bAcc: 0 };
+(() => {
+  const g = new THREE.Group(); g.position.set(TR.x, 0, TR.z); scene.add(g); lrt.g = g;
+  // ballast ring, rails and sleepers
+  const bal = new THREE.Mesh(new THREE.RingGeometry(TRACK_R - .48, TRACK_R + .48, 112), M('#d3cabe', { roughness: 1 }));
+  bal.rotation.x = -Math.PI / 2; bal.position.y = .008; bal.receiveShadow = true; g.add(bal);
+  const sleepers = new THREE.InstancedMesh(new THREE.BoxGeometry(.66, .05, .13), mat.wood2, 56); sleepers.receiveShadow = true;
+  for (let i = 0; i < 56; i++) { const a = i / 56 * Math.PI * 2; dummy.position.set(Math.cos(a) * TRACK_R, .03, Math.sin(a) * TRACK_R); dummy.rotation.set(0, -a, 0); dummy.scale.setScalar(1); dummy.updateMatrix(); sleepers.setMatrixAt(i, dummy.matrix); }
+  g.add(sleepers);
+  const railM = M('#7d8795', { metalness: .45, roughness: .4 });
+  for (const r of [TRACK_R - .2, TRACK_R + .2]) { const rail = put(g, new THREE.TorusGeometry(r, .03, 6, 140), railM, 0, .075, 0, false); rail.rotation.x = Math.PI / 2; }
+  // platform with a canopy on the north side of the loop
+  put(g, new THREE.BoxGeometry(2.4, .26, .62), mat.stone, 0, .13, -3.0);
+  put(g, new THREE.BoxGeometry(2.4, .02, .1), M('#ffd166'), 0, .27, -3.25, false);
+  for (const sx of [-.95, .95]) put(g, new THREE.BoxGeometry(.08, 1.95, .08), mat.navy, sx, 1.23, -2.86);
+  put(g, new THREE.BoxGeometry(2.5, .09, .95), M('#28445f'), 0, 2.22, -2.98);
+  put(g, new THREE.BoxGeometry(1.0, .07, .3), mat.wood, -.35, .62, -2.85); put(g, new THREE.BoxGeometry(1.0, .3, .06), mat.wood, -.35, .8, -2.72);
+  const sign = canvasTex(512, 96, (c, w, h) => {
+    c.fillStyle = '#fffaf4'; rrPath(c, 0, 0, w, h, 14); c.fill();
+    c.fillStyle = '#26334b'; c.font = `700 46px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('EDMONTON LRT', w / 2 + 34, h / 2 + 2);
+    LRT_LINES.forEach(([, col], i) => { c.fillStyle = col; c.beginPath(); c.arc(40 + i * 26, h / 2, 10, 0, 7); c.fill(); });
+  });
+  const sp = new THREE.Mesh(new THREE.PlaneGeometry(2.2, .42), new THREE.MeshBasicMaterial({ map: sign, toneMapped: false })); sp.position.set(0, 2.5, -2.5); g.add(sp);
+  boxes.push({ x: TR.x, z: TR.z - 2.98, c: 1, s: 0, hw: 1.25, hd: .4 });
+  // live map board in the middle of the park, facing the street from the square
+  const bd = new THREE.Group(); bd.position.set(0, 0, 0); bd.rotation.y = Math.atan2(-TR.x, -TR.z); g.add(bd);
+  for (const sx of [-.62, .62]) put(bd, new THREE.BoxGeometry(.08, 1.0, .08), mat.navy, sx, .5, 0);
+  put(bd, new THREE.BoxGeometry(1.62, 1.12, .1), mat.navy, 0, 1.52, 0);
+  const cv = document.createElement('canvas'); cv.width = 320; cv.height = 220;
+  lrt.bctx = cv.getContext('2d'); lrt.btex = new THREE.CanvasTexture(cv); lrt.btex.colorSpace = THREE.SRGBColorSpace; lrt.btex.anisotropy = 4;
+  const scr = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 1.03), new THREE.MeshBasicMaterial({ map: lrt.btex, toneMapped: false })); scr.position.set(0, 1.52, .056); bd.add(scr);
+  drawLrtBoard(0);
+  // a two-car train
+  const glass = M('#3a4a63', { roughness: .25 }), win = M('#a9d6ee', { roughness: .2 }), white = M('#f5fafc'), bogie = M('#3a4258'), lampM = M('#fff3c4', { emissive: '#ffe08a', emissiveIntensity: .8 });
+  for (let k = 0; k < 2; k++) {
+    const car = new THREE.Group(); g.add(car);
+    const paint = M(LRT_LINES[0][1], { roughness: .45 }); lrt.paints.push(paint);
+    put(car, new THREE.BoxGeometry(.6, .46, 1.42), paint, 0, .46, 0);
+    put(car, new THREE.BoxGeometry(.62, .26, 1.38), white, 0, .82, 0);
+    for (const s of [-1, 1]) put(car, new THREE.BoxGeometry(.02, .17, 1.12), win, s * .316, .83, 0, false);
+    put(car, new THREE.BoxGeometry(.5, .06, 1.24), M('#e3e8ee'), 0, .98, 0);
+    for (const e of [-1, 1]) { put(car, new THREE.BoxGeometry(.5, .2, .02), glass, 0, .82, e * .7, false); for (const s of [-1, 1]) put(car, new THREE.BoxGeometry(.08, .05, .02), lampM, s * .2, .4, e * .71, false); }
+    for (const z of [-.44, .44]) put(car, new THREE.BoxGeometry(.48, .14, .34), bogie, 0, .17, z);
+    if (k === 0) { const pa = put(car, new THREE.BoxGeometry(.03, .34, .03), bogie, 0, 1.15, .1); pa.rotation.x = .6; put(car, new THREE.BoxGeometry(.36, .03, .05), bogie, 0, 1.29, .2); }
+    lrt.cars.push(car);
+  }
+  placeTrain();
 })();
+function drawLrtBoard(t) {
+  const c = lrt.bctx, w = 320, h = 220;
+  c.fillStyle = '#1f2a44'; c.fillRect(0, 0, w, h);
+  c.fillStyle = '#ffffff'; c.font = `700 22px ${FONT}`; c.textAlign = 'left'; c.textBaseline = 'middle'; c.fillText('ETS LRT', 16, 24);
+  c.fillStyle = '#2fb67c'; rrPath(c, w - 84, 11, 68, 26, 13); c.fill(); c.fillStyle = '#ffffff'; c.font = `700 14px ${FONT}`; c.fillText('● LIVE', w - 74, 25);
+  const ptAt = (pts, u) => {
+    const seg = []; let L = 0; for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(l); L += l; }
+    let d = u * L; for (let i = 0; i < seg.length; i++) { if (d <= seg[i]) { const f = d / seg[i]; return [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * f, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * f]; } d -= seg[i]; }
+    return pts[pts.length - 1];
+  };
+  c.lineCap = 'round'; c.lineJoin = 'round';
+  for (const [col, pts] of LRT_MAP) { c.strokeStyle = col; c.lineWidth = 8; c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); c.stroke(); }
+  for (const [, pts] of LRT_MAP) for (const [x, y] of pts) { c.fillStyle = '#ffffff'; c.beginPath(); c.arc(x, y, 4, 0, 7); c.fill(); }
+  LRT_MAP.forEach(([col, pts], li) => {
+    for (let k = 0; k < 2; k++) {
+      const s = (t * .045 + k * .5 + li * .23) % 1, u = s < .5 ? s * 2 : 2 - s * 2, [x, y] = ptAt(pts, u);
+      c.fillStyle = '#ffffff'; c.beginPath(); c.arc(x, y, 8, 0, 7); c.fill(); c.fillStyle = col; c.beginPath(); c.arc(x, y, 4.5, 0, 7); c.fill();
+    }
+  });
+  if (lrt.btex) lrt.btex.needsUpdate = true;
+}
+function placeTrain() {
+  lrt.cars.forEach((car, k) => {
+    const a = lrt.phi - k * LRT_SPAN;
+    car.position.set(Math.cos(a) * TRACK_R, .06, Math.sin(a) * TRACK_R);
+    car.rotation.y = Math.atan2(-Math.sin(a), Math.cos(a));
+  });
+}
+function updateLRT(dt, t) {
+  if (lrt.t < 1) {
+    lrt.t = Math.min(1, lrt.t + dt / lrt.dur);
+    const u = lrt.t, e = u * u * u * (u * (u * 6 - 15) + 10);
+    lrt.phi = LRT_PARK + e * Math.PI * 2; placeTrain();
+  } else if (!reduceMotion && (lrt.idle += dt) > 18) dispatchTrain(true);
+  lrt.bAcc += dt; if (lrt.bAcc > .2) { lrt.bAcc = 0; drawLrtBoard(reduceMotion ? 0 : t); }
+}
+function dispatchTrain(auto = false) {
+  if (lrt.t < 1) { if (!auto) floatText(TR.x, 3.0, TR.z - 2.9, 'Already on the line<small>It stops here again in a moment</small>', 1.8); return; }
+  lrt.line = (lrt.line + 1) % LRT_LINES.length; const [name, col] = LRT_LINES[lrt.line];
+  lrt.paints.forEach(p => p.color.set(col)); lrt.t = 0; lrt.idle = 0;
+  if (auto) return;
+  faceToward(TR.x, TR.z - 3.2, 1.4); SFX.chime();
+  floatText(TR.x, 3.1, TR.z - 2.9, `${name} Line departing<small>On the live map every train follows ETS schedules</small>`, 2.8);
+  markInteract('train');
+}
 
-/* ---- StudyFlow hourglass ---- */
-const hg = (() => {
-  const x = 24, z = -12.3, g = new THREE.Group(); g.position.set(x, 0, z); scene.add(g);
-  const inner = new THREE.Group(); inner.position.y = 1.55; g.add(inner);
-  for (const y of [-1.38, 1.38]) put(inner, new THREE.CylinderGeometry(.95, .95, .14, 24), mat.wood, 0, y, 0);
-  for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI * 2 + .5; put(inner, new THREE.CylinderGeometry(.055, .055, 2.7, 8), mat.wood2, Math.cos(a) * .82, 0, Math.sin(a) * .82); }
-  const prof = [[.02, -1.3], [.66, -1.28], [.72, -1.0], [.6, -.5], [.14, -.06], [.11, 0], [.14, .06], [.6, .5], [.72, 1.0], [.66, 1.28], [.02, 1.3]].map(([r, y]) => new THREE.Vector2(r, y));
-  inner.add(new THREE.Mesh(new THREE.LatheGeometry(prof, 36), new THREE.MeshStandardMaterial({ color: '#e7f3ff', transparent: true, opacity: .32, roughness: .08, depthWrite: false })));
-  const sandM = M('#ffc94d', { roughness: .8 });
-  const tg = new THREE.ConeGeometry(.56, .86, 28); tg.translate(0, .43, 0); tg.rotateX(Math.PI); tg.translate(0, .86, 0);
-  const top = mesh(tg, sandM, false); top.position.y = .08; inner.add(top);
-  const bg = new THREE.ConeGeometry(.64, .7, 28); bg.translate(0, .35, 0);
-  const bot = mesh(bg, sandM, false); bot.position.y = -1.24; inner.add(bot);
-  const stream = mesh(new THREE.CylinderGeometry(.025, .025, 1.2, 6), sandM, false); stream.position.y = -.6; inner.add(stream);
-  [['#3b82f6', 0], ['#ec6a4e', .14], ['#ffd166', .28]].forEach(([c, y], i) => { const b = put(g, new THREE.BoxGeometry(.75 - i * .06, .13, .55), M(c), -1.6, y + .065, 1.2); b.rotation.y = .2 * i; });
-  colliders.push({ x, z, r: 1.0 }); colliders.push({ x: x - 1.6, z: z + 1.2, r: .45 });
-  return { inner, top, bot, stream, p: 1, flip: 0, running: false, dur: 20, doneOnce: false };
+/* ---- Stackyard: racks, an outbound pallet, a delivery van and an AGV that fills orders ---- */
+const YD = ISL.yard;
+const YARD_HOME = { x: .3, z: 2.35 }, YARD_AISLE = -1.65, YARD_LANE = 3.0, PALLET = { x: 3.95, z: .9 };
+const yard = { slots: [], steps: [], cur: null, carry: null, fly: null, shipped: 0, onPallet: [], idle: 6, sctx: null, stex: null };
+(() => {
+  const g = new THREE.Group(); g.position.set(YD.x, 0, YD.z); scene.add(g); yard.g = g;
+  const steel = M('#346aa0', { metalness: .22, roughness: .6 }), orange = M('#eda844'), boxM = M('#c69c69'), tape = M('#ffcc4d', { roughness: .8 });
+  const tapeSeg = (x1, z1, x2, z2) => { const len = Math.hypot(x2 - x1, z2 - z1); const m = put(g, new THREE.BoxGeometry(.07, .012, len + .07), tape, (x1 + x2) / 2, .008, (z1 + z2) / 2, false); m.rotation.y = Math.atan2(x2 - x1, z2 - z1); };
+  tapeSeg(YARD_HOME.x, YARD_HOME.z, YARD_HOME.x, YARD_AISLE); tapeSeg(-2.4, YARD_AISLE, YARD_LANE, YARD_AISLE); tapeSeg(YARD_LANE, YARD_AISLE, YARD_LANE, YARD_HOME.z); tapeSeg(YARD_LANE, YARD_HOME.z, YARD_HOME.x, YARD_HOME.z);
+  for (const [x1, z1, x2, z2] of [[3.35, .3, 4.55, .3], [4.55, .3, 4.55, 1.5], [4.55, 1.5, 3.35, 1.5], [3.35, 1.5, 3.35, .3]]) tapeSeg(x1, z1, x2, z2);
+  // charging pad where the AGV waits
+  put(g, new THREE.BoxGeometry(.9, .02, 1.1), M('#3a4258'), YARD_HOME.x, .012, YARD_HOME.z, false);
+  put(g, new THREE.BoxGeometry(.5, .022, .08), M('#2fb67c', { emissive: '#2fb67c', emissiveIntensity: .5 }), YARD_HOME.x, .02, YARD_HOME.z + .62, false);
+  // two racks facing the aisle
+  for (const rx of [-1.3, 1.45]) {
+    for (const x of [-1.16, 1.16]) for (const z of [-.38, .38]) put(g, new THREE.BoxGeometry(.1, 2.3, .1), steel, rx + x, 1.15, -2.9 + z);
+    for (const y of [.42, 1.12, 1.82]) {
+      put(g, new THREE.BoxGeometry(2.42, .08, .86), steel, rx, y, -2.9);
+      for (const bx of [-.78, 0, .78]) { const b = put(g, new THREE.BoxGeometry(.52, .42, .52), bx === 0 && y > 1 ? orange : boxM, rx + bx, y + .25, -2.9); if (y < .5) yard.slots.push({ m: b, x: rx + bx, home: b.position.clone() }); }
+    }
+    boxes.push({ x: YD.x + rx, z: YD.z - 2.9, c: 1, s: 0, hw: 1.25, hd: .48 });
+  }
+  const sign = canvasTex(512, 110, (c, w, h) => { c.fillStyle = '#fffaf4'; rrPath(c, 0, 0, w, h, 16); c.fill(); c.fillStyle = '#26334b'; c.font = `700 56px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('STACKYARD', w / 2, h / 2 + 3); });
+  const sp = new THREE.Mesh(new THREE.PlaneGeometry(2.4, .52), new THREE.MeshBasicMaterial({ map: sign, toneMapped: false })); sp.position.set(.08, 2.62, -2.42); g.add(sp);
+  // outbound pallet and the delivery van
+  put(g, new THREE.BoxGeometry(1.0, .12, 1.0), mat.wood, PALLET.x, .06, PALLET.z);
+  colliders.push({ x: YD.x + PALLET.x, z: YD.z + PALLET.z, r: .62 });
+  const van = new THREE.Group(); van.position.set(4.0, 0, 2.95); g.add(van);
+  put(van, new THREE.BoxGeometry(1.0, 1.0, 1.5), mat.white, 0, .68, -.2); put(van, new THREE.BoxGeometry(1.02, .14, 1.52), orange, 0, .5, -.2);
+  put(van, new THREE.BoxGeometry(.96, .72, .62), orange, 0, .55, .82); put(van, new THREE.BoxGeometry(.8, .3, .03), M('#3a4a63', { roughness: .25 }), 0, .72, 1.135, false);
+  for (const x of [-.5, .5]) for (const z of [-.6, .75]) { const w = put(van, new THREE.CylinderGeometry(.18, .18, .1, 14), M('#344156'), x, .18, z); w.rotation.z = Math.PI / 2; }
+  boxes.push({ x: YD.x + 4.0, z: YD.z + 3.05, c: 1, s: 0, hw: .55, hd: 1.12 });
+  // control kiosk with an order counter (the station marker sits on it)
+  const k = new THREE.Group(); k.position.set(-1.7, 0, -.5); k.rotation.y = Math.atan2(-YD.x, -YD.z); g.add(k);
+  put(k, new THREE.BoxGeometry(.5, .9, .36), mat.navy, 0, .45, 0);
+  const head = new THREE.Group(); head.position.set(0, 1.12, .02); head.rotation.x = -.45; k.add(head);
+  put(head, new THREE.BoxGeometry(.72, .5, .06), mat.navy, 0, 0, 0);
+  const cv = document.createElement('canvas'); cv.width = 256; cv.height = 160;
+  yard.sctx = cv.getContext('2d'); yard.stex = new THREE.CanvasTexture(cv); yard.stex.colorSpace = THREE.SRGBColorSpace;
+  const scr = new THREE.Mesh(new THREE.PlaneGeometry(.64, .4), new THREE.MeshBasicMaterial({ map: yard.stex, toneMapped: false })); scr.position.set(0, 0, .032); head.add(scr);
+  drawYardScreen();
+  // the AGV
+  const agv = new THREE.Group(); agv.position.set(YARD_HOME.x, 0, YARD_HOME.z); agv.rotation.y = Math.PI; g.add(agv); yard.agv = agv;
+  put(agv, new THREE.BoxGeometry(.66, .24, .86), orange, 0, .2, 0);
+  put(agv, new THREE.BoxGeometry(.58, .04, .78), M('#455b70'), 0, .34, 0);
+  put(agv, new THREE.BoxGeometry(.5, .05, .03), M('#7fe0ff', { emissive: '#4cc9ff', emissiveIntensity: .8 }), 0, .24, .44, false);
+  for (const x of [-.34, .34]) for (const z of [-.26, .26]) { const w = put(agv, new THREE.CylinderGeometry(.1, .1, .08, 10), M('#344156'), x, .1, z); w.rotation.z = Math.PI / 2; }
 })();
+function drawYardScreen() {
+  const c = yard.sctx, w = 256, h = 160;
+  c.fillStyle = '#1f2a44'; c.fillRect(0, 0, w, h);
+  c.fillStyle = '#eda844'; c.font = `700 20px ${FONT}`; c.textAlign = 'left'; c.textBaseline = 'middle'; c.fillText('STACKYARD OPS', 16, 26);
+  c.fillStyle = '#a9b4c8'; c.font = `600 16px ${FONT}`; c.fillText('Orders shipped', 16, 66);
+  c.fillStyle = '#ffffff'; c.font = `700 48px ${FONT}`; c.fillText(String(yard.shipped), 16, 112);
+  const busy = yard.steps.length || yard.cur; c.fillStyle = busy ? '#ffd166' : '#2fb67c'; rrPath(c, 150, 92, 92, 34, 17); c.fill();
+  c.fillStyle = '#1f2a44'; c.font = `700 15px ${FONT}`; c.textAlign = 'center'; c.fillText(busy ? 'PICKING' : 'READY', 196, 110);
+  if (yard.stex) yard.stex.needsUpdate = true;
+}
+const PALLET_SPOTS = [[-.22, -.22], [.22, -.22], [-.22, .22], [.22, .22]];
+function dispatchOrder(auto = false) {
+  if (yard.steps.length || yard.cur) { if (!auto) floatText(YD.x - 1.7, 2.4, YD.z - .5, 'The AGV is on it<small>One order at a time</small>', 1.6); return; }
+  let free = yard.slots.filter(s => s.m.visible);
+  if (!free.length) { restockRacks(); free = yard.slots; }
+  const sl = free[Math.floor(Math.random() * free.length)];
+  const go = (x, z) => ({ go: true, x, z });
+  yard.steps = [go(YARD_HOME.x, YARD_AISLE), go(sl.x, YARD_AISLE), { face: Math.PI }, { pick: sl }, { wait: .5 }, go(YARD_LANE, YARD_AISLE), go(YARD_LANE, PALLET.z), { face: Math.PI / 2 }, { drop: true }, { wait: .5 }, go(YARD_LANE, YARD_HOME.z), go(YARD_HOME.x, YARD_HOME.z), { face: Math.PI }, { done: true }];
+  yard.idle = 0; drawYardScreen();
+  if (auto) return;
+  faceToward(YD.x - 1.7, YD.z - .5, 1.4); SFX.pop();
+  floatText(YD.x - 1.7, 2.5, YD.z - .5, `Order #${1043 + yard.shipped} sent to the floor<small>Pick, pack and ship, like the live dashboard</small>`, 2.8);
+  markInteract('order');
+}
+function restockRacks() {
+  yard.slots.forEach(s => { s.m.visible = true; });
+  spriteBurst(YD.x, 1.2, YD.z - 2.9, sparkTex, 10, { size: .28, up: 1.4, spread: 2.4 });
+}
+function updateYard(dt) {
+  const agv = yard.agv;
+  if (yard.fly) {
+    const f = yard.fly; f.t = Math.min(1, f.t + dt / .55); const e = ease(f.t);
+    f.m.position.lerpVectors(f.a, f.b, e); f.m.position.y += Math.sin(f.t * Math.PI) * .35;
+    if (f.t >= 1) { yard.fly = null; f.end(); }
+    return;
+  }
+  if (!yard.cur && yard.steps.length) yard.cur = yard.steps.shift();
+  const s = yard.cur;
+  if (!s) { if (!reduceMotion && (yard.idle += dt) > 22) dispatchOrder(true); return; }
+  // a polite safety stop when Henry stands in front of the AGV
+  const wp = agv.getWorldPosition(tmpYard), fx = Math.sin(agv.rotation.y), fz = Math.cos(agv.rotation.y), hx = P.x - wp.x, hz = P.z - wp.z;
+  if (s.go && Math.hypot(hx, hz) < 1.0 && hx * fx + hz * fz > 0) return;
+  if (s.go) {
+    const dx = s.x - agv.position.x, dz = s.z - agv.position.z, d = Math.hypot(dx, dz);
+    if (d < .02) { agv.position.x = s.x; agv.position.z = s.z; yard.cur = null; return; }
+    const want = Math.atan2(dx, dz), diff = angDiff(want, agv.rotation.y);
+    if (Math.abs(diff) > .04) { agv.rotation.y += Math.sign(diff) * Math.min(Math.abs(diff), dt * 4.5); return; }
+    agv.rotation.y = want; const st = Math.min(d, dt * 1.5); agv.position.x += dx / d * st; agv.position.z += dz / d * st;
+  } else if (s.face !== undefined) {
+    const diff = angDiff(s.face, agv.rotation.y);
+    if (Math.abs(diff) < .03) { agv.rotation.y = s.face; yard.cur = null; } else agv.rotation.y += Math.sign(diff) * Math.min(Math.abs(diff), dt * 4.5);
+  } else if (s.pick) {
+    const sl = s.pick; yard.cur = null;
+    const b = sl.m.clone(); yard.g.add(b); b.position.copy(sl.home); sl.m.visible = false;
+    const top = new THREE.Vector3(agv.position.x, .58, agv.position.z);
+    yard.fly = { m: b, t: 0, a: b.position.clone(), b: top, end: () => { yard.carry = b; agv.attach(b); b.position.set(0, .58, 0); b.rotation.set(0, 0, 0); } };
+  } else if (s.drop) {
+    const b = yard.carry; yard.cur = null; if (!b) return;
+    yard.g.attach(b); yard.carry = null;
+    const n = yard.onPallet.length, [ox, oz] = PALLET_SPOTS[n % 4], layer = Math.floor(n / 4);
+    yard.fly = { m: b, t: 0, a: b.position.clone(), b: new THREE.Vector3(PALLET.x + ox, .32 + layer * .36, PALLET.z + oz), end: () => { b.scale.setScalar(.82); yard.onPallet.push(b); } };
+  } else if (s.wait !== undefined) {
+    s.wait -= dt; if (s.wait <= 0) yard.cur = null;
+  } else if (s.done) {
+    yard.cur = null; yard.shipped++; yard.idle = 0; drawYardScreen();
+    if (yard.onPallet.length >= 8) {
+      setTimeout(() => {
+        yard.onPallet.forEach(b => { yard.g.remove(b); spriteBurst(YD.x + PALLET.x, .8, YD.z + PALLET.z, puffTex, 3, { size: .5, up: .8, spread: .6 }); });
+        yard.onPallet = []; if (started && Math.hypot(P.x - YD.x, P.z - YD.z) < 12) toast(`<b>Van loaded.</b> ${yard.shipped} orders shipped from Stackyard`);
+      }, 400);
+    }
+  }
+}
+const tmpYard = new THREE.Vector3();
 
 /* ---- Skill tree grove ---- */
 const orbs = [];
@@ -1017,7 +1220,7 @@ function drawBoard() {
 })();
 
 
-/* ---- Live Demos District: three handmade low-poly project miniatures ---- */
+/* ---- Arcline showroom: the electric car on a turntable, with paint you can change ---- */
 function demoSign(group, title, y, width = 2.5) {
   const tex = canvasTex(512, 120, (c, w, h) => {
     c.fillStyle = '#fffaf4'; rrPath(c, 0, 0, w, h, 16); c.fill();
@@ -1025,69 +1228,52 @@ function demoSign(group, title, y, width = 2.5) {
     c.font = '700 55px ' + FONT; c.fillText(title, w / 2, h / 2 + 3, w - 36);
   });
   const board = new THREE.Mesh(new THREE.PlaneGeometry(width, .56), new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide, toneMapped: false }));
-  board.position.set(0, y, -1.26); group.add(board);
+  board.position.set(0, y, -1.26); board.rotation.y = Math.PI; group.add(board);
 }
-function createLiveDemoMiniatures() {
-  // Edmonton LRT: tiny blue, red and green trains on three tracks.
-  {
-    const g = new THREE.Group(); g.position.set(-3.7, .02, 32); scene.add(g);
-    const concrete = M('#dbe3eb'), steel = M('#6f7886', { metalness: .3, roughness: .6 });
-    put(g, new THREE.BoxGeometry(3, .14, 2.8), concrete, 0, .08, 0);
-    [['#2f6fdd', -.8], ['#e0393e', 0], ['#2fa35f', .8]].forEach(([col, x]) => {
-      const paint = M(col, { roughness: .5 });
-      for (const rx of [-.27, .27]) put(g, new THREE.BoxGeometry(.055, .035, 2.2), steel, x + rx, .19, -.06);
-      put(g, new THREE.BoxGeometry(.53, .47, 1.25), paint, x, .48, -.02);
-      put(g, new THREE.BoxGeometry(.55, .12, 1.18), M('#f5fafc'), x, .76, -.02);
-      put(g, new THREE.BoxGeometry(.4, .22, .025), M('#cce9f6'), x, .5, -.66);
-      put(g, new THREE.BoxGeometry(.3, .06, .025), M('#ffecaa'), x, .29, -.68);
-    });
-    for (const x of [-1.37, 1.37]) put(g, new THREE.BoxGeometry(.085, 2.05, .085), steel, x, 1.15, 1.08);
-    put(g, new THREE.BoxGeometry(3, .12, .95), M('#28445f'), 0, 2.2, .75);
-    demoSign(g, 'EDMONTON LRT', 2.14, 2.65);
+const ARC = { x: 0, z: 31.2, s: 1.5 };
+const ARC_PAINTS = [['Silver', '#cbd7df'], ['Red', '#c8553d'], ['Blue', '#2f6fdd'], ['Midnight', '#2a3656'], ['White', '#f4f4f2']];
+const arcline = { turn: null, paint: null, pi: 0, spin: 0, lights: null, flash: 0 };
+(() => {
+  const g = new THREE.Group(); g.position.set(ARC.x, .02, ARC.z); g.scale.setScalar(ARC.s); scene.add(g);
+  const graphite = M('#303c4e', { metalness: .35, roughness: .3 });
+  const silver = M(ARC_PAINTS[0][1], { metalness: .55, roughness: .26 }); arcline.paint = silver;
+  put(g, new THREE.CylinderGeometry(1.55, 1.6, .17, 40), M('#e9edf1'), 0, .1, 0);
+  put(g, new THREE.TorusGeometry(1.45, .075, 10, 56, Math.PI), M('#5c6f89', { metalness: .6 }), 0, 1.02, .9);
+  const turn = new THREE.Group(); turn.position.y = .19; g.add(turn); arcline.turn = turn;
+  put(turn, new THREE.CylinderGeometry(1.2, 1.2, .04, 40), M('#d7dde4', { metalness: .3, roughness: .35 }), 0, 0, 0, false);
+  const car = new THREE.Group(); car.position.set(0, -.19, .18); turn.add(car);
+  put(car, new THREE.BoxGeometry(1.8, .36, .97), silver, 0, .57, -.18);
+  put(car, new THREE.BoxGeometry(1.05, .35, .8), M('#87b8c9'), 0, .92, -.14);
+  put(car, new THREE.BoxGeometry(1.82, .1, 1.02), graphite, 0, .4, -.18);
+  for (const x of [-.91, .91]) for (const z of [-.55, .2]) {
+    const wh = put(car, new THREE.CylinderGeometry(.24, .24, .12, 16), graphite, x, .37, z); wh.rotation.z = Math.PI / 2;
+    const hub = put(car, new THREE.CylinderGeometry(.1, .1, .125, 12), M('#cbd7df', { metalness: .55, roughness: .26 }), x * 1.005, .37, z); hub.rotation.z = Math.PI / 2;
   }
-  // Arcline One: electric car with headlights, wheels and showroom arch.
-  {
-    const g = new THREE.Group(); g.position.set(0, .02, 27.8); scene.add(g);
-    const graphite = M('#303c4e', { metalness: .35, roughness: .3 });
-    const silver = M('#cbd7df', { metalness: .55, roughness: .26 });
-    put(g, new THREE.CylinderGeometry(1.45, 1.45, .17, 32), M('#e9edf1'), 0, .1, 0);
-    put(g, new THREE.TorusGeometry(1.35, .075, 10, 56, Math.PI), M('#5c6f89', { metalness: .6 }), 0, 1.02, .75);
-    put(g, new THREE.BoxGeometry(1.8, .36, .97), silver, 0, .57, -.18);
-    put(g, new THREE.BoxGeometry(1.05, .35, .8), M('#87b8c9'), 0, .92, -.14);
-    put(g, new THREE.BoxGeometry(1.82, .1, 1.02), graphite, 0, .4, -.18);
-    for (const x of [-.91, .91]) for (const z of [-.55, .2]) {
-      const wheel = put(g, new THREE.CylinderGeometry(.24, .24, .12, 16), graphite, x, .37, z);
-      wheel.rotation.z = Math.PI / 2;
-      const hub = put(g, new THREE.CylinderGeometry(.1, .1, .125, 12), silver, x * 1.005, .37, z);
-      hub.rotation.z = Math.PI / 2;
-    }
-    put(g, new THREE.BoxGeometry(1.5, .055, .025), M('#d6f4ff', { emissive: '#84ddff', emissiveIntensity: .6 }), 0, .68, -.68);
-    demoSign(g, 'ARCLINE ONE', 2.55, 2.35);
-  }
-  // Stackyard: blue warehouse racks, pallets and a small orange AGV.
-  {
-    const g = new THREE.Group(); g.position.set(3.7, .02, 32); scene.add(g);
-    const steel = M('#346aa0', { metalness: .22, roughness: .6 });
-    const orange = M('#eda844'), box = M('#c69c69');
-    put(g, new THREE.BoxGeometry(3, .13, 2.75), M('#dbe3e4'), 0, .08, 0);
-    for (const x of [-1.2, 1.2]) for (const z of [.22, 1.02]) put(g, new THREE.BoxGeometry(.11, 2.35, .1), steel, x, 1.37, z);
-    for (const y of [.45, 1.17, 1.91]) {
-      put(g, new THREE.BoxGeometry(2.57, .1, .92), steel, 0, y, .62);
-      for (const x of [-.79, 0, .79]) put(g, new THREE.BoxGeometry(.54, .43, .58), x === 0 ? orange : box, x, y + .27, .62);
-    }
-    const agv = new THREE.Group(); agv.position.set(0, .15, -.73); g.add(agv);
-    put(agv, new THREE.BoxGeometry(.84, .34, .55), orange, 0, .31, .08);
-    put(agv, new THREE.BoxGeometry(.55, .34, .42), M('#455b70'), 0, .64, .1);
-    for (const x of [-.43, .43]) for (const z of [-.12, .28]) {
-      const wheel = put(agv, new THREE.CylinderGeometry(.12, .12, .11, 10), M('#344156'), x, .14, z);
-      wheel.rotation.z = Math.PI / 2;
-    }
-    for (const x of [-.23, .23]) put(agv, new THREE.BoxGeometry(.085, .06, .8), M('#738397'), x, .2, -.63);
-    put(agv, new THREE.BoxGeometry(.09, .95, .08), M('#344c68'), 0, .76, -.36);
-    demoSign(g, 'STACKYARD', 2.82, 2.4);
-  }
+  const lightM = M('#d6f4ff', { emissive: '#84ddff', emissiveIntensity: .6 }); arcline.lights = lightM;
+  put(car, new THREE.BoxGeometry(1.5, .055, .025), lightM, 0, .68, -.68);
+  demoSign(g, 'ARCLINE ONE', 2.55, 2.35);
+  colliders.push({ x: ARC.x, z: ARC.z, r: 1.6 * ARC.s });
+  // a charging post beside the showroom
+  const ch = new THREE.Group(); ch.position.set(ARC.x + 3.4, 0, ARC.z + 1.6); ch.rotation.y = -.6; scene.add(ch);
+  put(ch, new THREE.BoxGeometry(.4, 1.3, .3), M('#e9edf1'), 0, .65, 0); put(ch, new THREE.BoxGeometry(.3, .3, .02), M('#2a3656'), 0, .95, .16, false);
+  put(ch, new THREE.BoxGeometry(.32, .05, .02), M('#7fe0ff', { emissive: '#4cc9ff', emissiveIntensity: .8 }), 0, .72, .16, false);
+  colliders.push({ x: ARC.x + 3.4, z: ARC.z + 1.6, r: .35 });
+  for (const sx of [-1, 1]) bench(ARC.x + sx * 3.5, ARC.z + 2.4, Math.atan2(-sx * 3.5, -2.4));
+})();
+function changePaint() {
+  arcline.pi = (arcline.pi + 1) % ARC_PAINTS.length; const [name, col] = ARC_PAINTS[arcline.pi];
+  arcline.paint.color.set(col); arcline.spin = 1.6; arcline.flash = 1;
+  faceToward(ARC.x, ARC.z, 1.4); SFX.pop();
+  spriteBurst(ARC.x, 2.2, ARC.z, sparkTex, 10, { size: .28, up: 1.6, spread: 2.2 });
+  floatText(ARC.x, 2.9, ARC.z, `${name} paint<small>Try every option in the live configurator</small>`, 2.4);
+  markInteract('paint');
 }
-createLiveDemoMiniatures();
+function updateArcline(dt) {
+  arcline.spin = Math.max(0, arcline.spin - dt);
+  if (!reduceMotion) arcline.turn.rotation.y += dt * (.22 + arcline.spin * 2.2);
+  arcline.flash = Math.max(0, arcline.flash - dt * 1.2);
+  arcline.lights.emissiveIntensity = .6 + Math.abs(Math.sin(arcline.flash * 12)) * arcline.flash * 2.5;
+}
 
 /* ---- trees, rocks, tufts, flowers ---- */
 function planter(x, z) {
@@ -1095,7 +1281,7 @@ function planter(x, z) {
   put(scene, new THREE.CylinderGeometry(.54, .54, .02, 22), M('#8a6a4a'), x, .245, z, false);
   colliders.push({ x, z, r: .62 });
 }
-[['hub', 5, 'leaf'], ['bridgly', 5, 'blossom'], ['greenpath', 7, 'leaf'], ['studyflow', 3, 'leaf'], ['grove', 3, 'leaf'], ['workshop', 3, 'leaf'], ['studio', 0, 'leaf'], ['lookout', 0, 'leaf']].forEach(([id, n, kind]) => {
+[['hub', 3, 'leaf'], ['bridgly', 4, 'blossom'], ['transit', 0, 'leaf'], ['yard', 2, 'leaf'], ['grove', 2, 'leaf'], ['workshop', 2, 'leaf'], ['studio', 2, 'leaf'], ['lookout', 0, 'leaf']].forEach(([id, n, kind]) => {
   const is = ISL[id], plaza = DISTRICT[id] === 'plaza';
   for (let i = 0; i < n; i++) { const p = freeSpot(is, 1.0, 1.8); if (p) { tree(p.x, p.z, .8 + srand() * .55, kind); if (plaza) planter(p.x, p.z); } }
   if (!plaza) for (let i = 0; i < Math.round(is.r * 1.2); i++) { const p = freeSpot(is, .5, 1.4); if (!p) continue; const r = put(scene, G.rock, mat.rock, p.x, .1, p.z); r.scale.setScalar(.5 + srand() * .9); r.rotation.set(srand() * 3, srand() * 3, 0); }
@@ -1219,8 +1405,9 @@ for (const b of BRIDGES) {
     }
   }
 }
-// 2) a ring of houses around each square and park, facing in; 3) a taller back row behind them
-for (const [row, gap] of [[0, 1.6], [1, 7.2]]) {
+// 2) a ring of houses around each square and park, facing in, each with a front path onto it
+//    (the old back row had no path to any street, so it is gone)
+for (const [row, gap] of [[0, 1.6]]) {
   for (const is of ISLANDS) {
     if (is.id === 'lookout' && row) continue;
     const d0 = 2.5, R = is.r + gap + d0 / 2;
@@ -1230,7 +1417,7 @@ for (const [row, gap] of [[0, 1.6], [1, 7.2]]) {
       const w = 2.4 + trand() * 1.1, d = 2.3 + trand() * .6, two = row === 1 && trand() < .55;
       const x = is.x + Math.cos(a) * R, z = is.z + Math.sin(a) * R;
       tryHouse(x, z, Math.atan2(is.x - x, is.z - z), w, d, two ? 3.2 + trand() * .6 : 2.0 + trand() * .6, row ? 0 : R - d / 2 - is.r, row === 0 && (is.id === 'hub' || is.id === 'workshop'));
-      a += (w + 1.0 + trand() * .7) / R;
+      a += (w + 1.7 + trand() * 1.1) / R;
     }
   }
 }
@@ -1290,7 +1477,7 @@ const ducks = [];
 const LEAVES = ['#7cc463', '#9bd57a', '#6ab258', '#f7a7a3', '#8fcf6e'];
 function townTree(x, z, s, solid) {
   if (solid) colliders.push({ x, z, r: .32 * s }); addInst(TOWN.trunks, x, GROUND_Y + .55 * s, z, 0, s, 1.1 * s, s, '#a8724a'); const col = tpick(LEAVES); addInst(TOWN.crowns, x, GROUND_Y + 1.55 * s, z, trand() * 6, .85 * s, .95 * s, .85 * s, col); addInst(TOWN.crowns, x + .3 * s, GROUND_Y + 2.05 * s, z + .1 * s, trand() * 6, .58 * s, .62 * s, .58 * s, col); }
-for (let k = 0, placed = 0; k < 900 && placed < 70; k++) {
+for (let k = 0, placed = 0; k < 900 && placed < 34; k++) {
   const a = trand() * Math.PI * 2, r = 9 + trand() * 31, x = Math.cos(a) * r, z = Math.sin(a) * r - 3, s = .8 + trand() * .55;
   if (townFree(x, z, .9 * s)) { townTree(x, z, s, true); HOUSES.push({ x, z, rad: .9 * s, tree: true }); placed++; }
 }
@@ -1623,7 +1810,7 @@ placeCamera();
 /* ================= HUD: tracker, XP ================= */
 let level = 4, xp = 72;
 const didInt = new Set();
-const INTERACTIONS = { hourglass: 'Turn the hourglass', planter: 'Log a green action', hug: 'Send a hug', wheel: 'Hamster wheel', coffee: 'Brew a coffee', card: 'Move a job card', shake: 'Shake the skill tree', pet: 'Pet the hamster', ball: 'Kick the beach ball', butterflies: 'Startle the butterflies', plane: 'Throw a paper plane', dog: 'Pet a dog', cat: 'Pet a cat', trick: 'Ask a dog for a trick', yarn: 'Toss yarn for a cat', fetch: 'Play fetch with a dog' };
+const INTERACTIONS = { train: 'Dispatch an LRT train', order: 'Dispatch a Stackyard order', paint: 'Repaint the Arcline car', hug: 'Send a hug', wheel: 'Hamster wheel', coffee: 'Brew a coffee', card: 'Move a job card', shake: 'Shake the skill tree', pet: 'Pet the hamster', ball: 'Kick the beach ball', butterflies: 'Startle the butterflies', plane: 'Throw a paper plane', dog: 'Pet a dog', cat: 'Pet a cat', trick: 'Ask a dog for a trick', yarn: 'Toss yarn for a cat', fetch: 'Play fetch with a dog' };
 function renderTracker() {
   $('#trList').innerHTML = STATIONS.map(st => `<li><button class="tr-row ${visited.has(st.id) ? 'done' : ''}" data-go="${st.id}"><span class="tr-dot" style="--c:${st.color}"></span><span class="tr-name">${esc(st.name)}</span><span class="tr-tag">${esc(st.tag)}</span><span class="tr-check" aria-label="${visited.has(st.id) ? 'visited' : 'not visited'}"></span></button></li>`).join('');
   $('#trCount').textContent = `${visited.size} / ${STATIONS.length}`;
@@ -1726,7 +1913,7 @@ panel.addEventListener('click', e => {
 /* ================= quick view ================= */
 const quick = $('#quick');
 function quickHTML() {
-  const cases = ['bridgly', 'greenpath', 'studyflow'].map(id => {
+  const cases = ['bridgly', 'greenpath', 'studyflow'].filter(id => !HIDDEN.has(id)).map(id => {
     const q = QUEST[id], st = SBY[id];
     return `<article class="q-case"><img class="p-icon" src="${st.icon}" alt="" width="56" height="56"><div>
       <div class="p-eyebrow"><span class="rar r-${q.rarity.toLowerCase()}">${q.rarity}</span>${esc(q.timeline)}</div>
@@ -1740,7 +1927,7 @@ function quickHTML() {
       <h1>HENRY WU</h1><div class="pc-role">UI/UX Designer</div>
       <p>UI/UX Design · Web Design · Web Development. Crafting simple, engaging, and code-ready digital experiences.</p>
       <div class="p-actions"><a class="btn primary" href="${LINKEDIN}" target="_blank" rel="noopener">LinkedIn ↗</a><a class="btn" href="${SITE}" target="_blank" rel="noopener">henrywu.link ↗</a></div></div></section>
-    <section class="q-sec card"><h2>Case studies</h2><div class="q-cards">${cases}</div></section>
+    <section class="q-sec card"><h2>Case study</h2><div class="q-cards">${cases}</div></section>
     <section class="q-sec card"><h2>Live projects</h2><div class="q-side">${side}</div></section>
     <div class="q-two">
       <section class="q-sec card"><h2>Skills</h2><ul class="skills">${SKILLS.map(([n, svg]) => `<li>${svgIcon(svg)}${esc(n)}</li>`).join('')}</ul><div class="eyebrow">Tools</div><p style="margin:0;color:var(--slate)">Figma, Framer, FigJam, Notion, Maze, Lottie, Spline</p></section>
@@ -1801,25 +1988,16 @@ function floatText(x, y, z, html, dur = 2.2) {
 }
 
 /* ---- props you can use on each island ---- */
-(() => {
-  const g = new THREE.Group(); g.position.set(-19, 0, -12.6); g.rotation.y = .4; scene.add(g);
-  put(g, new THREE.BoxGeometry(1.1, .4, .7), mat.wood, 0, .2, 0);
-  put(g, new THREE.BoxGeometry(1.0, .06, .6), M('#6b4a33'), 0, .4, 0, false);
-  for (const [sx, sz] of [[-.3, 0], [0, .1], [.3, -.05]]) { put(g, new THREE.ConeGeometry(.09, .3, 6), mat.leaf, sx, .58, sz); put(g, new THREE.SphereGeometry(.07, 8, 6), mat.leaf2, sx + .05, .68, sz); }
-  const sign = canvasTex(160, 64, (c, w, h) => { c.fillStyle = '#fffaf4'; c.fillRect(0, 0, w, h); c.fillStyle = '#2fb67c'; c.font = `700 26px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('−kg CO₂', w / 2, h / 2 + 2); });
-  put(g, new THREE.BoxGeometry(.04, .55, .04), mat.wood2, .62, .28, .2);
-  const sp = new THREE.Mesh(new THREE.PlaneGeometry(.5, .2), new THREE.MeshStandardMaterial({ map: sign })); sp.position.set(.62, .62, .23); g.add(sp);
-  colliders.push({ x: -19, z: -12.6, r: .65 });
-})();
 const PROPS = [
-  { id: 'hourglass', x: 24, z: -12.3, radius: 2.5, h: 3.2, label: 'Turn the glass', sub: 'StudyFlow hourglass', act: flipHourglass },
-  { id: 'planter', x: -19, z: -12.6, radius: 2.1, h: 1.6, label: 'Log a green action', sub: 'GreenPath planter', act: plantTree },
   { id: 'hug', x: 0, z: -26.3, radius: 2.0, h: 7, label: 'Send a hug', sub: 'to the lookout cottage', act: sendHug },
   { id: 'wheel', x: -2.2, z: -6.6, radius: 1.9, h: 1.6, label: 'Let the hamster run', sub: 'Hamster wheel', act: wheelRun },
 ];
 SBY.emberline.alt = { label: 'Brew a coffee', act: brewCoffee };
 SBY.jobtracker.alt = { label: 'Move a job card', act: moveCard };
 SBY.skills.alt = { label: 'Shake the tree', act: shakeTree };
+SBY.edmontonlrt.alt = { label: 'Dispatch a train', act: () => dispatchTrain() };
+SBY.stackyard.alt = { label: 'Dispatch an order', act: () => dispatchOrder() };
+SBY.arcline.alt = { label: 'Change the paint', act: changePaint };
 PROPS.forEach(pr => { const hit = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, pr.h, 10), hitMat); hit.position.set(pr.x, pr.h / 2, pr.z); hit.userData.prop = pr; scene.add(hit); stationHits.push(hit); });
 
 function markInteract(id) {
@@ -1828,34 +2006,6 @@ function markInteract(id) {
   didInt.add(id); addXP(2); renderTracker(); SFX.pop();
   const total = Object.keys(INTERACTIONS).length;
   if (didInt.size === total) setTimeout(() => toast(`<b>All ${total} interactions found.</b> You really explored the town!`, 4), 900);
-}
-function flipHourglass() {
-  if (hg.flip > 0) return;
-  faceToward(24, -12.3, 1.5);
-  hg.flip = .001; hg.running = false;
-  floatText(24, 3.5, -12.3, 'Focus session started<small>Turn the glass, and the sand shows time left</small>', 2.8);
-  markInteract('hourglass');
-}
-function focusDone() {
-  floatText(24, 3.5, -12.3, `Session complete<small>${hg.dur} seconds of focus, zero setup</small>`, 2.8);
-  spriteBurst(24, 2.8, -12.3, sparkTex, 14, { size: .3, up: 2, spread: 1.4 });
-  if (!hg.doneOnce) { hg.doneOnce = true; addXP(3); }
-}
-const GREEN = [['Took the bus', 1.2], ['Meat-free lunch', .9], ['Line-dried laundry', .6], ['Biked to class', .8], ['Reusable bottle', .1], ['Shorter shower', .3]];
-const GOAL = 4; let greenKg = 0, greenI = 0, goalHit = false, planted = 0; const grows = [];
-function plantTree() {
-  const [label, kg] = GREEN[greenI++ % GREEN.length];
-  greenKg = Math.round((greenKg + kg) * 10) / 10;
-  const pct = Math.round(kg / GOAL * 100), tot = Math.round(greenKg / GOAL * 100);
-  faceToward(-19, -12.6, 1.4);
-  floatText(-19, 2.2, -12.6, `−${kg.toFixed(1)} kg CO₂ · ${pct}%<small>${label} · ${Math.min(tot, 999)}% of today's goal</small>`, 2.8);
-  if (planted < 12) {
-    let spot = null;
-    for (let i = 0; i < 8 && !spot; i++) { const p = freeSpot(ISL.greenpath, 1.0, 1.8); if (p && Math.hypot(p.x - P.x, p.z - P.z) > 1.6 && Math.hypot(p.x - H.x, p.z - H.z) > 1) spot = p; }
-    if (spot) { planted++; const tr = tree(spot.x, spot.z, 1, 'leaf'); tr.scale.setScalar(.01); grows.push({ g: tr, t: 0, s: .7 + Math.random() * .4 }); spriteBurst(spot.x, .6, spot.z, leafTex, 8, { size: .25, up: 1.4, spread: .8 }); }
-  }
-  if (!goalHit && greenKg >= GOAL) { goalHit = true; setTimeout(() => { toast(`<b>Daily goal reached:</b> ${greenKg.toFixed(1)} kg CO₂ saved`); burst(-19, 1.5, -12.6, ['#2fb67c', '#9ed67e', '#ffd166'], 30, 4); }, 700); }
-  markInteract('planter');
 }
 const hugs = []; let heartPulse = 0;
 function sendHug() {
@@ -1926,11 +2076,10 @@ function renderBuffs() {
   const chips = [];
   if (buffs.coffee > 0) chips.push(`<span class="buff">Caffeinated · ${Math.ceil(buffs.coffee)}s</span>`);
   if (tour) chips.push('<button class="buff tour" data-stoptour title="Stop the tour">Guided tour · stop ×</button>');
-  if (hg.running) chips.push(`<span class="buff" style="background:#e3eefe;color:#3b82f6">Focus · ${Math.ceil((1 - hg.p) * hg.dur)}s</span>`);
   const html = chips.join(''), el = $('#buffs'); if (el.innerHTML !== html) el.innerHTML = html;
   document.querySelectorAll('#dock [data-emote]').forEach(b => b.classList.toggle('on', anim.emote === b.dataset.emote || (b.dataset.emote === 'pet' && hamState === 'pet')));
 }
-const TIPS = ['Glowing totems open my case studies.', 'Press 2 and I will dance.', 'One tool coin is hiding on a street.', 'Kick the beach ball. My hamster will chase it.', 'Mochi and Bean love belly rubs. Walk up and press E.', 'Say hi to the ducks on the pond south of the square.', 'Kick the ball near a dog to play fetch.', 'Press N to see the island at night.', 'Try turning the hourglass on StudyFlow island.', 'Press F at the coffee booth for a speed boost.', 'Press T for a guided tour of my work.', 'Toss some yarn for the cats with F.'];
+const TIPS = ['The golden totem opens my Bridgly case study.', 'Press 2 and I will dance.', 'One tool coin is hiding on a street.', 'Kick the beach ball. My hamster will chase it.', 'Mochi and Bean love belly rubs. Walk up and press E.', 'Say hi to the ducks on the pond south of the square.', 'Kick the ball near a dog to play fetch.', 'Press N to see the island at night.', 'Press F at the LRT station to dispatch a train.', 'Press F at the coffee booth for a speed boost.', 'The AGV at Stackyard fills an order when you press F.', 'Press T for a guided tour of my work.', 'Toss some yarn for the cats with F.'];
 let tipI = 0;
 
 /* ---- walking ---- */
@@ -2258,7 +2407,7 @@ const stars = (() => {
 const flies = (() => {
   const n = 80, base = [], p = new Float32Array(n * 3);
   for (let i = 0; i < n; i++) {
-    const is = [ISL.hub, ISL.grove, ISL.greenpath, ISL.bridgly][i % 4], a = Math.random() * Math.PI * 2, d = Math.random() * (is.r - .5);
+    const is = [ISL.hub, ISL.grove, ISL.transit, ISL.bridgly][i % 4], a = Math.random() * Math.PI * 2, d = Math.random() * (is.r - .5);
     base.push({ x: is.x + Math.cos(a) * d, y: .5 + Math.random() * 2.4, z: is.z + Math.sin(a) * d, ph: Math.random() * 10 });
   }
   const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(p, 3));
@@ -3032,10 +3181,10 @@ function updatePets(dt, t) {
   if (catToy && !reduceMotion) catToy.rotation.z = Math.sin(t * 1.7) * .16 + Math.sin(t * 3.1) * WXS.wind * .3;
 }
 
-/* ---- butterflies on GreenPath and the grove ---- */
+/* ---- butterflies in the Bridgly garden and the grove ---- */
 const wingTex = col => canvasTex(64, 64, (c) => { c.fillStyle = col; c.beginPath(); c.ellipse(30, 24, 26, 18, -.35, 0, 7); c.fill(); c.beginPath(); c.ellipse(26, 46, 17, 13, .4, 0, 7); c.fill(); c.fillStyle = 'rgba(255,255,255,.65)'; c.beginPath(); c.arc(34, 22, 6, 0, 7); c.fill(); });
 const wingGeo = new THREE.PlaneGeometry(.34, .34); wingGeo.rotateX(-Math.PI / 2);
-const bflies = [['#f6a68f', -21, -9], ['#ffd166', -22.5, -6.5], ['#c9b6ff', -19, -10.5], ['#ec6a4e', -23, -10], ['#9ed6ff', -17, 15], ['#ffd166', -15.5, 17]].map(([col, x, z], i) => {
+const bflies = [['#f6a68f', -3, -21.4], ['#ffd166', 3, -21.8], ['#c9b6ff', -2.4, -25.4], ['#ec6a4e', 2.8, -25.2], ['#9ed6ff', -17, 15], ['#ffd166', -15.5, 17]].map(([col, x, z], i) => {
   const g = new THREE.Group(); scene.add(g);
   const m = new THREE.MeshBasicMaterial({ map: wingTex(col), side: THREE.DoubleSide, transparent: true, alphaTest: .3, toneMapped: false });
   const wings = [-1, 1].map(s => { const piv = new THREE.Group(); g.add(piv); const w = new THREE.Mesh(wingGeo, m); w.position.x = s * .17; w.scale.x = -s; piv.add(w); return piv; });
@@ -3393,7 +3542,6 @@ function frame(now) {
   updateTown(dt, t);
   // ambient animation
   if (!reduceMotion) {
-    windBlades.rotation.z += dt * (1.3 + WXS.wind * 3);
     heart.rotation.y = Math.sin(t * .8) * .5; heart.position.y = 5.4 + Math.sin(t * 1.2) * .2;
     heart.scale.setScalar(1 + Math.max(0, Math.sin(t * 3.2)) ** 6 * .12 + heartPulse * .6);
     banners.forEach((b, i) => { b.rotation.y = Math.sin(t * (2 + WXS.wind * 3) + i) * (.25 + WXS.wind * .3); });
@@ -3404,17 +3552,10 @@ function frame(now) {
   } else heart.scale.setScalar(1 + heartPulse * .6);
   heartPulse = Math.max(0, heartPulse - dt * 1.4);
   wheel.rotation.z -= dt * (hamState === 'wheel' ? 10 : reduceMotion ? 0 : 1.2);
-  // hourglass: waits full until someone turns it, then drains for one focus session
-  if (hg.flip > 0) {
-    hg.flip += dt / (reduceMotion ? .05 : .9); hg.inner.rotation.z = ease(Math.min(1, hg.flip)) * Math.PI;
-    if (hg.flip >= 1) { hg.flip = 0; hg.inner.rotation.z = 0; hg.p = 0; hg.running = true; }
-  } else if (hg.running) { hg.p += dt / hg.dur; if (hg.p >= 1) { hg.p = 1; hg.running = false; focusDone(); } }
-  hg.top.scale.setScalar(Math.max(.001, 1 - hg.p)); hg.bot.scale.set(.35 + .65 * hg.p, Math.max(.001, hg.p), .35 + .65 * hg.p); hg.stream.visible = hg.running && hg.p < .98;
+  updateLRT(dt, t); updateYard(dt); updateArcline(dt);
   // skill tree shake
   if (shakeT > 0) { shakeT = Math.max(0, shakeT - dt); const amp = reduceMotion ? 0 : shakeT * .1; crown.rotation.z = Math.sin(t * 30) * amp; crown.rotation.x = Math.cos(t * 26) * amp * .6; }
   orbs.forEach(o => { o.mat.emissiveIntensity = .9 + shakeT * 2.2; });
-  // saplings growing on GreenPath
-  for (let i = grows.length - 1; i >= 0; i--) { const gr = grows[i]; gr.t = Math.min(1, gr.t + dt / 1.2); const e2 = 1 - Math.pow(1 - gr.t, 3); gr.g.scale.setScalar(Math.max(.01, gr.s * (e2 + Math.sin(gr.t * Math.PI) * .15))); if (gr.t >= 1) { gr.g.scale.setScalar(gr.s); grows.splice(i, 1); } }
   // hugs flying to the lookout
   for (let i = hugs.length - 1; i >= 0; i--) {
     const h = hugs[i]; h.t += dt / 1.5; if (h.t < 0) continue;
