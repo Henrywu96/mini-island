@@ -7,12 +7,14 @@ export const LINKEDIN = 'https://www.linkedin.com/in/min-tzu-wu-7910851b4/';
 
 export const QUEST = {
   bridgly: {
-    rarity: 'Legendary', lv: 50, tags: ['Mobile App', 'Relationship', 'UX UI'], timeline: 'May – Jul 2024 · 10 weeks',
-    lede: "A long-distance relationship app designed around emotional presence, helping couples feel part of each other's world through shared moments, daily connection and meaningful milestones.",
-    pivot: "Bridgly started as a goal-tracking app. Research showed couples didn't need another task manager; they needed to feel present in each other's daily lives, so the design shifted toward warmth, awareness and closeness.",
-    problem: "Long-distance couples could message all day but still couldn't tell when the other was awake or free.",
-    did: 'Solo, 10 weeks. 12 interviews and 87 survey responses led me to pivot from a goal tracker to a dual-time dial that shows both cities and the window when you are both free.',
-    outcome: 'In think-aloud tests with 8 users, V2 felt warmer than V1 and most found partner context and the reunion countdown on the first try. The final dial design has a validation plan ready.',
+    rarity: 'Legendary', lv: 50, tags: ['Mobile App', 'Relationship', 'UX / UI'], timeline: 'May – Jul 2024 · 10 weeks',
+    type: 'Personal concept · Mobile app', tools: 'Figma',
+    lede: "Designing for emotional presence across distance: a mobile app that helps long-distance couples feel part of each other's day.",
+    pivot: "Bridgly began as a shared goal tracker. Research showed couples didn't need another task manager — they wanted to feel present in each other's daily lives, so the design moved to partner context, warm contact and shared plans.",
+    problem: "Messages arrive, but presence doesn't. Across time zones, couples couldn't tell when the other was awake or free, and messaging apps left no space for shared memories or plans.",
+    did: 'Solo, 10 weeks. 12 interviews, 87 survey responses and a review of 6 apps led me to pivot from a goal tracker to V2: a warm, photo-led app built around partner awareness, warm contact, shared anticipation and shared memories.',
+    outcome: 'In a 2-week Think-Aloud test with 8 users, V2 felt warmer and more personal than V1, and most reached partner context and the reunion countdown on the first try. V2 is the final design.',
+    covers: 'research, design process, final design, results and reflection',
   },
   greenpath: {
     rarity: 'Epic', lv: 38, tags: ['Mobile App', 'Lifestyle', 'UX UI'], timeline: 'Feb – Apr 2024 · 8 weeks',

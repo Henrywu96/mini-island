@@ -230,7 +230,7 @@ const ACTIONS = {
     spriteBurst(n.x, n.y + 1.6, n.z, noteTex, 6, { size: .32, up: 1.3, spread: 1.2, life: 2 });
     floatText(n.x, n.y + n.top + 1.6, n.z, '♪ Thanks for the tip! ♪<small>Jules plays a song about long-distance love</small>', 2.8);
     markInteract('busker');
-    return 'This one is called “Two Cities, One Dial.”';
+    return 'This one is called “Two Cities, One Heart.”';
   },
   boba(n) {
     faceToward(n.x, n.z, 2); serveFor(n, 1.4); emote('sip', 2.4);

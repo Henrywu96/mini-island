@@ -27,7 +27,7 @@ export const NPCS = [
     look: { skin: '#c98d68', hair: '#2c201a', hairStyle: 'curly', top: '#8b5cf6', bottom: '#2a3656', shoes: '#f6f3ee', hat: 'beanie', hatColor: '#ffd166', acc: ['guitar'] },
     mode: 'post', at: [4.4, 4.9], face: [-.85, .5], pose: 'strum',
     alt: { label: 'Tip a coin', act: 'busker' },
-    barks: ['♪ Two cities, one dial… ♪', 'Requests welcome!', '♪ La la la… ♪'],
+    barks: ['♪ Two cities, one heart… ♪', 'Requests welcome!', '♪ La la la… ♪'],
     dialog: {
       start: 'hi',
       nodes: {

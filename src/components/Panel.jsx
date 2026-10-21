@@ -49,11 +49,11 @@ function Body({ id, close, closeRef, game }) {
       <p className="p-pivot">{q.pivot}</p>
       <Tldr q={q} />
       <dl className="meta">
-        <div><dt>Type</dt><dd>Personal concept project</dd></div><div><dt>Role</dt><dd>UI/UX Designer (solo)</dd></div>
-        <div><dt>Timeline</dt><dd>{q.timeline}</dd></div><div><dt>Tools</dt><dd>Figma</dd></div>
+        <div><dt>Type</dt><dd>{q.type || 'Personal concept project'}</dd></div><div><dt>Role</dt><dd>UI/UX Designer (solo)</dd></div>
+        <div><dt>Timeline</dt><dd>{q.timeline}</dd></div><div><dt>Tools</dt><dd>{q.tools || 'Figma'}</dd></div>
       </dl>
       <div className="p-actions"><a className="btn primary" href={SITE} {...ext}>Full case study on henrywu.link ↗</a>{nextBtn}</div>
-      <p className="p-note">The full write-up covers research, design process, results and reflection.</p>
+      <p className="p-note">The full write-up covers {q.covers || 'research, design process, results and reflection'}.</p>
     </>;
   }
   if (st.kind === 'side') {
