@@ -18,9 +18,14 @@ export function canvasTex(w, h, draw) {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
 }
 
+/** render resolution: capped at 1.5x, and lowered on the fly when frames run slow (see engine.js) */
+export const QUALITY = { max: 1.5, min: 1, pr: 1.5 };
+
 export function initGfx(stage) {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  // large screens draw through the glow pass, which has its own anti-aliasing, so the canvas skips it
+  renderer = new THREE.WebGLRenderer({ antialias: innerWidth < 720, powerPreference: 'high-performance' });
+  QUALITY.max = QUALITY.pr = Math.min(devicePixelRatio || 1, 1.5);
+  renderer.setPixelRatio(QUALITY.pr);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -41,11 +46,11 @@ export function initGfx(stage) {
   scene.fog = new THREE.Fog('#f7e3d9', 55, 140);
   hemi = new THREE.HemisphereLight('#ffffff', '#f1cdb8', 1.45); scene.add(hemi);
   sun = new THREE.DirectionalLight('#fff1df', 2.5);
-  sun.position.set(22, 38, 16); sun.castShadow = true;
+  sun.position.set(22, 38, 16); sun.userData.off = sun.position.clone(); sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   Object.assign(sun.shadow.camera, { left: -38, right: 38, top: 38, bottom: -38, near: 1, far: 120 });
   sun.shadow.bias = -.0005; sun.shadow.normalBias = .04;
-  scene.add(sun);
+  scene.add(sun, sun.target);
   sunDisc = new THREE.Sprite(new THREE.SpriteMaterial({ map: canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 6, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.35, 'rgba(255,255,255,.95)'); gr.addColorStop(.6, 'rgba(255,255,255,.25)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); }), fog: false, toneMapped: false, depthWrite: false, transparent: true }));
   sunDisc.position.set(70, 52, -130); sunDisc.scale.setScalar(34); scene.add(sunDisc);
   initTextures();
@@ -59,6 +64,8 @@ export const mat = {
   wood: M('#c98d5a'), wood2: M('#ad7244'), rope: M('#ecd8b8'), stone: M('#f4e5da'), cream: M('#fffaf4'),
   coral: M('#ec6a4e'), coralSoft: M('#f6a68f'), sun: M('#ffd166', { roughness: .7 }), navy: M('#2a3656'), white: M('#ffffff'),
   leaf: M('#7cc463', { flatShading: true }), leaf2: M('#9bd57a', { flatShading: true }), blossom: M('#f7a7a3', { flatShading: true }), blossom2: M('#fbc6bd', { flatShading: true }),
+  maple: M('#d9472b', { flatShading: true }), maple2: M('#ef7d2d', { flatShading: true }), maple3: M('#f2b23a', { flatShading: true }),
+  spruce: M('#3f8a5a', { flatShading: true }), spruce2: M('#4f9c68', { flatShading: true }),
   trunk: M('#a8724a'), dark: M('#3a4258', { roughness: .5 }), steel: M('#cfd6df', { metalness: .3, roughness: .4 }),
   curb: M('#eadfce'), inlay: M('#f4ece0'),
 };

@@ -73,15 +73,16 @@ export function applyTod(k) {
   const fog = /** @type {THREE.Fog} */ (scene.fog);
   fog.color.copy(overcast(mix(A.fog, B.fog, k))); fog.near = 55 - 38 * WXS.fog - 14 * WXS.ov; fog.far = 140 - 68 * WXS.fog - 32 * WXS.ov;
   hemi.color.copy(mix(A.hemiS, B.hemiS, k)); hemi.groundColor.copy(mix(A.hemiG, B.hemiG, k)); hemi.intensity = L(A.hemiI, B.hemiI) * (1 - .22 * WXS.ov);
-  sun.color.copy(mix(A.sunC, B.sunC, k)); sun.intensity = L(A.sunI, B.sunI) * (1 - .62 * WXS.ov); sun.position.set(L(A.sunP[0], B.sunP[0]), L(A.sunP[1], B.sunP[1]), L(A.sunP[2], B.sunP[2]));
+  sun.color.copy(mix(A.sunC, B.sunC, k)); sun.intensity = L(A.sunI, B.sunI) * (1 - .62 * WXS.ov); sun.userData.off.set(L(A.sunP[0], B.sunP[0]), L(A.sunP[1], B.sunP[1]), L(A.sunP[2], B.sunP[2]));
   sunDisc.material.color.copy(mix(A.disc, B.disc, k)); sunDisc.material.opacity = 1 - .9 * WXS.ov; sunDisc.position.set(L(A.discP[0], B.discP[0]), L(A.discP[1], B.discP[1]), L(A.discP[2], B.discP[2]));
   lampMats.forEach(m => { m.emissiveIntensity = L(A.lamp, B.lamp); });
-  lampLights.forEach(l => { l.intensity = L(A.light, B.light); });
+  // unlit lamps are hidden so every surface skips them in the daytime
+  lampLights.forEach(l => { l.intensity = L(A.light, B.light); l.visible = l.intensity > .05; });
   if (H_MAT) H_MAT.win.emissiveIntensity = Math.max(0, L(A.lamp, B.lamp) - .25) * .55;
   stars.material.opacity = L(A.stars, B.stars) * (1 - WXS.ov); stars.visible = stars.material.opacity > .01;
   flies.material.opacity = L(A.flies, B.flies); flies.visible = flies.material.opacity > .01;
   renderer.toneMappingExposure = L(A.exp, B.exp);
-  if (bloom) { bloom.threshold = L(A.bT, B.bT); bloom.strength = L(A.bS, B.bS); }
+  if (bloom) { bloom.threshold = L(A.bT, B.bT); bloom.strength = L(A.bS, B.bS); bloom.enabled = bloom.threshold < 1.15; }
   if (cloudMat) cloudMat.emissive.copy(mix(A.cloud, B.cloud, k));
   if (vignetteEl) vignetteEl.style.setProperty('--vig', (L(A.vig, B.vig) + .1 * WXS.ov).toFixed(3));
   LIGHT.hemiBase = hemi.intensity;

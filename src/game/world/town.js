@@ -6,12 +6,18 @@ import { ISLANDS, BRIDGES, POND, TOWN_R, segInfo, boxPush } from '../nav.js';
 import { FOOD_COURT } from '../../data/world.js';
 import { S } from '../state.js';
 import { angDiff } from '../util.js';
-import { geos, FLOWER_COLS } from './nature.js';
+import { geos, FLOWER_COLS, MAPLES } from './nature.js';
 import { bench } from './bridgly.js';
 import { P } from '../play/player.js';
 import { WXS } from '../sky/weather.js';
 
 export const GROUND_Y = -.06;
+/** a meadow in the woods north-west of town where the moose grazes (no trees there) */
+export const CLEARING = { a: 250 * Math.PI / 180, half: .2, r1: TOWN_R + 10 };
+function inClearing(x, z) {
+  const d = Math.atan2(z, x) - CLEARING.a;
+  return Math.abs(Math.atan2(Math.sin(d), Math.cos(d))) < CLEARING.half && Math.hypot(x, z) < CLEARING.r1;
+}
 const trand = (() => { let s = 20261012; return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; })();
 const tpick = arr => arr[Math.floor(trand() * arr.length)];
 
@@ -91,6 +97,9 @@ const DOORS = ['#3f4d73', '#e07a5f', '#5b8c6a', '#8a5a44', '#2a3656', '#b55d6f']
 const BLOOMS = ['#f27b78', '#ffd166', '#c9b6ff', '#f6a68f', '#ffffff'];
 const AWNS = ['#ec6a4e', '#3b82f6', '#2fb67c', '#ffd166', '#b55d6f'];
 const LEAVES = ['#7cc463', '#9bd57a', '#6ab258', '#f7a7a3', '#8fcf6e'];
+// maple reds and golds, and spruce greens, for the Canadian woods
+const MAPLE_LEAVES = ['#d9472b', '#e8632f', '#ef7d2d', '#f2b23a', '#c8382a'];
+const SPRUCE = ['#3f8a5a', '#4f9c68', '#357a4e'];
 
 function tryHouse(x, z, yaw, w, d, h, pathLen, shop) {
   const rad = Math.hypot(w, d) / 2;
@@ -117,14 +126,18 @@ export function initTown() {
     leaf: seeThrough(M('#ffffff', { flatShading: true, emissive: '#ffffff', emissiveIntensity: 0 })), trunk: seeThrough(M('#a8724a')),
   };
   // the trees already standing in the squares and parks fade the same way
-  for (const m of [mat.leaf, mat.leaf2, mat.blossom, mat.blossom2, mat.trunk]) seeThrough(m);
+  for (const m of [mat.leaf, mat.leaf2, mat.blossom, mat.blossom2, mat.maple, mat.maple2, mat.maple3, mat.spruce, mat.spruce2, mat.trunk]) seeThrough(m);
   const unitBox = new THREE.BoxGeometry(1, 1, 1), rg = roofGeo();
+  const trunkGeo = new THREE.CylinderGeometry(.13, .2, 1, 7), crownGeo = new THREE.IcosahedronGeometry(1, 0), coneGeo = new THREE.ConeGeometry(1, 1, 7);
   const lampHeadMat = new THREE.MeshStandardMaterial({ color: '#fff3d6', emissive: '#ffd58a', emissiveIntensity: .25 }); lampMats.push(lampHeadMat);
   const TOWN = {
     walls: inst(unitBox, H_MAT.wall, 140), gables: inst(rg, H_MAT.wall, 140), roofs: inst(rg, H_MAT.roof, 140),
     doors: inst(unitBox, H_MAT.door, 140), frames: inst(unitBox, H_MAT.trim, 1300), wins: inst(unitBox, H_MAT.win, 1300, false),
     boxes: inst(unitBox, H_MAT.trim, 400), chimneys: inst(unitBox, H_MAT.trim, 140), paths: inst(unitBox, M('#ffffff', { roughness: .95 }), 140, false),
-    awnings: inst(unitBox, H_MAT.trim, 80), trunks: inst(new THREE.CylinderGeometry(.13, .2, 1, 7), H_MAT.trunk, 460), crowns: inst(new THREE.IcosahedronGeometry(1, 0), H_MAT.leaf, 920),
+    awnings: inst(unitBox, H_MAT.trim, 80),
+    // yard trees cast shadows; the woods around town are too far out for the shadow map, so they skip it
+    trunks: inst(trunkGeo, H_MAT.trunk, 60), crowns: inst(crownGeo, H_MAT.leaf, 150), cones: inst(coneGeo, H_MAT.leaf, 120),
+    farTrunks: inst(trunkGeo, H_MAT.trunk, 260, false), farCrowns: inst(crownGeo, H_MAT.leaf, 420, false), farCones: inst(coneGeo, H_MAT.leaf, 560, false),
     posts: inst(new THREE.CylinderGeometry(.05, .07, 1, 8), mat.navy, 60), heads: inst(new THREE.SphereGeometry(.16, 12, 10), lampHeadMat, 60, false), caps: inst(new THREE.ConeGeometry(.22, .14, 12), mat.navy, 60),
   };
 
@@ -207,19 +220,37 @@ export function initTown() {
     bench(POND.x - 1.2, POND.z - POND.r - 1.0, 0);
   }
   // trees in the yards between houses, the woods around town and hills on the horizon
-  function townTree(x, z, s, solid = false) {
+  // kind: 'leaf', 'maple' (red and gold) or 'spruce' (stacked cones); far trees skip the shadow map
+  function townTree(x, z, s, kind = 'leaf', solid = false, far = false) {
+    if (far && inClearing(x, z)) return;
     if (solid) colliders.push({ x, z, r: .32 * s });
-    addInst(TOWN.trunks, x, GROUND_Y + .55 * s, z, 0, s, 1.1 * s, s, '#a8724a');
-    const col = tpick(LEAVES);
-    addInst(TOWN.crowns, x, GROUND_Y + 1.55 * s, z, trand() * 6, .85 * s, .95 * s, .85 * s, col);
-    addInst(TOWN.crowns, x + .3 * s, GROUND_Y + 2.05 * s, z + .1 * s, trand() * 6, .58 * s, .62 * s, .58 * s, col);
+    const [trunks, crowns, cones] = far ? [TOWN.farTrunks, TOWN.farCrowns, TOWN.farCones] : [TOWN.trunks, TOWN.crowns, TOWN.cones];
+    if (kind === 'spruce') {
+      addInst(trunks, x, GROUND_Y + .4 * s, z, 0, .8 * s, .8 * s, .8 * s, '#8d5f3e');
+      const col = tpick(SPRUCE);
+      addInst(cones, x, GROUND_Y + 1.15 * s, z, trand() * 6, .78 * s, 1.15 * s, .78 * s, col);
+      addInst(cones, x, GROUND_Y + 1.78 * s, z, trand() * 6, .6 * s, 1.0 * s, .6 * s, col);
+      addInst(cones, x, GROUND_Y + 2.35 * s, z, trand() * 6, .38 * s, .8 * s, .38 * s, col);
+      return;
+    }
+    addInst(trunks, x, GROUND_Y + .55 * s, z, 0, s, 1.1 * s, s, '#a8724a');
+    const maple = kind === 'maple', col = tpick(maple ? MAPLE_LEAVES : LEAVES), col2 = maple ? tpick(MAPLE_LEAVES) : col;
+    addInst(crowns, x, GROUND_Y + 1.55 * s, z, trand() * 6, .85 * s, .95 * s, .85 * s, col);
+    addInst(crowns, x + .3 * s, GROUND_Y + 2.05 * s, z + .1 * s, trand() * 6, .58 * s, .62 * s, .58 * s, col2);
+    if (maple) addInst(crowns, x - .32 * s, GROUND_Y + 1.95 * s, z - .12 * s, trand() * 6, .5 * s, .52 * s, .5 * s, col);
   }
+  const pickKind = (maple, spruce) => { const r = trand(); return r < maple ? 'maple' : r < maple + spruce ? 'spruce' : 'leaf'; };
   for (let k = 0, placed = 0; k < 900 && placed < 34; k++) {
     const a = trand() * Math.PI * 2, r = 9 + trand() * 31, x = Math.cos(a) * r, z = Math.sin(a) * r - 3, s = .8 + trand() * .55;
-    if (townFree(x, z, .9 * s)) { townTree(x, z, s, true); HOUSES.push({ x, z, rad: .9 * s, tree: true }); placed++; }
+    if (townFree(x, z, .9 * s)) {
+      const kind = pickKind(.45, .25); townTree(x, z, s, kind, true);
+      if (kind === 'maple' && Math.hypot(x, z) < 30) MAPLES.push({ x, z, h: 1.9 * s, r: .8 * s });
+      HOUSES.push({ x, z, rad: .9 * s, tree: true }); placed++;
+    }
   }
-  for (let a = 0; a < Math.PI * 2; a += 2.3 / (TOWN_R + 1.2)) { const r = TOWN_R + .9 + trand() * 1.4; townTree(Math.cos(a) * r, Math.sin(a) * r, 1.1 + trand() * .7); }
-  for (let i = 0; i < 210; i++) { const a = trand() * Math.PI * 2, r = TOWN_R + 3 + trand() * 38; townTree(Math.cos(a) * r, Math.sin(a) * r, 1.3 + trand() * 1.1); }
+  // the edge of town and the woods beyond: fewer trees than before, mostly spruce with maples between
+  for (let a = 0; a < Math.PI * 2; a += 3.3 / (TOWN_R + 1.2)) { const r = TOWN_R + .9 + trand() * 1.4; townTree(Math.cos(a) * r, Math.sin(a) * r, 1.1 + trand() * .7, pickKind(.35, .5), false, true); }
+  for (let i = 0; i < 120; i++) { const a = trand() * Math.PI * 2, r = TOWN_R + 4 + trand() * 36; townTree(Math.cos(a) * r, Math.sin(a) * r, 1.3 + trand() * 1.1, pickKind(.3, .55), false, true); }
   {
     const hillM = M('#9fcf83', { flatShading: true }), hillM2 = M('#b3d98f', { flatShading: true });
     for (let i = 0; i < 20; i++) {

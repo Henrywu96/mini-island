@@ -54,6 +54,7 @@ function Body({ id, close, closeRef, game }) {
       </dl>
       <div className="p-actions"><a className="btn primary" href={SITE} {...ext}>Full case study on henrywu.link ↗</a>{nextBtn}</div>
       <p className="p-note">The full write-up covers {q.covers || 'research, design process, results and reflection'}.</p>
+      {q.request && <p className="p-note">{q.request}</p>}
     </>;
   }
   if (st.kind === 'side') {

@@ -14,7 +14,8 @@ export const QUEST = {
     problem: "Messages arrive, but presence doesn't. Across time zones, couples couldn't tell when the other was awake or free, and messaging apps left no space for shared memories or plans.",
     did: 'Solo, 10 weeks. 12 interviews, 87 survey responses and a review of 6 apps led me to pivot from a goal tracker to V2: a warm, photo-led app built around partner awareness, warm contact, shared anticipation and shared memories.',
     outcome: 'In a 2-week Think-Aloud test with 8 users, V2 felt warmer and more personal than V1, and most reached partner context and the reunion countdown on the first try. V2 is the final design.',
-    covers: 'research, design process, final design, results and reflection',
+    covers: 'the problem, research, competitive analysis, ideation, iterations, final design, results and reflection',
+    request: 'The clickable prototype, slide deck and Figma file are available on request.',
   },
   greenpath: {
     rarity: 'Epic', lv: 38, tags: ['Mobile App', 'Lifestyle', 'UX UI'], timeline: 'Feb – Apr 2024 · 8 weeks',

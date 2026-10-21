@@ -43,6 +43,10 @@ export const SFX = {
   talk: () => tone(520 + Math.random() * 160, .06, 'triangle', .02, 60),
   quack: () => { tone(420, .12, 'square', .015, -120); tone(380, .1, 'square', .012, -100, .14); },
   slurp: () => tone(300, .35, 'sine', .03, 500),
+  // Canadian wildlife: a goose's double honk, the loon's long wail and a low moose grunt
+  honk: () => { tone(330, .16, 'sawtooth', .018, -60); tone(310, .18, 'sawtooth', .016, -70, .22); },
+  loon: () => { tone(520, .7, 'sine', .035, 260); tone(780, 1.0, 'sine', .03, -120, .75); tone(700, .9, 'sine', .025, 140, 1.8); },
+  moose: () => { tone(118, .55, 'sawtooth', .03, -40); tone(96, .6, 'triangle', .04, -20, .1); },
   sizzle: () => { for (let i = 0; i < 6; i++) tone(3000 + Math.random() * 1500, .05, 'sawtooth', .006, -800, i * .05); },
   // a short tune on the busker's guitar
   tune: () => [[392, 0], [494, .18], [587, .36], [784, .54], [659, .78], [587, .96], [494, 1.14], [523, 1.38], [587, 1.56]].forEach(([f, d]) => tone(f, .32, 'triangle', .045, 0, d)),

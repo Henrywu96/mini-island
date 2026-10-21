@@ -21,7 +21,11 @@ Walk anywhere on the streets, squares and lawns. Only the houses, trees, stalls 
 | Town Square | About me, contact, a hamster wheel, a beach ball, and two dogs and two cats who live there. |
 | Food Court | Around the duck pond south of the square: a bubble tea stand, a night market cart, a poutine truck, picnic tables and string lights that glow at night. |
 
-There are also 7 tool coins to collect, 28 interactions to discover, 11 townsfolk to meet, a guided tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
+**Canadian touches:** the woods around town are spruce and maple, the squares have red and gold maples with leaves drifting down, a Maple Leaf flag flies in the town square, an inukshuk stands at the lookout and a red canoe rests in the Bridgly garden.
+
+**Canadian wildlife,** every kind as a male and female pair: two beavers gnaw beside their lodge at the duck pond (walk up and they slap their tails), two common loons swim and dive on the pond and call when you come close, a bull and a cow moose graze where the town meets the woods (only the bull has antlers), and four pairs of Canada geese fly over in a V.
+
+There are also 7 tool coins to collect, 31 interactions to discover, 11 townsfolk to meet, a guided tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
 
 ## Townsfolk
 
@@ -101,6 +105,13 @@ npm run preview
 
 The site is deployed on Vercel. Every push to `main` builds and deploys automatically.
 Project settings: **Framework Preset** Vite · **Build Command** `npm run build` · **Output Directory** `dist` · **Node.js** 20.x or newer.
+
+## Performance
+
+- The canvas renders at up to 1.5x resolution and steps down to 1x by itself when frames run slow.
+- The shadow map follows the camera, the woods outside town skip it, and small props cast no shadow.
+- The glow pass only runs when it shows (sunset and night), and unlit lamps are switched off in the daytime.
+- Cards over the town use a solid background instead of a live blur, and the town pauses while Quick view is open.
 
 ## Project structure
 

@@ -173,6 +173,15 @@ export function buildPath(from, to) {
 }
 
 /* ---- free spots for decoration inside a square or park ---- */
+/** is (x, z) inside square or park `is`, off its street entrances and clear of stops, props and obstacles? */
+export function spotIsFree(is, x, z, margin = .8, clear = 1.6, pad = .6) {
+  const px = x - is.x, pz = z - is.z;
+  if (Math.hypot(px, pz) > is.r - margin) return false;
+  for (const ax of bridgeAxesOf(is.id)) { const along = px * ax.ux + pz * ax.uz, perp = Math.abs(px * ax.uz - pz * ax.ux); if (along > -1 && perp < clear) return false; }
+  for (const k2 of keepouts) if (Math.hypot(x - k2.x, z - k2.z) < k2.r) return false;
+  for (const c of colliders) if (Math.hypot(x - c.x, z - c.z) < c.r + pad) return false;
+  return true;
+}
 function bridgeAxesOf(id) {
   return BRIDGES.filter(b => b.a === id || b.b === id).map(b => b.a === id ? { ux: b.ux, uz: b.uz } : { ux: -b.ux, uz: -b.uz });
 }

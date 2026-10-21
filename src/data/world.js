@@ -53,11 +53,12 @@ export const INTERACTIONS = {
   yarn: 'Toss yarn for a cat', fetch: 'Play fetch with a dog',
   handshake: 'Shake the mayor’s hand', busker: 'Tip the busker', boba: 'Order bubble tea', snack: 'Buy a scallion pancake', truck: 'Order poutine from the truck',
   ducks: 'Feed the ducks with Grandpa Wen', mail: 'Get a postcard from Noor', jog: 'Jog with Oskar', sketch: 'Get a sketch from Priya', kite: 'Help Theo fly his kite', lrtfacts: 'Hear an LRT fact from Sam',
+  beaver: 'Startle the beavers by the pond', loon: 'Hear the loons on the pond', moose: 'Spot the moose pair at the edge of town',
 };
 
 export const TIPS = [
   'The golden totem opens my Bridgly case study.', 'Press 2 and I will dance.', 'One tool coin is hiding on a street.', 'Kick the beach ball. My hamster will chase it.',
   'Mochi and Bean love belly rubs. Walk up and press E.', 'Mayor Maple has a little job for you. Find her in the square.', 'The food court by the pond has boba, pancakes and a poutine truck.',
-  'Kick the ball near a dog to play fetch.', 'Press N to see the island at night.', 'Press F at the LRT station to dispatch a train.', 'Press F at the coffee booth for a speed boost.',
+  'Kick the ball near a dog to play fetch.', 'Two beavers live by the duck pond. Walk up and they slap their tails.', 'A bull and a cow moose graze where the town meets the woods.', 'Press N to see the island at night.', 'Press F at the LRT station to dispatch a train.', 'Press F at the coffee booth for a speed boost.',
   'The AGV at Stackyard fills an order when you press F.', 'Press T for a guided tour of my work.', 'Toss some yarn for the cats with F.', 'Everyone in town has something to say. Walk up and press E.',
 ];
