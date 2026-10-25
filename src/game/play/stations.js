@@ -1,7 +1,7 @@
 // Quest stops (totems, icons, labels), the tool coins hidden around town and the props you can use.
 import { CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { THREE, scene, camera, canvasTex, M, mat, put, hitMat, stationHits, markTex, doneTex, glyphTex, loadTex } from '../gfx.js';
-import { STATIONS, SBY } from '../../data/world.js';
+import { STATIONS, SBY, MAP_NUM } from '../../data/world.js';
 import { TOOLS } from '../../data/content.js';
 import { groundY } from '../nav.js';
 import { S } from '../state.js';
@@ -26,6 +26,10 @@ export const PROPS = [
   { id: 'wheel', x: -2.2, z: -6.6, radius: 1.9, h: 1.6, label: 'Let the hamster run', sub: 'Hamster wheel', act: () => wheelRun() },
 ];
 
+/** what a click on a stop's label does; the label is only clickable in the map view (set by the engine) */
+let onLabel = id => { };
+export function setLabelAction(fn) { onLabel = fn; }
+
 export function initStations() {
   STATIONS.forEach(st => {
     const g = new THREE.Group(); g.position.set(st.x, 0, st.z); scene.add(g);
@@ -43,8 +47,12 @@ export function initStations() {
     icon.scale.setScalar(st.kind === 'quest' ? 1.4 : 1.05); icon.position.y = st.iy; g.add(icon); st.iconS = icon;
     const mk = new THREE.Sprite(new THREE.SpriteMaterial({ map: markTex, toneMapped: false, fog: false, transparent: true }));
     mk.scale.setScalar(.58); mk.position.y = st.iy + (st.kind === 'quest' ? 1.05 : .9); g.add(mk); st.mark = mk;
-    const el = document.createElement('div'); el.className = 'slabel'; el.innerHTML = `<span style="--c:${st.color}"></span>${esc(st.name)}<small>${esc(st.tag)}</small>`;
-    const lab = new CSS2DObject(el); lab.position.y = mk.position.y + .75; g.add(lab); st.labelEl = el;
+    // the floating name tag; in the map view it shows its number and becomes a button
+    const el = document.createElement('button'); el.type = 'button'; el.className = 'slabel'; el.tabIndex = -1; el.setAttribute('aria-hidden', 'true');
+    el.setAttribute('aria-label', `${MAP_NUM[st.id]} ${st.name}, ${st.tag}`);
+    el.innerHTML = `<b class="sl-n" style="--c:${st.color}">${MAP_NUM[st.id]}</b><span style="--c:${st.color}"></span>${esc(st.name)}<small>${esc(st.tag)}</small>`;
+    el.addEventListener('click', () => { if (S.overview) onLabel(st.id); });
+    const lab = new CSS2DObject(el); lab.position.y = mk.position.y + .75; g.add(lab); st.labelEl = el; st.label = lab;
     const hit = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 4, 10), hitMat); hit.position.y = 2; hit.userData.station = st; g.add(hit); stationHits.push(hit);
     st.group = g;
   });
@@ -99,9 +107,9 @@ export function updateStations(dt, t) {
     st.iconS.position.y = st.iy + bob; st.mark.position.y = st.iy + (st.kind === 'quest' ? 1.05 : .9) + bob * 1.3;
     if (st.ring && !reduceMotion) { st.ring.rotation.z = t * .4; st.ring.material.opacity = .45 + Math.sin(t * 2.4 + i) * .15; st.beam.material.opacity = visited.has(st.id) ? .05 : .09 + Math.sin(t * 2 + i) * .03; }
     const d = Math.hypot(P.x - st.x, P.z - st.z);
-    let op = !S.started ? 1 : d < 16 ? 1 : d > 30 ? .4 : 1 - (d - 16) / 14 * .6;
+    let op = !S.started || S.overview ? 1 : d < 16 ? 1 : d > 30 ? .4 : 1 - (d - 16) / 14 * .6;
     // a stop's floating icon fades when it sits between the camera and Henry
-    const block = S.started && blocking(st.x, st.iy + st.group.position.y, st.z);
+    const block = S.started && !S.overview && blocking(st.x, st.iy + st.group.position.y, st.z);
     const io = block ? .22 : 1;
     st.iconS.material.opacity += (io - st.iconS.material.opacity) * Math.min(1, dt * 8); st.mark.material.opacity = st.iconS.material.opacity;
     if (block) op = Math.min(op, .35);

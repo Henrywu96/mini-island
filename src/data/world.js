@@ -44,6 +44,15 @@ export const STATIONS = STATION_DEFS.filter(s => !HIDDEN.has(s.id)).map(s => ({ 
 /** @type {Record<string, any>} */
 export const SBY = Object.fromEntries(STATIONS.map(s => [s.id, s]));
 export const ORDER = STATIONS.map(s => s.id);
+// Map view numbering and list groups: case studies first, then live projects, then the stops about Henry
+export const MAP_GROUPS = [
+  { title: 'Case study', kinds: ['quest'] },
+  { title: 'Live projects', kinds: ['side'] },
+  { title: 'About Henry', kinds: ['skills', 'about', 'contact'] },
+];
+export const MAP_ORDER = MAP_GROUPS.flatMap(g => STATIONS.filter(s => g.kinds.includes(s.kind)).map(s => s.id));
+/** "01", "02", … for each stop on the map */
+export const MAP_NUM = Object.fromEntries(MAP_ORDER.map((id, i) => [id, String(i + 1).padStart(2, '0')]));
 
 // Every small thing you can do in town, for the "Interactions" counter.
 export const INTERACTIONS = {

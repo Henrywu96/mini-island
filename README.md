@@ -25,7 +25,17 @@ Walk anywhere on the streets, squares and lawns. Only the houses, trees, stalls 
 
 **Canadian wildlife,** every kind as a male and female pair: two beavers gnaw beside their lodge at the duck pond (walk up and they slap their tails), two common loons swim and dive on the pond and call when you come close, a bull and a cow moose graze where the town meets the woods (only the bull has antlers), and four pairs of Canada geese fly over in a V.
 
-There are also 7 tool coins to collect, 31 interactions to discover, 11 townsfolk to meet, a guided tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
+**Map view:** press `O` (or **Map view** at the top, or **See the town map** on the start screen) and the camera lifts off Henry to show the whole town from above. Every stop has a numbered label: click a label, a totem or a row in the project list and the camera flies there and opens its card, framed beside the card so it never hides behind it. **Next** in a card goes through the stops in map order, and **Walk here with Henry** drops back into the town and walks him over. The project list (`L`) groups the stops into the case study, live projects and the stops about Henry, with a check on the ones already opened.
+
+**Connections:** the work is linked by six threads, such as *Research first*, *Brand storytelling*, *3D in the browser* and *Live data and simulation*. In the map view they are dashed arcs between the stops that share them; pick one in the **Connections** row to see just that thread. Every card lists what the project is made of (**Inside**) and its **Connected work**, with buttons that jump to the related stops. Threads and parts live in `src/data/content.js` (`THREADS`, `PARTS`).
+
+**Story tour:** press `T` (or **Take the story tour** on the start screen, or ask Mayor Maple to show you around) for a 12-chapter story in the map view: from the Bridgly research to the live sites, the skills behind them and how to get in touch. Each chapter frames its stops above the caption, brings out its thread and plays on by itself. Pause with `Space`, step with `←` `→`, open the stop from the card, or leave with `Esc`. The chapters are in `STORY` in `src/data/content.js`.
+
+**The island:** the town sits on an island now, with a sandy beach, foam along the shore, small islands on the horizon, a lighthouse that sweeps the sea at night (gulls circle it by day), a jetty with a rowboat and sailboats going round. Zoom the map all the way out to see the whole island.
+
+**Everyday crowd:** up to 32 small townsfolk leave their houses and walk the streets to wherever people go at that hour: the LRT park and the coffee booth in the morning, the food court at lunch, the parks in the afternoon and the square in the evening. Most go home at night. They step round Henry rather than walk through him. The townsfolk you can talk to keep their spots, so they are always there to meet.
+
+There are also 7 tool coins to collect, 31 interactions to discover, 11 townsfolk to meet, a story tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
 
 ## Townsfolk
 
@@ -62,13 +72,13 @@ Mochi (a Shiba) and Bean (a Border collie) share the doghouse; Mango (an orange 
 The town follows each visitor's own day:
 
 - **Date and time** come from the visitor's clock and are shown in the weather card at the top.
-- **Sky** switches automatically between day, sunset and night, using the real sunrise and sunset times for the visitor's area once the weather has loaded. The sun button (`N`) can override it.
+- **Sky** runs on a 24-hour clock: night, a pink dawn, day, sunset and night again, using the real sunrise and sunset times for the visitor's area once the weather has loaded. The sun button opens a time slider with Dawn, Noon, Sunset and Night, **My local time**, and **Watch a day go by** (a whole day in under a minute). `N` steps through auto, day, sunset and night.
 - **Weather** comes from [Open-Meteo](https://open-meteo.com/), is shown in degrees Celsius and refreshes every 15 minutes. Rain, snow, fog, overcast skies, wind and thunderstorms all show up in town, windows, street lamps and the food court lights glow after dark, and Henry opens an umbrella when it rains.
 - Clicking the weather card previews clear sky, rain, snow and a thunderstorm, then returns to live weather.
 
 **Privacy:** the approximate area is looked up from the visitor's IP address with [GeoJS](https://www.geojs.io/) (fallback: [ipwho.is](https://ipwho.is/)). The pin button asks the browser for a precise location instead, and its place name comes from [BigDataCloud](https://www.bigdatacloud.com/). The location is only cached in the visitor's own browser for six hours and is not sent to analytics. If any of these services are unreachable, the town still works and simply shows the local time.
 
-**Analytics:** the site uses [Google Analytics 4](https://marketingplatform.google.com/about/analytics/) to count visits and see which case studies and features people use (for example opening a case study, Quick view, the guided tour, town interactions and meeting the townsfolk). It collects no names, emails or precise locations. You can block it with any content blocker or by opting out with the [Google Analytics opt-out add-on](https://tools.google.com/dlpage/gaoptout).
+**Analytics:** the site uses [Google Analytics 4](https://marketingplatform.google.com/about/analytics/) to count visits and see which case studies and features people use (for example opening a case study, Quick view, the story tour, the map view, town interactions and meeting the townsfolk). It collects no names, emails or precise locations. You can block it with any content blocker or by opting out with the [Google Analytics opt-out add-on](https://tools.google.com/dlpage/gaoptout).
 
 ## Controls
 
@@ -82,13 +92,18 @@ The town follows each visitor's own day:
 | Wave · dance · cheer | `1` `2` `3` |
 | Pet the hamster | `H` |
 | Pet a dog or cat · trick or yarn | Walk up · `E` · `F` |
-| Guided tour | `T` |
+| Story tour | `T` · pause `Space` · back and next `←` `→` |
 | Auto · day · sunset · night | `N` |
 | Weather preview | Click the weather card |
 | Photo mode | `P` |
 | Sound on or off | `M` |
 | Quest log | `Q` |
 | Camera | Drag to turn · scroll to zoom |
+| Map view · project list | `O` · `L` |
+| Move the map | Drag · `W` `A` `S` `D` or arrow keys |
+| Turn or tilt the map | Right-drag (or `Shift`-drag) · `Q` `E` · two-finger twist |
+| Zoom the map | Scroll · `+` `−` · pinch |
+| Leave the map | `O` · `Esc` · **Back to Henry** |
 
 ## Run it locally
 
@@ -112,6 +127,8 @@ Project settings: **Framework Preset** Vite · **Build Command** `npm run build`
 - The shadow map follows the camera, the woods outside town skip it, and small props cast no shadow.
 - The glow pass only runs when it shows (sunset and night), and unlit lamps are switched off in the daytime.
 - Cards over the town use a solid background instead of a live blur, and the town pauses while Quick view is open.
+- The map view redraws shadows every third frame while the view is still (they are too small to notice from that high), which keeps it about as light as the start screen.
+- The crowd is five instanced meshes (a few draw calls for all 32 people) and shares out its path finding at one new route per frame; the connection arcs are a couple of lines each.
 
 ## Project structure
 
@@ -127,9 +144,9 @@ src/
   game/
     engine.js           builds the town, input, frame loop, the API React calls
     gfx.js nav.js       renderer, materials, collision and path finding
-    world/              squares and parks, houses and pond, the food court
-    actors/             Henry, the hamster, dogs and cats, townsfolk
-    play/               player, quest stops, effects, ball, camera, minimap
+    world/              squares and parks, houses and pond, the food court, the coast
+    actors/             Henry, the hamster, dogs and cats, townsfolk, the everyday crowd
+    play/               player, quest stops, effects, ball, camera, map view, threads, story, minimap
     sky/                time of day, weather
   styles/app.css
 ```

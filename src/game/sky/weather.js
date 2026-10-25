@@ -11,7 +11,7 @@ import { henryRig, holding, say } from '../actors/henry.js';
 import { toast } from '../play/hud.js';
 import { camTarget } from '../play/camera.js';
 import { cloudGeo } from '../world/nature.js';
-import { applyTod, setTod, todProgress } from './tod.js';
+import { applyTod, setHourTarget, todProgress } from './tod.js';
 
 /** weather currently shown (smoothed) */
 export const WXS = { ov: 0, fog: 0, rain: 0, snow: 0, wind: .2, flash: 0 };
@@ -109,7 +109,7 @@ async function refreshWeather() {
     WX.status = 'live';
   } catch (err) { if (!WX.live) WX.status = 'offline'; }
   applyWeatherTarget(); renderWx();
-  if (S.todMode === 'auto') setTod(autoTod(), true);
+  if (S.todMode === 'auto') setHourTarget(localHour());
 }
 export function usePreciseLocation() {
   if (!navigator.geolocation) { toast('Location is not available in this browser.', 2.6); return; }
@@ -131,6 +131,17 @@ export function wxCycle() {
 
 /* ---- auto time of day from the visitor's clock (and real sunrise and sunset once weather is live) ---- */
 const hm = s => { const m = /T(\d\d):(\d\d)/.exec(s || ''); return m ? +m[1] * 60 + +m[2] : null; };
+/** the visitor's local time as an hour (0-24), at the weather location once the weather is live */
+export function localHour() {
+  const w = WX.live;
+  if (w && w.offset != null) { const d = new Date(Date.now() + w.offset * 1000); return d.getUTCHours() + d.getUTCMinutes() / 60 + d.getUTCSeconds() / 3600; }
+  const now = new Date(); return now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+}
+/** sunrise and sunset as hours: the real ones once the weather is live, otherwise 6:15 and 18:15 */
+export function sunHours() {
+  const w = WX.live, r = w && hm(w.sunrise), s = w && hm(w.sunset);
+  return r != null && s != null ? [r / 60, s / 60] : [6.25, 18.25];
+}
 export function autoTod() {
   const now = new Date(); let mins = now.getHours() * 60 + now.getMinutes(), rise = 6 * 60 + 15, set = 18 * 60 + 15;
   const w = WX.live;
@@ -171,7 +182,7 @@ export function initWeather(dom) {
 /** clocks and network: the weather card ticks every second and the forecast refreshes every 15 minutes */
 export function startWeather() {
   document.addEventListener('visibilitychange', () => { if (!document.hidden && (!WX.live || Date.now() - WX.live.at > 15 * 60e3)) refreshWeather(); });
-  setInterval(() => { renderWx(); if (S.todMode === 'auto') { const a = autoTod(); if (a !== S.tod) setTod(a, true); } }, 1000);
+  setInterval(() => { renderWx(); if (S.todMode === 'auto' && !S.lapse) setHourTarget(localHour()); }, 1000);
   setInterval(refreshWeather, 15 * 60e3);
   applyWeatherTarget(); renderWx(); refreshWeather();
 }

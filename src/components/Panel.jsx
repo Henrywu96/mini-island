@@ -2,9 +2,9 @@
 import { useRef, useState } from 'react';
 import { useStore } from '../state/store.js';
 import { useGame } from '../game-context.js';
-import { SBY, ORDER } from '../data/world.js';
-import { QUEST, SIDE, SKILLS, TOOLS, GLYPH_SVG, ABOUT, SITE, LINKEDIN, asset } from '../data/content.js';
-import { RawSvg } from './icons.jsx';
+import { SBY, ORDER, MAP_ORDER, MAP_NUM } from '../data/world.js';
+import { QUEST, SIDE, SKILLS, TOOLS, GLYPH_SVG, ABOUT, SITE, LINKEDIN, PARTS, threadsOf, asset } from '../data/content.js';
+import { RawSvg, Icon } from './icons.jsx';
 import { useFocusOnMount } from './Hud.jsx';
 
 export function Tldr({ q }) {
@@ -31,9 +31,10 @@ function CopyRow({ text }) {
   return <div className="copyrow"><code ref={codeRef}>{text}</code><button onClick={copy}>{label}</button></div>;
 }
 
-function Body({ id, close, closeRef, game }) {
+function Body({ id, close, closeRef, game, map }) {
   const st = SBY[id], found = useStore(s => s.found);
-  const nextId = ORDER[(ORDER.indexOf(id) + 1) % ORDER.length], next = SBY[nextId];
+  // the map view goes through the stops in their map numbers, walking follows the quest log
+  const seq = map ? MAP_ORDER : ORDER, nextId = seq[(seq.indexOf(id) + 1) % seq.length], next = SBY[nextId];
   const head = (eyebrow, icon) => (
     <header className="p-head">{icon}<div><div className="p-eyebrow">{eyebrow}</div><h2 id="pTitle">{st.name}</h2></div>
       <button className="p-close" ref={closeRef} aria-label="Close" onClick={close}>×</button></header>
@@ -99,12 +100,44 @@ function Body({ id, close, closeRef, game }) {
   </>;
 }
 
+/** what the stop is made of, and the threads that tie it to other stops */
+function Links({ id, game, map }) {
+  const parts = PARTS[id], threads = threadsOf(id);
+  if (!parts && !threads.length) return null;
+  return <>
+    {parts && id !== 'skills' && <section className="p-sec"><div className="eyebrow">Inside</div><ol className="parts">{parts.map(p => <li key={p}>{p}</li>)}</ol></section>}
+    {threads.length > 0 && (
+      <section className="p-sec">
+        <div className="eyebrow">Connected work</div>
+        <ul className="links">
+          {threads.map(th => (
+            <li key={th.id} style={{ '--c': th.color }}>
+              <div className="ln-head"><i aria-hidden="true" /><b>{th.name}</b>
+                <button className="ln-map" onClick={() => game.showThread(th.id)}>{map ? 'Show on map' : 'See on the map'}</button></div>
+              <p>{th.why[id]}</p>
+              <div className="ln-stops">{th.stops.filter(o => o !== id).map(o => (
+                <button key={o} onClick={() => game.goTo(o)} title={th.why[o]}>{map && <b>{MAP_NUM[o]}</b>}{SBY[o].name} →</button>
+              ))}</div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </>;
+}
+
 function Open({ id }) {
-  const game = useGame(), closeRef = useRef(null), scroll = useRef(null);
+  const game = useGame(), closeRef = useRef(null), scroll = useRef(null), map = useStore(s => s.overview);
   useFocusOnMount(closeRef, game);
   return (
     <aside className="hud panel card" aria-labelledby="pTitle">
-      <div className="p-scroll" ref={scroll}><Body id={id} close={() => game.closePanel()} closeRef={closeRef} game={game} /></div>
+      {map && (
+        <div className="p-mapbar">
+          <span><b>{MAP_NUM[id]}</b> on the town map</span>
+          <button className="btn" onClick={() => game.walkHere(id)}>{Icon.walk}Walk here with Henry</button>
+        </div>
+      )}
+      <div className="p-scroll" ref={scroll}><Body id={id} close={() => game.closePanel()} closeRef={closeRef} game={game} map={map} /><Links id={id} game={game} map={map} /></div>
     </aside>
   );
 }

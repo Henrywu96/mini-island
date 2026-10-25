@@ -1,7 +1,7 @@
 // What the engine does when the React UI opens or closes things: quest cards, the quick view,
-// photo mode and the guided tour. The UI itself is rendered by React from the store.
+// photo mode and the story tour. The UI itself is rendered by React from the store.
 import { renderer } from '../gfx.js';
-import { SBY, STATIONS, ORDER } from '../../data/world.js';
+import { SBY, STATIONS } from '../../data/world.js';
 import { S } from '../state.js';
 import { store } from '../../state/store.js';
 import { track } from '../util.js';
@@ -15,7 +15,7 @@ import { beginGame, walkToStation } from './player.js';
 export function openPanel(id) {
   const st = SBY[id]; if (!st) return;
   track('open_quest', { quest_id: id, quest_name: st.name });
-  faceToward(st.x, st.z, 1.5); SFX.open(); onPanelOpened(id);
+  faceToward(st.x, st.z, 1.5); SFX.open();
   S.panelId = id; store.set({ panelId: id, prompt: null });
   if (!visited.has(id)) {
     visited.add(id); markVisited(st);
@@ -42,14 +42,7 @@ export function setPhoto(on) {
   if (on) { closePanel(); S.path = []; SFX.click(); }
 }
 
-export function startTour() {
-  track('start_tour');
-  if (!S.started) beginGame();
-  S.quick = false; store.set({ quick: false }); closePanel(); S.tour = true;
-  toast('<b>Guided tour</b> · Henry walks you to every stop. Press “Next” in each card to continue.', 3.6);
-  walkToStation(ORDER[0]);
-}
-export function stopTour() { S.tour = false; }
-function onPanelOpened(id) {
-  if (S.tour && id === ORDER[ORDER.length - 1]) { S.tour = false; track('complete_tour'); setTimeout(() => toast('<b>Tour complete.</b> Thanks for visiting every stop!', 3.6), 500); }
-}
+/** the story tour lives in story.js; the engine hands it over here so townsfolk can start it too */
+let tourFn = () => { };
+export function setTourAction(fn) { tourFn = fn; }
+export function startTour() { tourFn(); }

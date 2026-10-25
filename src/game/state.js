@@ -5,6 +5,10 @@ export const S = {
   quick: false,
   panelId: /** @type {string|null} */ (null),
   tour: false,
+  overview: false,
+  story: false,      // the story tour is playing (in the map view)
+  storyStop: /** @type {string|null} */ (null),
+  ovK: 0,          // 0 → 1 as the map view opens (the fog thins out)
   dialogue: /** @type {any} */ (null),
   // player navigation
   path: /** @type {{x:number,z:number}[]} */ ([]),
@@ -25,7 +29,10 @@ export const S = {
   hamState: 'follow',
   hamT: 0,
   tod: 'day',
-  todMode: 'auto',
+  todMode: 'auto',  // 'auto' follows the local clock, 'manual' is a time picked on the slider
+  hour: 12,         // the clock shown in town (0-24) and the hour it is easing towards
+  hourT: 12,
+  lapse: false,     // a day running as a time-lapse
   wxUmbrella: false,
   hoverObj: /** @type {any} */ (null),
   drag: /** @type {any} */ (null),

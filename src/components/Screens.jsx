@@ -19,13 +19,19 @@ export function StartScreen() {
         <p className="tag">Crafting simple, engaging, and code-ready digital experiences. Stroll around a little storybook town, open each quest, chat with the townsfolk and play with what you find. The sky follows your local time and weather.</p>
         <div className="start-actions">
           <button className="btn primary" disabled={!ready} onClick={() => game.beginGame()}>{ready ? 'Start exploring' : 'Building the town…'}</button>
-          <button className="btn" onClick={() => game.openQuick()} disabled={!ready}>Quick view instead</button>
+          <button className="btn" onClick={() => game.startTour()} disabled={!ready}>Take the story tour</button>
+        </div>
+        <div className="start-links">
+          <button className="start-quick" onClick={() => game.enterOverview()} disabled={!ready}>See the town map</button>
+          <span aria-hidden="true">·</span>
+          <button className="start-quick" onClick={() => game.openQuick()} disabled={!ready}>Read everything on one page</button>
         </div>
         <ul className="controls">
           <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or tap to walk</li>
           <li>Drag to look around</li>
           <li><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> emotes</li>
           <li><kbd>E</kbd> open quest or chat</li>
+          <li><kbd>O</kbd> town map</li>
         </ul>
       </div>
     </div>

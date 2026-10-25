@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from './state/store.js';
 import { GameContext } from './game-context.js';
-import { WeatherCard, PlayerCard, Tracker, TopBar, Help, Prompts, Dock, Minimap, Toast, PhotoExit } from './components/Hud.jsx';
+import { WeatherCard, PlayerCard, Tracker, TopBar, Help, Prompts, Dock, Minimap, Toast, PhotoExit, MapHud, TimeCard } from './components/Hud.jsx';
 import { Panel } from './components/Panel.jsx';
 import { DialogueBox } from './components/DialogueBox.jsx';
 import { StartScreen, QuickView } from './components/Screens.jsx';
@@ -10,7 +10,7 @@ import { StartScreen, QuickView } from './components/Screens.jsx';
 export default function App() {
   const stage = useRef(null), vignette = useRef(null), flash = useRef(null), hovertip = useRef(null), minimap = useRef(null);
   const [api, setApi] = useState(null);
-  const photo = useStore(s => s.photo), panel = useStore(s => s.panelId), talking = useStore(s => !!s.dialogue);
+  const photo = useStore(s => s.photo), panel = useStore(s => s.panelId), talking = useStore(s => !!s.dialogue), map = useStore(s => s.overview), story = useStore(s => !!s.story);
   useEffect(() => {
     let alive = true;
     // the engine (and three.js) load as their own chunk, so the start screen shows right away
@@ -20,7 +20,7 @@ export default function App() {
       .catch(err => console.error('Quest Town failed to start', err));
     return () => { alive = false; };
   }, []);
-  const cls = [photo && 'photo', panel && 'app-panel-open', talking && 'app-dialogue'].filter(Boolean).join(' ');
+  const cls = [photo && 'photo', panel && 'app-panel-open', talking && 'app-dialogue', map && 'app-overview', story && 'app-story'].filter(Boolean).join(' ');
   return (
     <GameContext.Provider value={api}>
       <div id="app" className={cls}>
@@ -32,9 +32,11 @@ export default function App() {
         <Tracker />
         <TopBar />
         <Help />
+        <TimeCard />
         <Prompts />
         <Dock />
         <Minimap canvasRef={minimap} />
+        <MapHud />
         <Panel />
         <DialogueBox />
         <div className="hovertip" ref={hovertip} hidden />

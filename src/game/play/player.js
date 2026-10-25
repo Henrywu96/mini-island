@@ -149,7 +149,7 @@ export function updatePlayer(dt) {
 /** the E / F buttons above the dock */
 export function updatePrompt() {
   const n = S.near;
-  if (!n || S.panelId || !S.started || S.quick || S.photo || S.dialogue) { if (store.get().prompt) store.set({ prompt: null }); return; }
+  if (!n || S.panelId || !S.started || S.quick || S.photo || S.dialogue || S.overview) { if (store.get().prompt) store.set({ prompt: null }); return; }
   const key = (n.kind ? 's:' : 'p:') + n.id + ':' + (n.sub || '');
   const cur = store.get().prompt;
   if (cur && cur.key === key) return;

@@ -25,6 +25,8 @@ const tpick = arr => arr[Math.floor(trand() * arr.length)];
 export const HOUSES = [];
 /** @type {Record<string, THREE.MeshStandardMaterial>} */ export let H_MAT;
 let lawnMat = null, lawnBase = null;
+/** the lawn under the whole town (coast.js trims it to the island's shore) */
+export let groundMesh = null;
 const _snowWhite = new THREE.Color('#ffffff');
 
 // houses between the camera and Henry turn see-through, so the town never hides him
@@ -117,7 +119,7 @@ export function lureDucks(x, z, secs = 7) { lure = { x, z, t: secs }; }
 
 export function initTown() {
   lawnMat = M('#97cc79'); lawnBase = lawnMat.color.clone();
-  const ground = mesh(new THREE.CircleGeometry(420, 72), lawnMat, false); ground.rotation.x = -Math.PI / 2; ground.position.y = GROUND_Y; scene.add(ground); walkMeshes.push(ground);
+  const ground = mesh(new THREE.CircleGeometry(420, 72), lawnMat, false); ground.rotation.x = -Math.PI / 2; ground.position.y = GROUND_Y; scene.add(ground); walkMeshes.push(ground); groundMesh = ground;
 
   H_MAT = {
     wall: seeThrough(M('#ffffff', { roughness: .92 })), roof: seeThrough(M('#ffffff', { roughness: .75, flatShading: true, emissive: '#ffffff', emissiveIntensity: 0 })),
@@ -252,11 +254,14 @@ export function initTown() {
   for (let a = 0; a < Math.PI * 2; a += 3.3 / (TOWN_R + 1.2)) { const r = TOWN_R + .9 + trand() * 1.4; townTree(Math.cos(a) * r, Math.sin(a) * r, 1.1 + trand() * .7, pickKind(.35, .5), false, true); }
   for (let i = 0; i < 120; i++) { const a = trand() * Math.PI * 2, r = TOWN_R + 4 + trand() * 36; townTree(Math.cos(a) * r, Math.sin(a) * r, 1.3 + trand() * 1.1, pickKind(.3, .55), false, true); }
   {
-    const hillM = M('#9fcf83', { flatShading: true }), hillM2 = M('#b3d98f', { flatShading: true });
+    const hillM = M('#9fcf83', { flatShading: true }), hillM2 = M('#b3d98f', { flatShading: true }), sandM = M('#ecd3a4');
     for (let i = 0; i < 20; i++) {
       const a = i / 20 * Math.PI * 2 + trand() * .2, r = 125 + trand() * 50, s = 20 + trand() * 16;
       const hill = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 1), i % 2 ? hillM : hillM2); hill.scale.set(s * 1.5, s * (.32 + trand() * .18), s * 1.2);
       hill.position.set(Math.cos(a) * r, -2, Math.sin(a) * r); hill.rotation.y = trand() * 3; scene.add(hill);
+      // the hills are islands out at sea now, each with a sandy rim at the waterline
+      const rim = new THREE.Mesh(new THREE.CylinderGeometry(1, 1.12, .5, 24), sandM); rim.scale.set(s * 1.5 * 1.04, 1, s * 1.2 * 1.04);
+      rim.position.set(hill.position.x, GROUND_Y - .55, hill.position.z); rim.rotation.y = hill.rotation.y; scene.add(rim);
     }
   }
   // tufts and flowers on the lawns
@@ -276,7 +281,7 @@ export function initTown() {
 }
 
 export function updateTown(dt, t) {
-  CUT.uCut.value = S.started && !S.photo ? 1 : 0;
+  CUT.uCut.value = S.started && !S.photo && !S.overview ? 1 : 0;
   CUT.uCamPos.value.copy(camera.position); CUT.uTarget.value.set(P.x, P.y + 1.0, P.z);
   if (lure) { lure.t -= dt; if (lure.t <= 0) lure = null; }
   ducks.forEach((dk, i) => {

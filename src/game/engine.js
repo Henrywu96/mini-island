@@ -18,7 +18,7 @@ import { initCanada, updateCanada, CANADA } from './world/canada.js';
 import { initWildlife, updateWildlife, WILD } from './world/wildlife.js';
 import { initFoodCourt, updateFoodCourt } from './world/foodcourt.js';
 import { initTown, updateTown } from './world/town.js';
-import { initStations, updateStations } from './play/stations.js';
+import { initStations, updateStations, setLabelAction } from './play/stations.js';
 import { initFx, updateFx, hoverRing, destDot, markAt } from './play/fx.js';
 import { initHenry } from './actors/henry.js';
 import { H, initHamster, petHamster } from './actors/hamster.js';
@@ -26,17 +26,30 @@ import { initBall, updateBall, BALL } from './play/ball.js';
 import { initPets, updatePets, walkToPet } from './actors/pets.js';
 import { initNpcs, updateNpcs, walkToNpc, dialogueChoose, dialogueNext, dialogueClose, FOLK } from './actors/npcs.js';
 import { updatePlanes } from './play/plane.js';
-import { initTod, updateTod, cycleTod, composer } from './sky/tod.js';
+import { initTod, updateTod, cycleTod, setHour, setTodAuto, toggleLapse, composer } from './sky/tod.js';
 import { initWeather, startWeather, updateWeather, wxCycle, usePreciseLocation, WXS } from './sky/weather.js';
 import { updateCamera, placeCamera, camTarget } from './play/camera.js';
 import { initMinimap, drawMinimap, minimapClick } from './play/minimap.js';
 import { syncTracker } from './play/hud.js';
 import { P, keys, beginGame, walkTo, walkToStation, walkToProp, updatePlayer, updatePrompt, interact, interactAlt, jump, doEmote } from './play/player.js';
-import { openPanel, closePanel, goTo, openQuick, closeQuick, quickGo, setPhoto, startTour, stopTour } from './play/ui.js';
+import { openPanel, closePanel, goTo, openQuick, closeQuick, quickGo, setPhoto, setTourAction } from './play/ui.js';
+import { OV, enterOverview, exitOverview, toggleOverview, ovOpen, walkHere, setList, zoomBy, turnBy, resetView, updateOverview, ovDown, ovMove, ovUp, ovCancel, ovWheel, ovKey, ovKeys, showThread, initMapRings } from './play/overview.js';
+import { initThreads, updateThreads } from './play/threads.js';
+import { startStory, stopStory, storyNext, storyBack, storyPlay, storyReplay, updateStory } from './play/story.js';
+import { initCoast, updateCoast } from './world/coast.js';
+import { initCrowd, updateCrowd, crowdOut, crowdDebug } from './actors/crowd.js';
 import { ISL } from '../data/world.js';
 
 const DEBUG = typeof location !== 'undefined' && /[?&]debug\b/.test(location.search);
 let created = null;
+
+/* the map view and the walking-only modes (photo, tour) never run at the same time */
+function photoMode(on) { if (on && S.overview) exitOverview(); setPhoto(on); }
+function tour() { if (S.photo) setPhoto(false); if (S.dialogue) dialogueClose(); startStory(); }
+function mapView() { if (S.photo) setPhoto(false); if (S.dialogue) dialogueClose(); enterOverview(); }
+function toggleMap() { if (S.overview) exitOverview(); else mapView(); }
+/** a stop chosen from a card or the quest log: fly there in the map view, otherwise walk */
+function go(id) { if (S.overview) ovOpen(id); else goTo(id); }
 
 function setTrackerCollapsed(c) {
   store.set({ trackerCollapsed: c });
@@ -58,7 +71,9 @@ export async function createGame(dom) {
     initTod(dom); initWeather(dom);
     initNpcs();
     initCanada(); initMapleLeaves(); initWildlife();
+    initCoast(); initCrowd(); initThreads(); initMapRings();
     trimShadowCasters();
+    setLabelAction(ovOpen); setTourAction(tour);
     initMinimap(dom.minimap);
     placeCamera(); syncTracker();
     wireInput(dom);
@@ -72,9 +87,11 @@ export async function createGame(dom) {
     startWeather();
     requestAnimationFrame(frame);
     const api = {
-      beginGame, interact, interactAlt, doEmote, petHamster, jump, setPhoto, cycleTod, startTour, stopTour,
+      beginGame, interact, interactAlt, doEmote, petHamster, jump, setPhoto: photoMode, cycleTod, setHour, setTodAuto, toggleLapse,
+      startTour: tour, stopStory, storyNext, storyBack, storyPlay, storyReplay, showThread,
       toggleSound: () => setSound(!isSoundOn()),
-      goTo, openPanel, closePanel, openQuick, closeQuick, quickGo, minimapClick, wxCycle, usePreciseLocation,
+      goTo: go, openPanel, closePanel, openQuick, closeQuick, quickGo, minimapClick, wxCycle, usePreciseLocation,
+      enterOverview: mapView, exitOverview, toggleOverview: toggleMap, ovOpen, walkHere, setList, zoomBy, turnBy, resetView,
       dialogueChoose, dialogueNext, dialogueClose, setTrackerCollapsed,
       focusStage: () => { try { renderer.domElement.focus({ preventScroll: true }); } catch (err) { } },
     };
@@ -99,11 +116,33 @@ function wireInput(dom) {
     if (k === 'escape') {
       if (S.photo) { setPhoto(false); return; }
       if (S.dialogue) { dialogueClose(); return; }
-      if (S.quick) closeQuick(false); else if (S.panelId) closePanel(); else store.set({ trackerOpen: false, help: false });
+      if (st.timeOpen) { store.set({ timeOpen: false }); return; }
+      if (S.quick) closeQuick(false); else if (S.panelId) closePanel();
+      else if (S.overview) { if (st.help) store.set({ help: false }); else if (S.story) stopStory(); else if (st.threadFocus) showThread(null); else if (st.listOpen && innerWidth < 1100) setList(false); else exitOverview(); }
+      else store.set({ trackerOpen: false, help: false });
       return;
     }
     if (S.quick || !created) return;
     const tgt = /** @type {any} */ (e.target), onControl = tgt && tgt.closest && tgt.closest('button, a, input, textarea, [contenteditable]');
+    // the map view has its own keys: move, turn and zoom the view; O goes back to Henry, L shows the list
+    if (S.overview) {
+      const once = !e.repeat && !onControl;
+      if (S.story && !S.panelId && !(tgt && tgt.closest && tgt.closest('input, textarea, a'))) {
+        if (k === ' ' || k === 'k') { e.preventDefault(); if (!e.repeat) storyPlay(); return; }
+        if (k === 'arrowright') { e.preventDefault(); storyNext(); return; }
+        if (k === 'arrowleft') { e.preventDefault(); storyBack(); return; }
+      }
+      if (k === 'o' && once) { exitOverview(); return; }
+      if (k === 'l' && once) { setList(!st.listOpen); return; }
+      if (k === 'n' && once) { cycleTod(); return; }
+      if (k === 'm' && once) { setSound(!isSoundOn()); return; }
+      if (k === 't' && once) { tour(); return; }
+      if (k === 'p' && once) { photoMode(true); return; }
+      if (onControl && (k.startsWith('arrow') || k === ' ' || k === 'enter')) return;
+      if (ovKey(k, true)) e.preventDefault();
+      return;
+    }
+    if (!e.repeat && !onControl && S.started && !S.dialogue && (k === 'o' || k === 'l')) { if (S.photo) setPhoto(false); enterOverview({ list: k === 'l' ? true : undefined }); return; }
     if (S.dialogue) {
       if (/^[1-9]$/.test(k)) { e.preventDefault(); dialogueChoose(+k - 1); return; }
       if (k === 'e' || ((k === 'enter' || k === ' ') && !onControl)) { e.preventDefault(); dialogueNext(); return; }
@@ -119,8 +158,8 @@ function wireInput(dom) {
       if (k === 'q') { setTrackerCollapsed(!st.trackerCollapsed); return; }
       if (k === 'n') { cycleTod(); return; }
       if (k === 'm') { setSound(!isSoundOn()); return; }
-      if (k === 'p') { setPhoto(!S.photo); return; }
-      if (k === 't') { startTour(); return; }
+      if (k === 'p') { photoMode(!S.photo); return; }
+      if (k === 't') { tour(); return; }
     }
     if (k === ' ' && !onControl) { e.preventDefault(); jump(); return; }
     if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift'].includes(k)) {
@@ -129,11 +168,19 @@ function wireInput(dom) {
       keys.add(k); if (k.startsWith('arrow')) e.preventDefault();
     }
   });
-  addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
-  addEventListener('blur', () => keys.clear());
+  addEventListener('keyup', e => { const k = e.key.toLowerCase(); keys.delete(k); ovKey(k, false); });
+  addEventListener('blur', () => { keys.clear(); ovKeys.clear(); });
 
-  cvs.addEventListener('pointerdown', e => { S.drag = { x: e.clientX, y: e.clientY, yaw: S.camYaw, pitch: S.camPitch, moved: false, id: e.pointerId }; });
+  cvs.addEventListener('pointerdown', e => {
+    if (S.overview) { ovDown(e); return; }
+    S.drag = { x: e.clientX, y: e.clientY, yaw: S.camYaw, pitch: S.camPitch, moved: false, id: e.pointerId };
+  });
+  cvs.addEventListener('contextmenu', e => { if (S.overview) e.preventDefault(); });
   cvs.addEventListener('pointermove', e => {
+    if (S.overview) {
+      if (ovMove(e)) { tip.hidden = true; return; }
+      const h = pick(e, stationHits); hoverAt(e, h && h.object.userData.station ? h : null, dom, tip); return;
+    }
     const d = S.drag;
     if (d && d.id === e.pointerId) {
       const dx = e.clientX - d.x, dy = e.clientY - d.y;
@@ -144,6 +191,13 @@ function wireInput(dom) {
     hoverAt(e, pick(e, stationHits), dom, tip);
   });
   cvs.addEventListener('pointerup', e => {
+    if (S.overview) {
+      // in the map view a click on a stop opens it; anywhere else closes the open card
+      if (!ovUp(e) || e.button === 2) return;
+      const sh = pick(e, stationHits), u = sh && sh.object.userData;
+      if (u && u.station) ovOpen(u.station.id); else if (S.panelId) closePanel();
+      return;
+    }
     const d = S.drag; S.drag = null; if (!d || d.moved) return;
     if (!S.started) { beginGame(); return; }
     if (S.photo) return;
@@ -160,9 +214,9 @@ function wireInput(dom) {
     const wh = pick(e, walkMeshes);
     if (wh) { walkTo({ x: wh.point.x, z: wh.point.z }); if (S.path.length) { const e2 = S.path[S.path.length - 1]; markAt(e2.x, e2.z, groundY(e2.x, e2.z)); } }
   });
-  cvs.addEventListener('pointercancel', () => { S.drag = null; });
+  cvs.addEventListener('pointercancel', e => { S.drag = null; ovCancel(e); });
   cvs.addEventListener('pointerleave', () => { tip.hidden = true; S.hoverObj = null; });
-  cvs.addEventListener('wheel', e => { e.preventDefault(); S.camDistTarget = clamp(S.camDistTarget + e.deltaY * .012, 8, 30); }, { passive: false });
+  cvs.addEventListener('wheel', e => { e.preventDefault(); if (S.overview) { ovWheel(e); return; } S.camDistTarget = clamp(S.camDistTarget + e.deltaY * .012, 8, 30); }, { passive: false });
 }
 function hoverAt(e, h, dom, tip) {
   S.hoverObj = h ? h.object.userData : null;
@@ -175,7 +229,7 @@ function hoverAt(e, h, dom, tip) {
 }
 function updateHover(t) {
   let hp = null;
-  const u = S.hoverObj;
+  const u = S.overview && S.hoverObj && !S.hoverObj.station ? null : S.hoverObj;
   if (u && !S.photo) hp = u.station ? u.station : u.prop ? u.prop : u.pet ? u.pet : u.npc ? u.npc : u.ham ? H : u.ball ? { x: BALL.x, z: BALL.z } : null;
   hoverRing.visible = !!hp;
   if (hp) {
@@ -194,7 +248,6 @@ function renderBuffs() {
   if (b.coffee > 0) chips.push({ id: 'coffee', label: `Caffeinated · ${Math.ceil(b.coffee)}s` });
   if (b.boba > 0) chips.push({ id: 'boba', label: `Extra bouncy · ${Math.ceil(b.boba)}s` });
   if (b.jog > 0) chips.push({ id: 'jog', label: `Runner's high · ${Math.ceil(b.jog)}s` });
-  if (S.tour) chips.push({ id: 'tour', label: 'Guided tour · stop ×', tour: true });
   const key = JSON.stringify(chips);
   if (key !== lastBuffs) { lastBuffs = key; store.set({ buffs: chips }); }
   store.set({ hamPet: S.hamState === 'pet' });
@@ -214,11 +267,12 @@ function trimShadowCasters() {
   });
 }
 // the sun's shadow box follows the camera's target and only covers what the camera can see
-const shadowCenter = new THREE.Vector3();
-let shadowHalf = 0;
+const shadowCenter = new THREE.Vector3(), lastCenter = new THREE.Vector3();
+let shadowHalf = 0, shadowMoved = true, shadowN = 0;
 function updateShadowBox() {
   const wide = !S.started || S.photo, half = wide ? 38 : clamp(Math.round((S.camDist * 1.25 + 6) / 2) * 2, 16, 38);
   if (wide) shadowCenter.set(0, 0, 0); else shadowCenter.set(Math.round(camTarget.x / 2) * 2, 0, Math.round(camTarget.z / 2) * 2);
+  if (!shadowCenter.equals(lastCenter) || half !== shadowHalf) { shadowMoved = true; lastCenter.copy(shadowCenter); }
   sun.target.position.copy(shadowCenter); sun.target.updateMatrixWorld();
   sun.position.copy(shadowCenter).add(sun.userData.off);
   if (half !== shadowHalf) {
@@ -247,6 +301,8 @@ function simulate(dt, t) {
   updateBall(dt); updatePets(dt, t); updateNpcs(dt, t); updateButterflies(dt, t); updatePlanes(dt);
   updateHover(t);
   updateWeather(dt, t);
+  updateStory(dt);
+  updateOverview(dt);
   updateCamera(dt);
   updateShadowBox();
   if (DEBUG && /** @type {any} */ (window).__ov) { const v = /** @type {any} */ (window).__ov; camera.position.set(...v.p); camera.lookAt(...v.t); }
@@ -256,6 +312,7 @@ function simulate(dt, t) {
   wheel.rotation.z -= dt * (S.hamState === 'wheel' ? 10 : reduceMotion ? 0 : 1.2);
   updateLRT(dt, t); updateYard(dt); updateShowroom(dt); updateFoodCourt(dt, t);
   updateCanada(dt, t); updateMapleLeaves(dt, t); updateWildlife(dt, t);
+  updateCoast(dt, t); updateCrowd(dt, t); updateThreads(dt, t);
   for (const k of ['coffee', 'boba', 'jog']) S.buffs[k] = Math.max(0, S.buffs[k] - dt);
   updateStations(dt, t);
   const g = Math.hypot(P.x - ISL.grove.x, P.z - ISL.grove.z) < 9;
@@ -263,6 +320,11 @@ function simulate(dt, t) {
   updateFx(dt);
 }
 function render() {
+  // the map view shows the whole town at once; its shadows only need redrawing every third frame
+  // (or right away when the view moves), which keeps it about as light as the start screen
+  if (S.overview) { renderer.shadowMap.autoUpdate = false; if (shadowMoved || ++shadowN % 3 === 0) renderer.shadowMap.needsUpdate = true; }
+  else renderer.shadowMap.autoUpdate = true;
+  shadowMoved = false;
   if (composer) composer.render(); else renderer.render(scene, camera);
   labelRenderer.render(scene, camera);
 }
@@ -281,7 +343,7 @@ function frame(now) {
 /* ---- test hooks, only with ?debug in the address ---- */
 function exposeDebug(api) {
   /** @type {any} */ (window).__qt = {
-    api, S, store, P, FOLK, BALL, scene, camera, renderer, CANADA, WILD,
+    api, S, store, P, FOLK, BALL, scene, camera, renderer, CANADA, WILD, OV, crowdOut, crowdDebug,
     /** time n full renders (ms per frame) and report draw calls and triangles */
     perf(n = 30) { const t0 = performance.now(); for (let i = 0; i < n; i++) render(); renderer.getContext().finish(); const ms = (performance.now() - t0) / n; const r = renderer.info.render; return { ms: +ms.toFixed(1), calls: r.calls, triangles: r.triangles, pr: renderer.getPixelRatio() }; },
     /** run the simulation n steps of dt seconds without waiting for frames */

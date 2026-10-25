@@ -1,9 +1,10 @@
 // The follow camera: a slow sway on the start screen, then it trails Henry. During a chat it eases in
-// between Henry and whoever he is talking to.
+// between Henry and whoever he is talking to. In the map view it eases towards the map camera (overview.js).
 import { THREE, camera } from '../gfx.js';
 import { S } from '../state.js';
-import { lerp, reduceMotion } from '../util.js';
+import { lerp, angDiff, reduceMotion } from '../util.js';
 import { P } from './player.js';
+import { OV, ovRate } from './overview.js';
 
 export const camTarget = new THREE.Vector3(0, 0, -6);
 const tmpV = new THREE.Vector3();
@@ -14,6 +15,15 @@ export function placeCamera() {
   camera.lookAt(camTarget);
 }
 export function updateCamera(dt) {
+  if (S.overview) {
+    const k = 1 - Math.exp(-dt * ovRate());
+    camTarget.lerp(OV.t, k);
+    S.camDist = lerp(S.camDist, OV.dist, k); S.camPitch = lerp(S.camPitch, OV.pitch, k);
+    S.camYaw += angDiff(OV.yaw, S.camYaw) * k;
+    placeCamera(); return;
+  }
+  // coming back down from the map: the follow camera settles to its usual tilt
+  if (OV.back > 0) { OV.back -= dt; S.camPitch = lerp(S.camPitch, OV.pitchBack, 1 - Math.exp(-dt * 3)); }
   const D = S.dialogue;
   chatK = lerp(chatK, D ? 1 : 0, 1 - Math.exp(-dt * 3));
   if (!S.started) { introT += dt; if (!reduceMotion) S.camYaw = Math.sin(introT * .12) * .5; camTarget.lerp(tmpV.set(0, 0, -7), .05); }

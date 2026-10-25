@@ -79,3 +79,81 @@ export const ABOUT = {
   headline: 'UI/UX Designer. Hamster Lover. Problem Solver.',
   bio: "I'm Henry Wu, a UI/UX designer who crafts meaningful digital experiences with empathy and curiosity. When I'm not designing, you'll find me hanging out with my hamster, gaming, or working out.",
 };
+
+/** one line for each stop in the map view's project list */
+export const BLURB = {
+  ...Object.fromEntries(Object.entries(QUEST).map(([id, q]) => [id, q.lede])),
+  ...Object.fromEntries(Object.entries(SIDE).map(([id, q]) => [id, q.desc])),
+  skills: 'Six core skills, plus the design tools hidden around town as coins.',
+  about: 'Who I am, what I focus on and the tools I use every day.',
+  contact: 'The quickest way to reach me about a role or a project.',
+};
+
+/* ---- how the work connects ---- */
+/** what each stop is made of, shown as "Inside" in its card */
+export const PARTS = {
+  bridgly: ['Problem', 'Research', 'Competitive analysis', 'Ideation', 'Iterations', 'Final design', 'Results', 'Reflection'],
+  emberline: ['Cinematic product landing page', 'Brand storytelling', 'Immersive browsing'],
+  jobtracker: ['Application workspace', 'Keeps every opportunity moving'],
+  edmontonlrt: ['Interactive LRT map', 'Tiny 3D trains', 'Capital, Metro and Valley lines', 'ETS schedules'],
+  arcline: ['3D car configurator', 'Paint options', 'Range calculator'],
+  stackyard: ['Automated vehicles', 'Pallet racks', 'Simulated fulfillment tasks'],
+  skills: ['UX Research', 'UI Design', 'Prototyping', 'Design Systems', 'Interaction Design', 'Usability Testing'],
+};
+/**
+ * Threads run through several stops: the same way of working, or the same kind of build.
+ * `why` says what each stop brings to the thread. The map view draws them as arcs between the stops.
+ */
+export const THREADS = [
+  {
+    id: 'research', name: 'Research first', color: '#ec6a4e',
+    desc: 'Talking to people and testing with them decides what gets designed.',
+    why: { bridgly: '12 interviews, 87 survey responses and a Think-Aloud test with 8 users shaped V2.', skills: 'UX Research and Usability Testing are two of my six core skills.' },
+  },
+  {
+    id: 'daily', name: 'Built around daily life', color: '#8b5cf6',
+    desc: "Products that fit into someone's everyday routine.",
+    why: { bridgly: "Helps long-distance couples feel part of each other's day.", jobtracker: 'A focused workspace that keeps every job application moving.' },
+  },
+  {
+    id: 'story', name: 'Brand storytelling', color: '#e6a400',
+    desc: 'Landing pages that sell a product by telling its story.',
+    why: { emberline: 'A cinematic coffee landing page crafted around brand storytelling.', arcline: 'A cinematic electric-vehicle landing page.' },
+  },
+  {
+    id: '3d', name: '3D in the browser', color: '#3b82f6',
+    desc: 'Interactive 3D scenes that run on a web page, like this town.',
+    why: { arcline: 'A 3D car configurator with paint options.', edmontonlrt: 'Tiny 3D trains running across the LRT lines.', stackyard: 'A 3D warehouse with automated vehicles and pallet racks.' },
+  },
+  {
+    id: 'live', name: 'Live data and simulation', color: '#2fb67c',
+    desc: 'Interfaces that move on their own, from real schedules or a simulation.',
+    why: { edmontonlrt: 'Trains are driven by ETS schedules.', stackyard: 'Fulfillment tasks are simulated so the dashboard feels live.' },
+  },
+  {
+    id: 'shipped', name: 'Designed and shipped', color: '#57677d',
+    desc: 'Side projects that went all the way to a live site you can visit.',
+    why: { emberline: 'Live landing page.', jobtracker: 'Live web app.', edmontonlrt: 'Live transit map.', arcline: 'Live landing page.', stackyard: 'Live dashboard.' },
+  },
+];
+for (const th of THREADS) th.stops = Object.keys(th.why);
+export const THREAD = Object.fromEntries(THREADS.map(th => [th.id, th]));
+/** the threads a stop belongs to */
+export const threadsOf = id => THREADS.filter(th => th.stops.includes(id));
+
+/* ---- the story tour: chapters the map camera flies through (press T) ---- */
+// shot: a stop to frame, `fit` to frame several stops, or 'home' for the whole town
+export const STORY = [
+  { kicker: 'Welcome', title: 'A town made of my work', text: 'Every square in Quest Town holds a project. This short story walks through how they connect, from research to things you can visit live.', shot: 'home' },
+  { kicker: 'Case study', stop: 'bridgly', thread: 'research', title: 'It started with people', text: 'Bridgly began as a shared goal tracker. 12 interviews, 87 survey responses and a review of 6 apps showed couples wanted to feel present in each other’s day, not another task manager.' },
+  { kicker: 'Case study', stop: 'bridgly', thread: 'research', title: 'Test, learn, redesign', text: 'In a 2-week Think-Aloud test with 8 users, V2 felt warmer and more personal than V1, and most people reached partner context and the reunion countdown on the first try.', yaw: .7, dist: 18 },
+  { kicker: 'Skills', stop: 'skills', thread: 'research', title: 'The skills behind it', text: 'UX research, UI design, prototyping, design systems, interaction design and usability testing. Seven of my design tools are hidden around town as coins.' },
+  { kicker: 'Connection', fit: ['bridgly', 'jobtracker'], thread: 'daily', title: 'Built around daily life', text: 'Like Bridgly, the Job Tracker fits into someone’s routine: a focused workspace that keeps every job application moving.' },
+  { kicker: 'Live project', stop: 'emberline', thread: 'story', title: 'Telling a brand’s story', text: 'Emberline Coffee is a cinematic landing page crafted around brand storytelling and an immersive browsing experience.' },
+  { kicker: 'Live project', stop: 'arcline', thread: 'story', title: 'From coffee to cars', text: 'Arcline One takes the same storytelling to an electric vehicle, with paint options and a range calculator.' },
+  { kicker: 'Connection', fit: ['arcline', 'edmontonlrt', 'stackyard'], thread: '3d', title: '3D in the browser', text: 'Arcline’s car configurator, the LRT’s tiny trains and Stackyard’s warehouse are all interactive 3D on a web page, like this town.' },
+  { kicker: 'Live project', stop: 'edmontonlrt', thread: 'live', title: 'Driven by real schedules', text: 'Edmonton LRT Live puts tiny 3D trains on the Capital, Metro and Valley lines, moving to ETS schedules.' },
+  { kicker: 'Live project', stop: 'stackyard', thread: 'live', title: 'A warehouse that runs itself', text: 'Stackyard Warehouse Ops simulates fulfillment tasks, with automated vehicles moving between pallet racks.' },
+  { kicker: 'About me', stop: 'about', title: 'Who made all this', text: 'I’m Henry Wu, a UI/UX designer who crafts meaningful digital experiences with empathy and curiosity. When I’m not designing, I’m hanging out with my hamster, gaming or working out.' },
+  { kicker: 'The end', stop: 'contact', title: 'Let’s talk', text: 'Want to talk design, a role or a project? The quickest way to reach me is LinkedIn. You can also open any stop on the map, or walk the town with me.', end: true },
+];
