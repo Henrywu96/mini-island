@@ -11,7 +11,7 @@ function signpost() {
   const g = new THREE.Group(); g.position.set(0, 0, 1.2); scene.add(g);
   put(g, new THREE.CylinderGeometry(.09, .1, 3.35, 8), mat.wood2, 0, 1.675, 0);
   put(g, new THREE.SphereGeometry(.14, 10, 8), mat.coral, 0, 3.45, 0);
-  const dests = [['bridgly', 'Bridgly'], ['yard', 'Stackyard'], ['transit', 'LRT Station'], ['workshop', 'Market'], ['grove', 'Skill Tree'], ['studio', 'Showroom']];
+  const dests = [['bridgly', 'Bridgly'], ['yard', 'Stackyard'], ['transit', 'LRT Station'], ['toronto', 'Toronto'], ['workshop', 'Market'], ['grove', 'Skill Tree'], ['studio', 'Showroom']];
   dests.forEach(([id, label], i) => {
     const is = ISL[id], dx = is.x, dz = is.z - 1.2, d = Math.hypot(dx, dz), ux = dx / d, uz = dz / d;
     const face = (txt, flip) => canvasTex(320, 64, (c, w, h) => {
@@ -19,7 +19,7 @@ function signpost() {
       c.fillText(flip ? `‹  ${txt}` : `${txt}  ›`, w / 2, h / 2 + 2);
     });
     const mats = [mat.wood, mat.wood, mat.wood, mat.wood, new THREE.MeshStandardMaterial({ map: face(label, false), roughness: .8 }), new THREE.MeshStandardMaterial({ map: face(label, true), roughness: .8 })];
-    const b = mesh(new THREE.BoxGeometry(1.55, .3, .06), mats); b.position.set(ux * .82, 2.9 - i * .35, uz * .82); b.rotation.y = Math.atan2(-uz, ux); g.add(b);
+    const b = mesh(new THREE.BoxGeometry(1.55, .3, .06), mats); b.position.set(ux * .82, 2.98 - i * .31, uz * .82); b.rotation.y = Math.atan2(-uz, ux); g.add(b);
   });
   colliders.push({ x: 0, z: 1.2, r: .14 });
 }

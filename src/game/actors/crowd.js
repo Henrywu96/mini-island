@@ -13,9 +13,9 @@ import { P } from '../play/player.js';
 const MAX = 32;
 // where people want to be, by hour: [from, to, weights per place]
 const SCHEDULE = [
-  [5.5, 10, { transit: 4, workshop: 3, hub: 2, yard: 1 }],
+  [5.5, 10, { transit: 3, toronto: 2, workshop: 3, hub: 2, yard: 1 }],
   [10, 14, { food: 5, hub: 2, workshop: 2, grove: 1, bridgly: 1 }],
-  [14, 17.5, { grove: 2, bridgly: 2, studio: 2, hub: 2, yard: 1, transit: 1 }],
+  [14, 17.5, { grove: 2, bridgly: 2, studio: 2, hub: 2, yard: 1, transit: 1, toronto: 1 }],
   [17.5, 21.5, { hub: 3, food: 3, studio: 2, bridgly: 1, workshop: 1 }],
   [21.5, 29.5, { hub: 1, food: 1 }],
 ];

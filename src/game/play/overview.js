@@ -24,10 +24,13 @@ export const OV = {
   fast: false,       // true while dragging, so the view follows the hand instead of easing
   back: 0, pitchBack: .62,
 };
-const homeDist = () => {
-  // far enough back that the whole town (about 64 m across with its labels) fits the screen's width
+// the middle of the town and its width with the labels: the Toronto plaza on the west side pulls the
+// middle a little west of the square
+const HOME = { x: -4.5, z: 1, span: 72 };
+const homeDist = (left = 0) => {
+  // far enough back that the whole town fits the part of the screen the project list leaves free
   const w = renderer.domElement.clientWidth || innerWidth, h = renderer.domElement.clientHeight || innerHeight;
-  const fit = 64 / (2 * Math.tan(camera.fov * Math.PI / 360) * w / h);
+  const fit = HOME.span / (2 * Math.tan(camera.fov * Math.PI / 360) * Math.max(1, w - left) / h);
   return clamp(Math.max(60, fit), 60, 118);
 };
 const size = () => [renderer.domElement.clientWidth || innerWidth, renderer.domElement.clientHeight || innerHeight];
@@ -45,9 +48,10 @@ function frame(x, z, { dist = OV.dist, pitch = OV.pitch, yaw = OV.yaw, left = 0,
 const listPx = () => (store.get().listOpen && size()[0] >= 1100 ? 316 : 0);
 /** the whole town, centred in the part of the screen the project list leaves free */
 function home(keepYaw = true, listOpen = store.get().listOpen) {
-  frame(0, 1, { dist: homeDist(), pitch: .98, yaw: keepYaw ? OV.yaw : 0, left: listOpen && size()[0] >= 1100 ? 316 : 0 });
+  const left = listOpen && size()[0] >= 1100 ? 316 : 0;
+  frame(HOME.x, HOME.z, { dist: homeDist(left), pitch: .98, yaw: keepYaw ? OV.yaw : 0, left });
 }
-export function frameHome({ bottom = 0 } = {}) { frame(0, 1, { dist: homeDist() * (bottom ? 1.12 : 1), pitch: .98, bottom }); }
+export function frameHome({ bottom = 0 } = {}) { frame(HOME.x, HOME.z, { dist: homeDist() * (bottom ? 1.12 : 1), pitch: .98, bottom }); }
 /** frame a few stops together (or one, close up) */
 export function frameStops(ids, { bottom = 0, right = 0, dist, yaw } = {}) {
   const sts = ids.map(id => SBY[id]).filter(Boolean); if (!sts.length) return;

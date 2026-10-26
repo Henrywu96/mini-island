@@ -9,6 +9,7 @@ import { SFX, isSoundOn, setSound, unlockAudio } from './sound.js';
 import { initHub, banners, wheel } from './world/hub.js';
 import { initBridgly, updateBridgly } from './world/bridgly.js';
 import { initTransit, updateLRT } from './world/transit.js';
+import { initToronto, updateSubway } from './world/toronto.js';
 import { initYard, updateYard } from './world/yard.js';
 import { initGrove, updateGrove } from './world/grove.js';
 import { initMarket, updateMarket } from './world/market.js';
@@ -65,7 +66,7 @@ export async function createGame(dom) {
     try { await Promise.race([document.fonts.load('700 48px Fredoka'), new Promise(r => setTimeout(r, 1500))]); } catch (e) { }
     initGfx(dom.stage);
     // the world, in the same order as the original single-file town
-    initNav(); initHub(); initBridgly(); initTransit(); initYard(); initGrove(); initMarket(); initShowroom();
+    initNav(); initHub(); initBridgly(); initTransit(); initToronto(); initYard(); initGrove(); initMarket(); initShowroom();
     initSquareDecor(); initClouds(); initFoodCourt(); initTown(); initStations(); initFx();
     initHenry(); initHamster(); initBall(); initPets(); initButterflies();
     initTod(dom); initWeather(dom);
@@ -310,7 +311,7 @@ function simulate(dt, t) {
   updateClouds(dt); updateBridgly(dt, t); updateMarket(dt, t); updateGrove(dt, t);
   if (!reduceMotion) banners.forEach((b, i) => { b.rotation.y = Math.sin(t * (2 + WXS.wind * 3) + i) * (.25 + WXS.wind * .3); });
   wheel.rotation.z -= dt * (S.hamState === 'wheel' ? 10 : reduceMotion ? 0 : 1.2);
-  updateLRT(dt, t); updateYard(dt); updateShowroom(dt); updateFoodCourt(dt, t);
+  updateLRT(dt, t); updateSubway(dt, t); updateYard(dt); updateShowroom(dt); updateFoodCourt(dt, t);
   updateCanada(dt, t); updateMapleLeaves(dt, t); updateWildlife(dt, t);
   updateCoast(dt, t); updateCrowd(dt, t); updateThreads(dt, t);
   for (const k of ['coffee', 'boba', 'jog']) S.buffs[k] = Math.max(0, S.buffs[k] - dt);

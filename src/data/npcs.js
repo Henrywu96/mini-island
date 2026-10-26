@@ -17,7 +17,7 @@ export const NPCS = [
       start: 'hi',
       nodes: {
         hi: { text: "Welcome to Quest Town! I'm Mayor Maple. Henry built this town to show his work, and the rest of us moved in for the scenery.", choices: [{ label: 'Tell me about the town', to: 'town' }, { label: 'Any tasks for me?', do: 'census' }, { label: 'Who is Henry?', to: 'henry' }, { label: 'Show me around', do: 'tour' }, { label: 'Goodbye', end: true }] },
-        town: { text: 'Every glowing totem is a project. The golden one in the garden up north is the Bridgly case study. The live sites sit in the market, the LRT park, the Stackyard yard and the showroom. Snacks are by the pond.', next: 'hi' },
+        town: { text: 'Every glowing totem is a project. The golden one in the garden up north is the Bridgly case study. The live sites sit in the market, the LRT park, the Toronto plaza past it, the Stackyard yard and the showroom. Snacks are by the pond.', next: 'hi' },
         henry: { text: 'A UI/UX designer who likes research, prototypes and his hamster, in that order. Mostly. His Character Sheet is on the desk next to the signpost.', choices: [{ label: 'Open his Character Sheet', do: 'about' }, { label: 'Back', to: 'hi' }] },
       },
     },

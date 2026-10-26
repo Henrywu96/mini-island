@@ -20,7 +20,8 @@ const LRT_MAP = [
 export const lrt = { phi: LRT_PARK, t: 1, dur: 9, line: 0, cars: [], paints: [], idle: 9, bctx: null, btex: null, bAcc: 0, g: null };
 
 export function initTransit() {
-  for (const a of [2.35, 3.05, 3.75]) tree(TR.x + Math.cos(a) * 5.05, TR.z + Math.sin(a) * 5.05, .85, a > 3 ? 'leaf' : 'blossom');
+  // clear of the street to the Toronto plaza, which leaves the park to the south-west
+  for (const a of [2.8, 3.35, 3.9]) tree(TR.x + Math.cos(a) * 5.05, TR.z + Math.sin(a) * 5.05, .85, a > 3 ? 'leaf' : 'blossom');
   const g = new THREE.Group(); g.position.set(TR.x, 0, TR.z); scene.add(g); lrt.g = g;
   // ballast ring, rails and sleepers
   const bal = new THREE.Mesh(new THREE.RingGeometry(TRACK_R - .48, TRACK_R + .48, 112), M('#d3cabe', { roughness: 1 }));

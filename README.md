@@ -14,6 +14,7 @@ Walk anywhere on the streets, squares and lawns. Only the houses, trees, stalls 
 | --- | --- |
 | Bridgly Garden | Featured case study (Legendary) in a blossom park. Send a hug to the cottage down the lane. |
 | LRT Station Park | Edmonton LRT Live: a loop of track, a live map board and a two-car train. Press `F` to dispatch it. |
+| Toronto Plaza | Toronto Transit Live, down the street from the LRT park: a subway platform between two tunnel portals, a live map board of the Toronto lines and a little CN Tower. Press `F` to send the train into the tunnel; the next one pulls in on another line. |
 | Stackyard Yard | Stackyard Ops: warehouse racks, a delivery van and an AGV that picks and ships an order when you press `F`. |
 | Arcline Showroom | Arcline One on a turntable. Press `F` to change the paint. |
 | Market Square | Side quests: Emberline Coffee and the Job Tracking Web App, both linked to their live sites. Brew a coffee, move a job card. |
@@ -29,13 +30,13 @@ Walk anywhere on the streets, squares and lawns. Only the houses, trees, stalls 
 
 **Connections:** the work is linked by six threads, such as *Research first*, *Brand storytelling*, *3D in the browser* and *Live data and simulation*. In the map view they are dashed arcs between the stops that share them; pick one in the **Connections** row to see just that thread. Every card lists what the project is made of (**Inside**) and its **Connected work**, with buttons that jump to the related stops. Threads and parts live in `src/data/content.js` (`THREADS`, `PARTS`).
 
-**Story tour:** press `T` (or **Take the story tour** on the start screen, or ask Mayor Maple to show you around) for a 12-chapter story in the map view: from the Bridgly research to the live sites, the skills behind them and how to get in touch. Each chapter frames its stops above the caption, brings out its thread and plays on by itself. Pause with `Space`, step with `←` `→`, open the stop from the card, or leave with `Esc`. The chapters are in `STORY` in `src/data/content.js`.
+**Story tour:** press `T` (or **Take the story tour** on the start screen, or ask Mayor Maple to show you around) for a 13-chapter story in the map view: from the Bridgly research to the live sites, the skills behind them and how to get in touch. Each chapter frames its stops above the caption, brings out its thread and plays on by itself. Pause with `Space`, step with `←` `→`, open the stop from the card, or leave with `Esc`. The chapters are in `STORY` in `src/data/content.js`.
 
 **The island:** the town sits on an island now, with a sandy beach, foam along the shore, small islands on the horizon, a lighthouse that sweeps the sea at night (gulls circle it by day), a jetty with a rowboat and sailboats going round. Zoom the map all the way out to see the whole island.
 
-**Everyday crowd:** up to 32 small townsfolk leave their houses and walk the streets to wherever people go at that hour: the LRT park and the coffee booth in the morning, the food court at lunch, the parks in the afternoon and the square in the evening. Most go home at night. They step round Henry rather than walk through him. The townsfolk you can talk to keep their spots, so they are always there to meet.
+**Everyday crowd:** up to 32 small townsfolk leave their houses and walk the streets to wherever people go at that hour: the LRT park, the Toronto plaza and the coffee booth in the morning, the food court at lunch, the parks in the afternoon and the square in the evening. Most go home at night. They step round Henry rather than walk through him. The townsfolk you can talk to keep their spots, so they are always there to meet.
 
-There are also 7 tool coins to collect, 31 interactions to discover, 11 townsfolk to meet, a story tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
+There are also 7 tool coins to collect, 32 interactions to discover, 11 townsfolk to meet, a story tour, a photo mode and a **Quick view** for anyone who would rather skim the work than play.
 
 ## Townsfolk
 

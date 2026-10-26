@@ -39,10 +39,11 @@ export const SIDE = {
   emberline: { title: 'Emberline Coffee', desc: 'A cinematic coffee product landing page crafted around brand storytelling and an immersive browsing experience.', tags: ['Web Design', 'UI Design', 'Branding'], url: 'https://emberline-landing.vercel.app/' },
   jobtracker: { title: 'Job Tracking Web App', desc: 'A focused workspace for organizing job applications and keeping every opportunity moving forward.', tags: ['Web App', 'UX UI', 'Development'], url: 'https://mern-project-job.onrender.com/landing' },
   edmontonlrt: { title: 'Edmonton LRT Live', desc: 'An interactive Edmonton LRT map with tiny 3D trains across the Capital, Metro and Valley lines, driven by ETS schedules.', tags: ['Transit', 'Three.js', 'React'], url: 'https://edmonton-lrt-live.vercel.app/' },
+  torontotransit: { title: 'Toronto Transit Live', desc: 'Every scheduled train around Toronto on a live 3D map: TTC subway, LRT and streetcars, GO Transit, UP Express and VIA Rail, placed from their timetables.', tags: ['Transit', 'Three.js', 'React'], url: 'https://toronto-transit-live.vercel.app/' },
   arcline: { title: 'Arcline One', desc: 'A cinematic electric-vehicle landing page with a 3D car configurator, paint options and range calculator.', tags: ['Web Design', 'EV', '3D Interaction'], url: 'https://arcline-landing-kappa.vercel.app/' },
   stackyard: { title: 'Stackyard Warehouse Ops', desc: 'A live-feeling 3D warehouse dashboard with automated vehicles, pallet racks and simulated fulfillment tasks.', tags: ['3D Dashboard', 'Simulation', 'Operations'], url: 'https://stackyard-warehouse-ops.vercel.app/' },
 };
-export const SIDE_ORDER = ['emberline', 'jobtracker', 'edmontonlrt', 'arcline', 'stackyard'];
+export const SIDE_ORDER = ['emberline', 'jobtracker', 'edmontonlrt', 'torontotransit', 'arcline', 'stackyard'];
 
 export const SKILLS = [
   ['UX Research', '<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/>'],
@@ -71,6 +72,7 @@ export const GLYPH_SVG = {
   cup: '<path d="M4 9h12v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 3c-.8 1 .8 2 0 3M12 3c-.8 1 .8 2 0 3"/>',
   board: '<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M9 4v16M15 4v16"/><path d="M5 8h2M11 8h2M17 8h2M5 11h2M11 11h2"/>',
   train: '<rect x="4" y="5" width="16" height="14" rx="4"/><path d="M8 5V2h8v3M4 12h16M7 22l3-3M17 22l-3-3M8 9h2M14 9h2"/>',
+  subway: '<path d="M3 21v-9a9 9 0 0 1 18 0v9"/><rect x="7.5" y="9" width="9" height="9" rx="2"/><path d="M7.5 14h9M10 21l.8-3M14 21l-.8-3"/>',
   car: '<path d="M5 16 3 13l2-5h14l2 5-2 3H5z"/><path d="m7 8 2-4h6l2 4M6 16v3M18 16v3M7 13h2M15 13h2"/>',
   warehouse: '<path d="M3 21V8l9-5 9 5v13M3 10h18M7 21v-8h10v8M7 17h10M11 13v8"/>',
 };
@@ -96,6 +98,7 @@ export const PARTS = {
   emberline: ['Cinematic product landing page', 'Brand storytelling', 'Immersive browsing'],
   jobtracker: ['Application workspace', 'Keeps every opportunity moving'],
   edmontonlrt: ['Interactive LRT map', 'Tiny 3D trains', 'Capital, Metro and Valley lines', 'ETS schedules'],
+  torontotransit: ['Live 3D rail map', 'TTC subway, LRT and streetcars', 'GO Transit, UP Express and VIA Rail', 'Tunnel and surface sections', 'Four GTFS timetables'],
   arcline: ['3D car configurator', 'Paint options', 'Range calculator'],
   stackyard: ['Automated vehicles', 'Pallet racks', 'Simulated fulfillment tasks'],
   skills: ['UX Research', 'UI Design', 'Prototyping', 'Design Systems', 'Interaction Design', 'Usability Testing'],
@@ -123,17 +126,17 @@ export const THREADS = [
   {
     id: '3d', name: '3D in the browser', color: '#3b82f6',
     desc: 'Interactive 3D scenes that run on a web page, like this town.',
-    why: { arcline: 'A 3D car configurator with paint options.', edmontonlrt: 'Tiny 3D trains running across the LRT lines.', stackyard: 'A 3D warehouse with automated vehicles and pallet racks.' },
+    why: { arcline: 'A 3D car configurator with paint options.', edmontonlrt: 'Tiny 3D trains running across the LRT lines.', torontotransit: 'Toy trains on every Toronto rail line, see-through where they run in a tunnel.', stackyard: 'A 3D warehouse with automated vehicles and pallet racks.' },
   },
   {
     id: 'live', name: 'Live data and simulation', color: '#2fb67c',
     desc: 'Interfaces that move on their own, from real schedules or a simulation.',
-    why: { edmontonlrt: 'Trains are driven by ETS schedules.', stackyard: 'Fulfillment tasks are simulated so the dashboard feels live.' },
+    why: { edmontonlrt: 'Trains are driven by ETS schedules.', torontotransit: 'Four operators’ timetables place every train in the region.', stackyard: 'Fulfillment tasks are simulated so the dashboard feels live.' },
   },
   {
     id: 'shipped', name: 'Designed and shipped', color: '#57677d',
     desc: 'Side projects that went all the way to a live site you can visit.',
-    why: { emberline: 'Live landing page.', jobtracker: 'Live web app.', edmontonlrt: 'Live transit map.', arcline: 'Live landing page.', stackyard: 'Live dashboard.' },
+    why: { emberline: 'Live landing page.', jobtracker: 'Live web app.', edmontonlrt: 'Live transit map.', torontotransit: 'Live transit map.', arcline: 'Live landing page.', stackyard: 'Live dashboard.' },
   },
 ];
 for (const th of THREADS) th.stops = Object.keys(th.why);
@@ -151,8 +154,9 @@ export const STORY = [
   { kicker: 'Connection', fit: ['bridgly', 'jobtracker'], thread: 'daily', title: 'Built around daily life', text: 'Like Bridgly, the Job Tracker fits into someone’s routine: a focused workspace that keeps every job application moving.' },
   { kicker: 'Live project', stop: 'emberline', thread: 'story', title: 'Telling a brand’s story', text: 'Emberline Coffee is a cinematic landing page crafted around brand storytelling and an immersive browsing experience.' },
   { kicker: 'Live project', stop: 'arcline', thread: 'story', title: 'From coffee to cars', text: 'Arcline One takes the same storytelling to an electric vehicle, with paint options and a range calculator.' },
-  { kicker: 'Connection', fit: ['arcline', 'edmontonlrt', 'stackyard'], thread: '3d', title: '3D in the browser', text: 'Arcline’s car configurator, the LRT’s tiny trains and Stackyard’s warehouse are all interactive 3D on a web page, like this town.' },
+  { kicker: 'Connection', fit: ['arcline', 'edmontonlrt', 'torontotransit', 'stackyard'], thread: '3d', title: '3D in the browser', text: 'Arcline’s car configurator, the tiny trains on the Edmonton and Toronto maps and Stackyard’s warehouse are all interactive 3D on a web page, like this town.' },
   { kicker: 'Live project', stop: 'edmontonlrt', thread: 'live', title: 'Driven by real schedules', text: 'Edmonton LRT Live puts tiny 3D trains on the Capital, Metro and Valley lines, moving to ETS schedules.' },
+  { kicker: 'Live project', stop: 'torontotransit', thread: 'live', title: 'Scaled up to a whole region', text: 'Toronto Transit Live takes the same idea to Toronto: TTC subway, LRT and streetcars, GO Transit, UP Express and VIA Rail, every train placed from its timetable.' },
   { kicker: 'Live project', stop: 'stackyard', thread: 'live', title: 'A warehouse that runs itself', text: 'Stackyard Warehouse Ops simulates fulfillment tasks, with automated vehicles moving between pallet racks.' },
   { kicker: 'About me', stop: 'about', title: 'Who made all this', text: 'I’m Henry Wu, a UI/UX designer who crafts meaningful digital experiences with empathy and curiosity. When I’m not designing, I’m hanging out with my hamster, gaming or working out.' },
   { kicker: 'The end', stop: 'contact', title: 'Let’s talk', text: 'Want to talk design, a role or a project? The quickest way to reach me is LinkedIn. You can also open any stop on the map, or walk the town with me.', end: true },

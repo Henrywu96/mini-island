@@ -6,15 +6,16 @@ export const ISLANDS = [
   { id: 'bridgly', x: 0, z: -23, r: 6.2, depth: 6.5 },
   { id: 'lookout', x: 9.2, z: -27.2, r: 2.4, depth: 3 },
   { id: 'transit', x: -21, z: -9, r: 6, depth: 6 },
+  { id: 'toronto', x: -31, z: 2.5, r: 5.4, depth: 5.5 },
   { id: 'yard', x: 21, z: -9, r: 6, depth: 6 },
   { id: 'grove', x: -17, z: 15, r: 5.6, depth: 5.5 },
   { id: 'workshop', x: 17, z: 15, r: 5.6, depth: 5.5 },
   { id: 'studio', x: 0, z: 31, r: 7, depth: 6.5 },
 ];
 export const ISL = Object.fromEntries(ISLANDS.map(i => [i.id, i]));
-export const LINKS = [['hub', 'bridgly'], ['hub', 'transit'], ['hub', 'yard'], ['hub', 'grove'], ['hub', 'workshop'], ['bridgly', 'lookout'], ['grove', 'studio'], ['workshop', 'studio']];
+export const LINKS = [['hub', 'bridgly'], ['hub', 'transit'], ['hub', 'yard'], ['hub', 'grove'], ['hub', 'workshop'], ['bridgly', 'lookout'], ['transit', 'toronto'], ['grove', 'studio'], ['workshop', 'studio']];
 // each square is cobblestone (plaza) or grass (park)
-export const DISTRICT = { hub: 'plaza', yard: 'plaza', workshop: 'plaza', studio: 'plaza', bridgly: 'park', transit: 'park', grove: 'park', lookout: 'park' };
+export const DISTRICT = { hub: 'plaza', yard: 'plaza', workshop: 'plaza', studio: 'plaza', bridgly: 'park', transit: 'park', toronto: 'plaza', grove: 'park', lookout: 'park' };
 
 // The duck pond and the food court around it, south of the town square.
 export const POND = { x: 0, z: 16.2, r: 3.4 };
@@ -25,6 +26,7 @@ const STATION_DEFS = [
   { id: 'greenpath', island: 'greenpath', x: -21.3, z: -9.3, kind: 'quest', name: 'GreenPath', tag: 'Epic', color: '#8b5cf6', icon: asset('img/greenpath.webp'), verb: 'Accept quest', radius: 2.8, iy: 2.75, col: .95 },
   { id: 'studyflow', island: 'studyflow', x: 21.3, z: -9.3, kind: 'quest', name: 'StudyFlow', tag: 'Rare', color: '#3b82f6', icon: asset('img/studyflow.webp'), verb: 'Accept quest', radius: 2.8, iy: 2.75, col: .95 },
   { id: 'edmontonlrt', island: 'transit', x: -21, z: -9, kind: 'side', name: 'Edmonton LRT Live', tag: 'Live site', color: '#2f6fdd', glyph: 'train', verb: 'Visit station', radius: 2.6, iy: 3.05, col: .6 },
+  { id: 'torontotransit', island: 'toronto', x: -31, z: 2.5, kind: 'side', name: 'Toronto Transit Live', tag: 'Live site', color: '#c8302c', glyph: 'subway', verb: 'Visit station', radius: 2.6, iy: 3.05, col: .6 },
   { id: 'skills', island: 'grove', x: -15.9, z: 13.9, kind: 'skills', name: 'Skill Tree', tag: 'Abilities', color: '#2fb67c', glyph: 'star', verb: 'Inspect the tree', radius: 2.8, iy: 2.1, col: 0 },
   { id: 'arcline', island: 'studio', x: 0, z: 31.2, kind: 'side', name: 'Arcline One', tag: 'Live site', color: '#57677d', glyph: 'car', verb: 'Explore showroom', radius: 3.7, iy: 4.85, col: 2.4 },
   { id: 'emberline', island: 'workshop', x: 15.1, z: 17.2, kind: 'side', name: 'Emberline Coffee', tag: 'Live site', color: '#ec6a4e', glyph: 'cup', verb: 'Visit booth', radius: 2.5, iy: 2.9, col: .95 },
@@ -56,7 +58,7 @@ export const MAP_NUM = Object.fromEntries(MAP_ORDER.map((id, i) => [id, String(i
 
 // Every small thing you can do in town, for the "Interactions" counter.
 export const INTERACTIONS = {
-  train: 'Dispatch an LRT train', order: 'Dispatch a Stackyard order', paint: 'Repaint the Arcline car', hug: 'Send a hug', wheel: 'Hamster wheel',
+  train: 'Dispatch an LRT train', subway: 'Send a Toronto subway train', order: 'Dispatch a Stackyard order', paint: 'Repaint the Arcline car', hug: 'Send a hug', wheel: 'Hamster wheel',
   coffee: 'Brew a coffee', card: 'Move a job card', shake: 'Shake the skill tree', pet: 'Pet the hamster', ball: 'Kick the beach ball',
   butterflies: 'Startle the butterflies', plane: 'Throw a paper plane', dog: 'Pet a dog', cat: 'Pet a cat', trick: 'Ask a dog for a trick',
   yarn: 'Toss yarn for a cat', fetch: 'Play fetch with a dog',
@@ -68,6 +70,6 @@ export const INTERACTIONS = {
 export const TIPS = [
   'The golden totem opens my Bridgly case study.', 'Press 2 and I will dance.', 'One tool coin is hiding on a street.', 'Kick the beach ball. My hamster will chase it.',
   'Mochi and Bean love belly rubs. Walk up and press E.', 'Mayor Maple has a little job for you. Find her in the square.', 'The food court by the pond has boba, pancakes and a poutine truck.',
-  'Kick the ball near a dog to play fetch.', 'Two beavers live by the duck pond. Walk up and they slap their tails.', 'A bull and a cow moose graze where the town meets the woods.', 'Press N to see the island at night.', 'Press F at the LRT station to dispatch a train.', 'Press F at the coffee booth for a speed boost.',
+  'Kick the ball near a dog to play fetch.', 'Two beavers live by the duck pond. Walk up and they slap their tails.', 'A bull and a cow moose graze where the town meets the woods.', 'Press N to see the island at night.', 'Press F at the LRT station to dispatch a train.', 'Press F on the Toronto platform to send the subway into the tunnel.', 'Press F at the coffee booth for a speed boost.',
   'The AGV at Stackyard fills an order when you press F.', 'Press T for a guided tour of my work.', 'Toss some yarn for the cats with F.', 'Everyone in town has something to say. Walk up and press E.',
 ];

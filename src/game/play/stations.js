@@ -16,6 +16,7 @@ import { wheelRun } from '../actors/hamster.js';
 import { brewCoffee, moveCard } from '../world/market.js';
 import { shakeTree } from '../world/grove.js';
 import { dispatchTrain } from '../world/transit.js';
+import { sendSubway } from '../world/toronto.js';
 import { dispatchOrder } from '../world/yard.js';
 import { changePaint } from '../world/showroom.js';
 import { throwPlane } from './plane.js';
@@ -61,6 +62,7 @@ export function initStations() {
   SBY.jobtracker.alt = { label: 'Move a job card', act: moveCard };
   SBY.skills.alt = { label: 'Shake the tree', act: shakeTree };
   SBY.edmontonlrt.alt = { label: 'Dispatch a train', act: () => dispatchTrain() };
+  SBY.torontotransit.alt = { label: 'Send the subway', act: () => sendSubway() };
   SBY.stackyard.alt = { label: 'Dispatch an order', act: () => dispatchOrder() };
   SBY.arcline.alt = { label: 'Change the paint', act: changePaint };
   SBY.contact.alt = { label: 'Throw a paper plane', act: throwPlane };
