@@ -73,8 +73,8 @@ function Quick() {
           <div className="q-side">{SIDE_ORDER.map(id => { const s = SIDE[id]; return <a key={id} href={s.url} {...ext}><span className="rar r-live">Live site ↗</span><h3>{s.title}</h3><p>{s.desc}</p></a>; })}</div>
         </section>
         <div className="q-two">
-          <section className="q-sec card"><h2>Skills</h2><SkillGrid /><div className="eyebrow">Tools</div><p style={{ margin: 0, color: 'var(--slate)' }}>Figma, Framer, FigJam, Notion, Maze, Lottie, Spline</p></section>
-          <section className="q-sec card"><h2>About</h2><p className="headline">{ABOUT.headline}</p><p style={{ margin: 0, color: 'var(--slate)' }}>{ABOUT.bio}</p></section>
+          <section className="q-sec card"><h2>Skills</h2><SkillGrid /><div className="eyebrow">Tools</div><p style={{ margin: 0, color: 'var(--qu-text-body)' }}>Figma, Framer, FigJam, Notion, Maze, Lottie, Spline</p></section>
+          <section className="q-sec card"><h2>About</h2><p className="headline">{ABOUT.headline}</p><p style={{ margin: 0, color: 'var(--qu-text-body)' }}>{ABOUT.bio}</p></section>
         </div>
       </div>
     </div>

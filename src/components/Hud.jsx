@@ -70,7 +70,7 @@ export function Tracker() {
           <div className="tool-dots">{TOOLS.map(t => <i key={t.n} title={t.n} style={found.includes(t.n) ? { background: t.c } : null} />)}</div>
         </div>
         <div className="tr-tools"><span>Interactions</span><b>{done.length} / {INT_KEYS.length}</b>
-          <div className="tool-dots">{INT_KEYS.map(k => <i key={k} title={INTERACTIONS[k]} style={done.includes(k) ? { background: 'var(--coral)' } : null} />)}</div>
+          <div className="tool-dots">{INT_KEYS.map(k => <i key={k} title={INTERACTIONS[k]} style={done.includes(k) ? { background: 'var(--qu-coral-500)' } : null} />)}</div>
         </div>
         <div className="tr-tools"><span>Townsfolk met</span><b>{met.length} / {NPCS.length}</b>
           <div className="tool-dots">{NPCS.map(n => <i key={n.id} title={met.includes(n.id) ? `${n.name} · ${n.role}` : 'Not met yet'} style={met.includes(n.id) ? { background: n.color } : null} />)}</div>
